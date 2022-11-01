@@ -17,7 +17,8 @@ http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/
 http://example.com/tags/%E8%AE%B0%E5%BD%95%E7%94%9F%E6%B4%BB/
 http://example.com/tags/%E7%94%9F%E6%B4%BB/
 http://example.com/tags/Ubuntu/
+http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%81CV/
 http://example.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/
 http://example.com/categories/%E7%94%9F%E6%B4%BB/
 http://example.com/categories/Ubuntu/
-http://example.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%81CV%E3%80%81-%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/
+http://example.com/categories/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/

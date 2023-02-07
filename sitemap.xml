@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/1970/01/01/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/</loc>
+    <loc>http://example.com/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/</loc>
     
     <lastmod>2023-02-07</lastmod>
     
@@ -184,6 +184,13 @@
   
   <url>
     <loc>http://example.com/tags/ActionFormer/</loc>
+    <lastmod>2023-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2023-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

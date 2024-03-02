@@ -13,13 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-        # 分支文件检查聚合
-        - name: Checkout branch dependent
-          uses: actions/checkout@v2
-          with:
-            ref: dependent
-            path: ./
         - name: Checkout branch main
           uses: actions/checkout@v2
           with:

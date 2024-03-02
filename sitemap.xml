@@ -74,15 +74,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/09/20/Hello/</loc>
-    
-    <lastmod>2024-03-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/Gallery/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>

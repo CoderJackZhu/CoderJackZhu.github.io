@@ -1,0 +1,46 @@
+name: Hexo Build & Deploy
+
+on:
+# 触发事件
+  push:
+    # 排除分支
+    branches-ignore:
+      - 'html'
+
+# 工作流
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+        # 分支文件检查聚合
+        - name: Checkout branch dependent
+          uses: actions/checkout@v2
+          with:
+            ref: dependent
+            path: ./
+        - name: Checkout branch main
+          uses: actions/checkout@v2
+          with:
+            ref: main
+            path: ./source
+
+        # 工具安装
+        - name: Use Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '20'
+        - name: Install dependencies
+          run: npm install
+
+        # 构建
+        - name: Build
+          run: npm run build
+
+        # 部署
+        - name: Deploy
+          uses: JamesIves/github-pages-deploy-action@v4.2.2
+          with:
+            branch: html
+            folder: public

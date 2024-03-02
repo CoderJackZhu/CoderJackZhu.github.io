@@ -25,7 +25,7 @@ aside:
 # 博客配置Github Actions和仓库分支存储
 
 之前的博客是源文件建了一个github仓库，然后一个仓库只用作github pages，这样的话，每次写博客都要手动编译，然后push到github pages仓库，这样很麻烦，所以我就想到了使用github actions自动部署博客，然后使用仓库分支存储图片等资源。（虽然不怎么写博客）
-这块我参考了之前浪潮的一次技术讲座，不过那个稍微麻烦了一些，我这里就简化了一下，把之前的文件迁移到这里.
+这块我参考了之前浪潮的一次技术讲座，不过那个稍微麻烦了一些，我这里就简化了一下，把之前的文件迁移到这里。
 
 ## 1.把源文件和github pages的文件分开
 
@@ -63,7 +63,7 @@ git push # 将修改推送到远程仓库
 
 ## 4. 配置GiHub Actions工作流文件
 
-在仓库文件夹.github/下新建一个目录workflows/(注意有两层目录)，在里面新建一个hexo_build_deploy.yml文件(这个文件可以暂时存到另外某个地方，还需要的)，内容如下：
+在仓库文件夹.github/下新建一个目录workflows/(注意有两层目录)，在里面新建一个hexo_build_deploy.yml文件，内容如下：
 
 ``` yaml
 name: Hexo Build & Deploy

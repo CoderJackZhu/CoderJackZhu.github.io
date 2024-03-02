@@ -11,15 +11,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/categories/index.html</loc>
-    
-    <lastmod>2024-03-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/public/link/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
@@ -38,7 +29,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/photos/index.html</loc>
+    <loc>http://example.com/public/music/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -47,7 +38,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/music/index.html</loc>
+    <loc>http://example.com/public/photos/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -83,15 +74,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/source/categories/index.html</loc>
-    
-    <lastmod>2024-03-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/source/link/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
@@ -101,7 +83,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/source/music/index.html</loc>
+    <loc>http://example.com/source/categories/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -111,6 +93,15 @@
   
   <url>
     <loc>http://example.com/source/movies/index.html</loc>
+    
+    <lastmod>2024-03-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/source/music/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -129,33 +120,6 @@
   
   <url>
     <loc>http://example.com/source/tags/index.html</loc>
-    
-    <lastmod>2024-03-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/public/categories/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/index.html</loc>
-    
-    <lastmod>2024-03-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/public/categories/%E6%97%B6%E5%BA%8F%E5%AE%9A%E4%BD%8D/index.html</loc>
-    
-    <lastmod>2024-03-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/public/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -227,15 +191,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/Gallery/index.html</loc>
-    
-    <lastmod>2024-03-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/public/about/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
@@ -245,7 +200,25 @@
   </url>
   
   <url>
+    <loc>http://example.com/public/Gallery/index.html</loc>
+    
+    <lastmod>2024-03-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/public/archives/index.html</loc>
+    
+    <lastmod>2024-03-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/public/categories/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -290,15 +263,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/categories/Ubuntu/index.html</loc>
-    
-    <lastmod>2024-03-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/public/archives/2023/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
@@ -308,7 +272,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/archives/2020/10/index.html</loc>
+    <loc>http://example.com/public/categories/Ubuntu/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -317,7 +281,34 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/archives/2022/04/index.html</loc>
+    <loc>http://example.com/public/categories/%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/index.html</loc>
+    
+    <lastmod>2024-03-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/public/categories/%E6%97%B6%E5%BA%8F%E5%AE%9A%E4%BD%8D/index.html</loc>
+    
+    <lastmod>2024-03-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/public/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.html</loc>
+    
+    <lastmod>2024-03-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/public/archives/2020/10/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -344,7 +335,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/archives/2022/11/index.html</loc>
+    <loc>http://example.com/public/archives/2022/04/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -362,7 +353,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/2020/10/31/%E8%AE%B0%E5%BD%95%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%90%AD%E5%8D%9A%E5%AE%A2/index.html</loc>
+    <loc>http://example.com/public/archives/2022/11/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -380,7 +371,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/2021/12/29/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/index.html</loc>
+    <loc>http://example.com/public/2020/10/31/%E8%AE%B0%E5%BD%95%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%90%AD%E5%8D%9A%E5%AE%A2/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -398,7 +389,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/public/2022/05/10/%E4%BB%8A%E6%97%A5%E9%9A%8F%E7%AC%94/index.html</loc>
+    <loc>http://example.com/public/2021/12/29/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     
@@ -408,6 +399,15 @@
   
   <url>
     <loc>http://example.com/public/2022/09/21/HRNet/index.html</loc>
+    
+    <lastmod>2024-03-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/public/2022/05/10/%E4%BB%8A%E6%97%A5%E9%9A%8F%E7%AC%94/index.html</loc>
     
     <lastmod>2024-03-02</lastmod>
     

@@ -1,9 +1,9 @@
-http://example.com/source/Gallery/index.html
-http://example.com/source/categories/index.html
 http://example.com/source/about/index.html
+http://example.com/source/categories/index.html
 http://example.com/source/link/index.html
 http://example.com/source/movies/index.html
 http://example.com/source/music/index.html
 http://example.com/source/photos/index.html
 http://example.com/source/tags/index.html
+http://example.com/source/Gallery/index.html
 http://example.com/

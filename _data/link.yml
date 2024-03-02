@@ -1,0 +1,45 @@
+- class_name: 友情链接
+  class_desc: 那些人，那些事
+  link_list:
+    - name: 冉崇治
+      link: http://resetran.top/
+      avatar: https://gcore.jsdelivr.net/gh/ranchongzhi/ranchongzhi.github.io@master/medias/logo.png
+      descr: 王者打野贼溜的NeRF研究者
+    - name: 六个骨头
+      link: http://www.bone6.top/
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/zhan.jpg
+      descr: 飞桨开发者专家
+    - name: Evan CHEN
+      link: https://lhchen.top/
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/_8RG~~1E221F8I(K2FUV4KJ.bmp
+      descr: 保研清深的图表示学习、语音驱动生成大牛
+    - name: BB酱
+      link: https://www.bbbbchan.com/
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/bb.jpg
+      descr: 南开大学分割领域强者
+    - name: sund
+      link: http://www.sund-xys.cn/
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/sund.jpg
+      descr: 西交网络&无线&侧信道大爹     
+    - name: 冯玉龙
+      link: http://bestxinyu.com/
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/feng.jpg
+      descr: 又一个大佬
+    - name: 西电浪潮俱乐部
+      link: http://www.xdu-inspur.club/
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/inspur.jpg
+      descr: 在西电的技术性交流社团
+
+
+
+- class_name: 网站
+  class_desc: 值得推荐的网站
+  link_list:
+    - name: 跟李沐学AI的入门课
+      link: https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20221004001647.png
+      descr: 视频网站
+    - name: OpenMMLab
+      link: https://openmmlab.com/
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/httpsi.loli.net202005145VyHPQqR6LWF39a.png.png
+      descr: 比较综合性的AI框架

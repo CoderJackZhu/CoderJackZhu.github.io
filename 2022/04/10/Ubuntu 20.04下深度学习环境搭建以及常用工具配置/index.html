@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置 | Jack's Blog</title><meta name="author" content="Jack Zhu"><meta name="copyright" content="Jack Zhu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一点小记录"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/04/10/Ubuntu%2020.04%E4%B8%8B%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E4%BB%A5%E5%8F%8A%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-02 17:38:12'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Jack's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/%E9%9F%B3%E4%B9%90"><i class="fa-fw /music/"></i><span> 0</span></a></li><li><a class="site-page child" href="/%E7%85%A7%E7%89%87"><i class="fa-fw /Gallery/"></i><span> 1</span></a></li><li><a class="site-page child" href="/%E7%94%B5%E5%BD%B1"><i class="fa-fw /movies/"></i><span> 2</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102119630.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Jack's Blog"><span class="site-name">Jack's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/%E9%9F%B3%E4%B9%90"><i class="fa-fw /music/"></i><span> 0</span></a></li><li><a class="site-page child" href="/%E7%85%A7%E7%89%87"><i class="fa-fw /Gallery/"></i><span> 1</span></a></li><li><a class="site-page child" href="/%E7%94%B5%E5%BD%B1"><i class="fa-fw /movies/"></i><span> 2</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-10T00:08:37.000Z" title="发表于 2022-04-10 00:08:37">2022-04-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-02T17:38:12.406Z" title="更新于 2024-03-02 17:38:12">2024-03-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Ubuntu-20-04下Pytorch深度学习环境搭建以及常用工具配置"><a href="#Ubuntu-20-04下Pytorch深度学习环境搭建以及常用工具配置" class="headerlink" title="Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置"></a>Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置</h1><p>作者：CoderJackZhu</p>
+<p>从事计算机相关行业的在今后学习工作过程中总会接触到Linux系统，而且在很多情况下，Windows下可能会出现一些奇奇怪怪的bug，这些问题部分是系统的问题导致的，比如常见的路径中不能带中文。深度学习环境有时候为了更好的管理机器，取得更好的效率也常常采用Linux系统，这里选择Ubuntu是对于个人的萌新而言，应该选择尽量大众些的系统，出问题也容易找到解决办法，比如由于各种误操作，linux系统我至少已经重装过不下二十次了，为了更好的学习相关知识，这样一个系统的搭建也是需要的，这里写出这个博客为了方便使用，也让我之后重装系统的时候不用再找好几个博客了。</p>
+<h2 id="“双系统”中Ubuntu安装"><a href="#“双系统”中Ubuntu安装" class="headerlink" title="“双系统”中Ubuntu安装"></a>“双系统”中Ubuntu安装</h2><p>这里的所说的双系统并不是真正的单个硬盘上多个挂载点的双系统，而是把第二个系统装在移动硬盘里面，这样正常开机默认还是Windows系统，需要选择系统就在进入系统时长按<code>F11</code>（不同品牌电脑不同），选择相应的系统就可以进入了，这样的安装相比一个硬盘上多个挂载点简易不少，配置难度低，而且不易出问题，不然一不小心两个系统都不能用了，这样Linux出了问题只需要直接覆盖重装就可以了，下面是具体步骤：</p>
+<h3 id="准备需要的工具"><a href="#准备需要的工具" class="headerlink" title="准备需要的工具"></a>准备需要的工具</h3><p>这里软件方面需要准备的是，从官方网站上下载Ubuntu的镜像，以及刻录软件。刻录软件使用UltraIso或者balentEtcher都是可以的，balentEtcher相对操作更简易些。</p>
+<p>硬件需要准备的是一个U盘用于制作启动盘，尽量大于等于16G，一个移动硬盘用于安装系统，尽量大于128G，毕竟实际使用过程中数据集也比较大，还是需要给后续留足空间。</p>
+<h3 id="制作启动盘"><a href="#制作启动盘" class="headerlink" title="制作启动盘"></a>制作启动盘</h3><p>安装好Format后选择文件为之前下的系统镜像，选择硬件为U盘，然后点击Flash就可以了，等几分钟安装校验完就可以了。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>然后重启并选择使用刚才的U盘启动，就可以进入安装Ubuntu的界面了，正常使用的话选择中文汉语，正常安装，勾选安装第三方软件。这个时候可以插上移动硬盘了，然后输入自己的用户名密码什么的，之后就进入选择安装位置了，这里点击清理磁盘安装就可以了，不然挂载点就很不太好理解，然后下一步点击你插入的那个硬盘，<strong>这里注意别选错</strong>，根据你的硬盘大小就能判断出了，选错其他盘的话可能你的数据就凉了，然后下一步。然后选择地图上的位置为shanghai就可以了，之后就进入安装了，等一会安装完然后点击重新启动，然后根据提示拔掉U盘，然后开机的时候选择那个硬盘启动，这个时候硬盘的名字就已经是Ubuntu了，然后两次回车就可以进入系统了，到这里，系统的安装就算完成了。</p>
+<h2 id="深度学习Pytorch环境配置"><a href="#深度学习Pytorch环境配置" class="headerlink" title="深度学习Pytorch环境配置"></a>深度学习Pytorch环境配置</h2><p>正常使用深度学习环境跑代码，GPU是必不可少，这里只演示GPU版本的pytorch的安装，所需要的工具为Anaconda、CUDA、cuDNN、Pytorch。Anaconda可以用来管理不同版本的环境，CUDA和cuDNN是使用GPU计算所需要的工具这里需要注意相互之间的匹配关系，首先去<a target="_blank" rel="noopener" href="https://pytorch.org/">pytorch官网</a>可以看到</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102136735.png" alt="6"></p>
+<p>因此这里选择CUDA11.3，然后根据CUDA的版本，选择cuDNN的版本，具体在下载cuDNN的时候可以看到。</p>
+<h3 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h3><p>安装NVIDIA驱动有多种方式，比如可以去官网下载最新版，这里介绍最简单的一种，首先打开软件与更新，然后点附加驱动这里，系统默认用的是开源的的驱动，这里选最上面的几个版本高的就可以，这里安装的cuda11.3驱动至少要470以上，然后点击应用更改等一会就可以了。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102136053.png" alt="1"></p>
+<p>安装完成之后在命令行输入<code>nvidia-smi</code>就可以看到下图GPU情况，这就说明驱动基本没问题了。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102136894.png" alt="4"></p>
+<h3 id="下载安装cuda"><a href="#下载安装cuda" class="headerlink" title="下载安装cuda"></a>下载安装cuda</h3><p>这里找<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads">官方网站</a></p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102136125.png" alt="2"></p>
+<p>可以看到这里默认是11.6版本的，这里点击下方中的<code>Archive of Previous CUDA Releases</code>并选择对于的11.3版本，都是11.3的情况下选最后一位高的，之后进入以下界面，选择对应版本，然后先后输入下方的两行，第一行输入命令行，就开始下载了，下载完之后在对应的目录打开终端命令行，然后输入第二行，就开始安装了。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102137818.png" alt="3"></p>
+<p>安装过程中看到勾选多个项目的时候，把第一项的X勾选框点下回车取消掉，由于之前已经安装了驱动，所有这里不需要安装里面附带的驱动，然后切换Install并点击回车，等待就可以安装好了。</p>
+<p>然后添加路径，修改<code>.bashrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>#在末尾添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=/usr/local/cuda/bin$&#123;PATH:+:$&#123;PATH&#125;&#125; </span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda/lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125; </span><br></pre></td></tr></table></figure>
+<p>更新刚才输入的内容，在命令行输入： <code>source ~/.bashrc</code></p>
+<p>安装成功输入<code>nvcc -V</code></p>
+<h3 id="cuDNN的安装"><a href="#cuDNN的安装" class="headerlink" title="cuDNN的安装"></a>cuDNN的安装</h3><p>到<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cudnn">官网</a>下载文件：点击如图<code>Download cuDNN</code>按钮。下载需要NVIDIA的账号，没有的需要先注册一个。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102137133.png" alt="5"></p>
+<p>然后进入<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-archive#a-collapse742-10">下载界面</a>并选择Previous Archive</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102137217.png" alt="7"></p>
+<p>选择CUDA11.x对于的cuDNNv8.2 选择Runtime Library版的deb文件进行下载：</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102137992.png" alt="8"></p>
+<p>安装cuDNN过程与CUDA类似：<br>在下载的文件的文件夹里面打开终端，执行命令<code>sudo dpkg -i &lt;name&gt;</code>，其中<code>&lt;name&gt;</code>为刚才下载的deb文件名<br>执行命令<code>sudo apt install &lt;name&gt;</code>,其中<code>&lt;name&gt;</code>要和自己下载的cudnn版本匹配，比如这里是libcudnn8</p>
+<h2 id="安装Anaconda"><a href="#安装Anaconda" class="headerlink" title="安装Anaconda"></a>安装Anaconda</h2><p>Anaconda用于控制版本管理，直接在系统的python里装不太方便，库的控制也不那么直观，使用Anaconda之后会方便很多。</p>
+<p>这里直接从<a target="_blank" rel="noopener" href="https://www.anaconda.com/products/individual">官网</a>下载就可以，速度也不错，下载完之后在下载的文件夹打开终端，这里重点，命令行不要输入<code>sudo</code>，直接<code>sh &lt;name&gt;</code> <code>name</code>为刚才下的文件名然后可以了，一路回车过完协议书，然后yes同意，然后要么回车要么yes就可以了。千万别在命令行前面加<code>sudo</code>，这样anaconda3的文件夹就安装在<code>root</code>下了，这样感觉有时候不方便；直接<code>sh</code>就可以安装在你的主目录下，装好退出命令行就可以用了。</p>
+<p>安装过程先一路回车，然后按要求都yes就好。</p>
+<p>安装后退出命令行，然后重新进入命令行，然后输入<code>conda</code>，若出现如下则证明安装成功，若出现command not found则重启系统，若还不行则需要添加环境变量。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102137141.png" alt="10"></p>
+<h2 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h2><p>输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>再执行conda，若好则安装结束，否则手动添加环境变量</p>
+<p>输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>若vim未安装，先安装，可以使用<code>sudo apt install vim</code>安装（或者使用<code>sudo gedit ~/.bashrc</code>也可打开文件），然后执行上述命令，然后在文件的最后添加，这里的内容不要直接复制，根据自己的用户名来定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export</span><br><span class="line">PATH=/home/&lt;自己的用户名&gt;/anaconda3/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>输入完成后点击<code>ESC</code>, 然后输入<code>:wq</code>保存退出.</p>
+<p>然后更新环境变量:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>输入conda,检查是否配置成功。</p>
+<h2 id="创建环境并安装PyTorch"><a href="#创建环境并安装PyTorch" class="headerlink" title="创建环境并安装PyTorch"></a>创建环境并安装PyTorch</h2><p>安装后一般应用栏里是没有这个软件的，需要在命令行中输入<code>anaconda-navigator</code>等待进入就可以了，然后点左方的environment然后点下方的加号创建环境，想个环境的名字，选择需要的python版本，这里也可以使用命令来创建</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n &lt;环境名&gt; python=3.8</span><br></pre></td></tr></table></figure>
+
+<p>等待创建完成后在命令行中输入<code>conda info -e</code>即可查看现有哪些环境</p>
+<p>然后进入相应的环境输入下面命令，其中这里使用的环境名为<code>env1</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source activate env1</span><br></pre></td></tr></table></figure>
+
+<p>即可激活，若为windows下则为<code>conda activate env1</code>。</p>
+<p>这样就进入环境了，随后输入pytorch官网上的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch</span><br></pre></td></tr></table></figure>
+
+<p>如果速度慢，则需要换源，一般默认使用清华源为以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line"></span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge</span><br><span class="line"></span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/</span><br><span class="line"></span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/</span><br><span class="line"></span><br><span class="line">conda config --set show_channel_urls yes</span><br></pre></td></tr></table></figure>
+
+<p><strong>或者</strong>打开主目录下的隐藏文件<code>.condarc</code>，将其内容整体更换为以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssl_verify: true</span><br><span class="line">show_channel_urls: true</span><br><span class="line"></span><br><span class="line">channels:</span><br><span class="line">  - http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/win-64/</span><br><span class="line">  - http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/win-64/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后运行 <code>conda clean -i</code> 清除索引缓存。</p>
+<p>这时候安装命令就要把最后的<code>-c pytorch</code>去掉，变成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install pytorch torchvision torchaudio cudatoolkit=11.3</span><br></pre></td></tr></table></figure>
+
+<p>就可以很快的下载了，也可以使用<a target="_blank" rel="noopener" href="https://download.pytorch.org/whl/torch_stable.html">pytorch离线安装下载</a>直接下载whl文件，然后在命令行中进入下载的文件夹，然后输入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torch-<span class="number">1.9</span><span class="number">.0</span>+cu111-cp38-cp38-win_amd64.whl</span><br></pre></td></tr></table></figure>
+<p>这样就可以安装了，若为linux则将<code>win_amd64</code>改为<code>linux_x86_64</code>即可。</p>
+<p>若为单次换下载换源则命令为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple/  </span><br></pre></td></tr></table></figure>
+
+<p>在后面加上需要安装的库名字即可。</p>
+<h2 id="验证安装成功"><a href="#验证安装成功" class="headerlink" title="验证安装成功"></a>验证安装成功</h2><p>若全部安装完成，则新建一个python脚本hello.py，内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import torch</span><br><span class="line">import torchvision</span><br><span class="line">print(torch)</span><br><span class="line">print(torchvision)</span><br><span class="line">print(torch.cuda.is_available())</span><br><span class="line">x=torch.randn(5, 3)</span><br><span class="line">print(x)</span><br><span class="line">print(torch.cuda.device)</span><br><span class="line">print(torch.__version__)</span><br><span class="line">print(torchvision.__version__)</span><br><span class="line">print(torch.version)</span><br><span class="line">print(torch.version.cuda) # Corresponding CUDA version</span><br><span class="line">print(torch.backends.cudnn.version()) # Corresponding cuDNN version</span><br><span class="line">print(torch.cuda.get_device_name(0)) # GPU type</span><br></pre></td></tr></table></figure>
+
+<p>即可查看详细情况，若cuda可用这里显示true就说明安装成功。</p>
+<h2 id="常用软件"><a href="#常用软件" class="headerlink" title="常用软件"></a>常用软件</h2><p>深度学习环境其他非常常用的软件一般还有VScode和Pychram，一般这两个都安装比较好。</p>
+<p>BT下载以及磁力链下载很多时候是需要的，因此需要下载工具</p>
+<p>下载工具可以用Free Download Manger，还是非常好用的，还有qbittorrent和Motrix作为备用下载软件，这两个软件下载后不用安装，需要用的时候打开，也非常不错。</p>
+<p>其他比如截屏剪切板等功能用utools也挺好，不过高级功能后来收费了。</p>
+<h2 id="windows下安装的差异"><a href="#windows下安装的差异" class="headerlink" title="windows下安装的差异"></a>windows下安装的差异</h2><h3 id="更新驱动"><a href="#更新驱动" class="headerlink" title="更新驱动"></a>更新驱动</h3><p>正常使用的话，下载GeForce Experience然后把驱动更新到最新版即可，或者手动下载驱动，没有特殊需要的话默认最新版就好。</p>
+<h3 id="安装cuda和cudnn"><a href="#安装cuda和cudnn" class="headerlink" title="安装cuda和cudnn"></a>安装cuda和cudnn</h3><p>主体部分和linux下大同小异，按要求下载安装对应版本即可，安装cuda后打开命令行输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
+
+<p>返回版本号说明安装cuda成功。</p>
+<p>不过cudnn这里下载完后是复制到cuda对应的bin目录里面，一般是C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA。</p>
+<p>安装后有时候不能使用则需要添加环境变量，在系统环境变量里的Path项下添加几个路径</p>
+<p>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1</p>
+<p> 　　C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\lib\x64</p>
+<p>安装完成后进入路径然后运行测试，成功则为以下界面。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102138180.png" alt="11"></p>
+<p>然后运行测试的代码即可。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Jack Zhu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="http://jackzhu.top/">http://jackzhu.top/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="http://jackzhu.top/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Jack's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></div><div class="post_share"><div class="social-share" data-image="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102119630.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/05/10/%E4%BB%8A%E6%97%A5%E9%9A%8F%E7%AC%94/" title="今日随笔"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/moon.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">今日随笔</div></div></a></div><div class="next-post pull-right"><a href="/2021/12/29/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" title="考研后的思考"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102148023.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">考研后的思考</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/09/20/HRNet/" title="【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/mouse.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-20</div><div class="title">【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jack Zhu</div><div class="author-info__description">过好每一天</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderJackZhu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderJackZhu" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zhuyijie151@sina.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.zhihu.com/people/zhu-yijie-51" target="_blank" title="知乎"><i class="fab zhihu"></i></a><a class="social-icon" href="https://space.bilibili.com/355295657/" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu-20-04%E4%B8%8BPytorch%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E4%BB%A5%E5%8F%8A%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9C%E5%8F%8C%E7%B3%BB%E7%BB%9F%E2%80%9D%E4%B8%ADUbuntu%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">“双系统”中Ubuntu安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E9%9C%80%E8%A6%81%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="toc-number">1.1.1.</span> <span class="toc-text">准备需要的工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E5%90%AF%E5%8A%A8%E7%9B%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">制作启动盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.3.</span> <span class="toc-text">安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0Pytorch%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">深度学习Pytorch环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E9%A9%B1%E5%8A%A8"><span class="toc-number">1.2.1.</span> <span class="toc-text">安装驱动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85cuda"><span class="toc-number">1.2.2.</span> <span class="toc-text">下载安装cuda</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cuDNN%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.3.</span> <span class="toc-text">cuDNN的安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Anaconda"><span class="toc-number">1.3.</span> <span class="toc-text">安装Anaconda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.4.</span> <span class="toc-text">添加环境变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%8E%AF%E5%A2%83%E5%B9%B6%E5%AE%89%E8%A3%85PyTorch"><span class="toc-number">1.5.</span> <span class="toc-text">创建环境并安装PyTorch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="toc-number">1.6.</span> <span class="toc-text">验证安装成功</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.7.</span> <span class="toc-text">常用软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#windows%E4%B8%8B%E5%AE%89%E8%A3%85%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="toc-number">1.8.</span> <span class="toc-text">windows下安装的差异</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E9%A9%B1%E5%8A%A8"><span class="toc-number">1.8.1.</span> <span class="toc-text">更新驱动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85cuda%E5%92%8Ccudnn"><span class="toc-number">1.8.2.</span> <span class="toc-text">安装cuda和cudnn</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅谈《原神》游戏的理解"/></a><div class="content"><a class="title" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解">浅谈《原神》游戏的理解</a><time datetime="2023-02-07T00:00:00.000Z" title="发表于 2023-02-07 00:00:00">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ActionFormer论文分享"/></a><div class="content"><a class="title" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享">ActionFormer论文分享</a><time datetime="2022-11-09T18:01:37.000Z" title="发表于 2022-11-09 18:01:37">2022-11-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Ubuntu的基本使用"/></a><div class="content"><a class="title" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用">Ubuntu的基本使用</a><time datetime="2022-11-01T23:17:37.000Z" title="发表于 2022-11-01 23:17:37">2022-11-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/20/HRNet/" title="【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/mouse.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition"/></a><div class="content"><a class="title" href="/2022/09/20/HRNet/" title="【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition">【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition</a><time datetime="2022-09-20T19:57:37.000Z" title="发表于 2022-09-20 19:57:37">2022-09-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/10/%E4%BB%8A%E6%97%A5%E9%9A%8F%E7%AC%94/" title="今日随笔"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/moon.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="今日随笔"/></a><div class="content"><a class="title" href="/2022/05/10/%E4%BB%8A%E6%97%A5%E9%9A%8F%E7%AC%94/" title="今日随笔">今日随笔</a><time datetime="2022-05-10T00:00:00.000Z" title="发表于 2022-05-10 00:00:00">2022-05-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Jack Zhu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><span>本网站由 </span><a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/logo5.png"align="absmiddle"width="59px" height="30px" /></a><span>提供加速服务</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'hGtO6K0x6GlrX1FhjTwfMaWM-gzGzoHsz',
+      appKey: 'Nzeyk2Mmrhm9kBQtsXVYd4QA',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -105,4 +105,4 @@ theme: butterfly
 deploy:
   type: git
   repo: git@github.com:CoderJackZhu/CoderJackZhu.github.io.git
-  branch: html
+  branch: main

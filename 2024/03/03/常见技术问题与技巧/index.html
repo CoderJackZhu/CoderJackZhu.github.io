@@ -1,0 +1,358 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>常见技术问题与技巧 | Jack's Blog</title><meta name="author" content="Jack Zhu"><meta name="copyright" content="Jack Zhu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文记录了一些常见的技术问题与技巧"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/03/03/%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '常见技术问题与技巧',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-02 18:36:27'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Jack's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/%E9%9F%B3%E4%B9%90"><i class="fa-fw /music/"></i><span> 0</span></a></li><li><a class="site-page child" href="/%E7%85%A7%E7%89%87"><i class="fa-fw /Gallery/"></i><span> 1</span></a></li><li><a class="site-page child" href="/%E7%94%B5%E5%BD%B1"><i class="fa-fw /movies/"></i><span> 2</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Jack's Blog"><span class="site-name">Jack's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/%E9%9F%B3%E4%B9%90"><i class="fa-fw /music/"></i><span> 0</span></a></li><li><a class="site-page child" href="/%E7%85%A7%E7%89%87"><i class="fa-fw /Gallery/"></i><span> 1</span></a></li><li><a class="site-page child" href="/%E7%94%B5%E5%BD%B1"><i class="fa-fw /movies/"></i><span> 2</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">常见技术问题与技巧</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-03T02:29:37.000Z" title="发表于 2024-03-03 02:29:37">2024-03-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-02T18:36:27.295Z" title="更新于 2024-03-02 18:36:27">2024-03-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98/">技术问题</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="常见技术问题与技巧"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="目前碰到的一些技术问题与知识"><a href="#目前碰到的一些技术问题与知识" class="headerlink" title="目前碰到的一些技术问题与知识"></a>目前碰到的一些技术问题与知识</h1><h2 id="ubuntu安装驱动时候出现的问题"><a href="#ubuntu安装驱动时候出现的问题" class="headerlink" title="ubuntu安装驱动时候出现的问题"></a>ubuntu安装驱动时候出现的问题</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo -e “blacklist nouveau\noptions nouveau modeset=0” &gt; /etc/modprobe.d/disable-nouveau.conf</span><br><span class="line">update-initramfs -u</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/1574965/1698641093203-76565fa7-cadb-4ea1-b0e4-e8c6b708d97b.jpeg#averageHue=%23f1f1f1&from=url&id=jS4MF&originHeight=377&originWidth=1080&originalType=binary&ratio=1&rotation=0&showTitle=false&size=88211&status=done&style=none&title=" alt="1112806704.jpg"></p>
+<h2 id="ubuntu安装cuda驱动时候出现报错"><a href="#ubuntu安装cuda驱动时候出现报错" class="headerlink" title="ubuntu安装cuda驱动时候出现报错"></a>ubuntu安装cuda驱动时候出现报错</h2><ul>
+<li>安装显卡驱动需要关闭图形界面，在命令行完成安装（提前下好安装包）<br>关闭图形界面</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl isolate multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>开机可能出现黑屏，按<code>ctrl + shift + F2</code>即可进入命令行窗口，登录即可，随后安装驱动，安装完成之后，执行下边命令开机默认进入图形用户界面。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl isolate graphical.target</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiaoyuxin1/article/details/124526430">给Ubuntu安装驱动（nvidia）保姆级教程（方法一）_X.等雨停的博客-CSDN博客</a></p>
+<h2 id="ubuntu拨号上网以及各种方式上网设置"><a href="#ubuntu拨号上网以及各种方式上网设置" class="headerlink" title="ubuntu拨号上网以及各种方式上网设置"></a>ubuntu拨号上网以及各种方式上网设置</h2><p>命令行输入即可进入图形管理界面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nm-connection-editor</span><br></pre></td></tr></table></figure>
+
+<h2 id="ubuntu22-04-向日葵远程无法连接成功"><a href="#ubuntu22-04-向日葵远程无法连接成功" class="headerlink" title="ubuntu22.04 向日葵远程无法连接成功"></a>ubuntu22.04 向日葵远程无法连接成功</h2><p>需要切换桌面模式</p>
+<h2 id="ubuntu机械盘挂载"><a href="#ubuntu机械盘挂载" class="headerlink" title="ubuntu机械盘挂载"></a>ubuntu机械盘挂载</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">创建挂载路径</span></span><br><span class="line">sudo mkdir /data</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">格式化硬盘</span></span><br><span class="line">sudo mkfs -t ext4 /dev/sda</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">挂载硬盘</span></span><br><span class="line">sudo mount -t ext4 /dev/sda /data</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开机自动挂载</span></span><br><span class="line">sudo vim /etc/fstab</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在最后一行加入</span></span><br><span class="line">/dev/sda /data ext4  defaults 0 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用yaml创建虚拟环境"><a href="#使用yaml创建虚拟环境" class="headerlink" title="使用yaml创建虚拟环境"></a>使用yaml创建虚拟环境</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda env create -f environment.yml</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">transformer</span></span><br><span class="line"><span class="attr">channels:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">pytorch</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">conda-forge</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">defaults</span></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">_libgcc_mutex=0.1=main</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">_openmp_mutex=4.5=1_gnu</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">astor=0.8.1=py39h06a4308_0</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">autograd=1.3=pyhd3eb1b0_1</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">pip:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">argparse==1.4.0</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">einops==0.3.2</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">nystrom-attention==0.0.11</span></span><br><span class="line"><span class="attr">prefix:</span> <span class="string">/home/ps/anaconda3/envs/transformer</span></span><br></pre></td></tr></table></figure>
+
+<p>最后的<code>prefix</code>指定环境位置</p>
+<h2 id="使用-gitkeep文件保存空文件夹"><a href="#使用-gitkeep文件保存空文件夹" class="headerlink" title="使用.gitkeep文件保存空文件夹"></a>使用<code>.gitkeep</code>文件保存空文件夹</h2><h2 id="创建一个新的普通用户"><a href="#创建一个新的普通用户" class="headerlink" title="创建一个新的普通用户"></a>创建一个新的普通用户</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd -m ai -s /bin/bash</span><br><span class="line">sudo passwd ai</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sudo adduser ai sudo</span></span><br><span class="line">su ai</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建了可以登录的ai用户并使用&#x2F;bin&#x2F;bash作为shell。</li>
+<li>设置密码。</li>
+<li>为ai用户增加管理员权限。</li>
+<li>切换登录用户为ai。</li>
+</ul>
+<h2 id="为普通用户添加sudo权限"><a href="#为普通用户添加sudo权限" class="headerlink" title="为普通用户添加sudo权限"></a>为普通用户添加sudo权限</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">为用户username添加sudo权限</span></span><br><span class="line">sudo usermod -a -G sudo username</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">去除用户username的sudo权限</span></span><br><span class="line">sudo usermod -G usergroup username</span><br></pre></td></tr></table></figure>
+
+<p>给用户授权</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">groups ai</span><br><span class="line">usermod -aG sudo meow</span><br><span class="line">visudo</span><br></pre></td></tr></table></figure>
+
+<p>删除用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo deluser --remove-home ai</span><br></pre></td></tr></table></figure>
+
+<p>删除用户目录</p>
+<p>查看所有用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep bash /etc/passwd</span><br></pre></td></tr></table></figure>
+
+<h2 id="linux新建用户也使用原来conda环境"><a href="#linux新建用户也使用原来conda环境" class="headerlink" title="linux新建用户也使用原来conda环境"></a>linux新建用户也使用原来conda环境</h2><p>a用户下安装anaconda，默认地址不变，b用户直接不可用，在b用户登录的终端编辑b用户的<code>.bashrc</code>文件，在文档最后一行加入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/home/&lt;Username&gt;/anaconda3/bin</span><br></pre></td></tr></table></figure>
+
+<p>保存退出，并<code>source .bashrc</code>，然后<code>conda init</code>就可以了</p>
+<p>高级配置参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/570747928?utm_id=0">Anaconda 多用户共享安装（Ubuntu） - 知乎 (zhihu.com)</a></p>
+<h2 id="给用户授予docker使用权限"><a href="#给用户授予docker使用权限" class="headerlink" title="给用户授予docker使用权限"></a>给用户授予docker使用权限</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo gpasswd -a $USER docker </span><br><span class="line">newgrp docker</span><br></pre></td></tr></table></figure>
+
+<p><code>$USER</code>可以更换为其他，不换就是默认的。第二步有可能需要输密码，然后输入会发现错误，其实是没有设置密码，需要先设置密码，然后这样更新组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod a+rw /var/run/docker.sock</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
+
+<h2 id="neofetch"><a href="#neofetch" class="headerlink" title="neofetch"></a>neofetch</h2><p>方便的查看系统的工具</p>
+<h2 id="卸载图形界面"><a href="#卸载图形界面" class="headerlink" title="卸载图形界面"></a>卸载图形界面</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove gnome-shell</span><br><span class="line">sudo apt-get remove gnome </span><br><span class="line">sudo apt-get autoremove</span><br><span class="line">sudo apt-get purge gnome</span><br><span class="line">sudo apt-get autoclean</span><br><span class="line">sudo apt-get clean</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<h2 id="ssh免密登录"><a href="#ssh免密登录" class="headerlink" title="ssh免密登录"></a>ssh免密登录</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub root@服务器IP</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lscpu</span><br></pre></td></tr></table></figure>
+
+<h2 id="cudnn-source-problem"><a href="#cudnn-source-problem" class="headerlink" title="cudnn source problem"></a>cudnn source problem</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">W: GPG error: file:/var/cudnn-local-repo-ubuntu2004-8.6.0.163  InRelease: The following signatures couldn&#x27;t be verified because the public key is not available: NO_PUBKEY 323547C4B0FE0A41</span><br><span class="line">E: The repository &#x27;file:/var/cudnn-local-repo-ubuntu2004-8.6.0.163  InRelease&#x27; is not signed.</span><br><span class="line">N: Updating from such a repository can&#x27;t be done securely, and is therefore disabled by default.</span><br><span class="line">N: See apt-secure(8) manpage for repository creation and user configuration details.</span><br></pre></td></tr></table></figure>
+
+<p>then input <code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 323547C4B0FE0A41</code> to solve the problem.</p>
+<p>But it doesn’t work. You can follow the steps below to solve the problem.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /var/cudnn-local-repo-ubuntu2004-8.4.1.50/*.gpg /usr/share/keyrings/</span><br></pre></td></tr></table></figure>
+
+<p>复制到&#x2F;usr&#x2F;share&#x2F;keyrings即可。</p>
+<h2 id="两个盘软raid命令"><a href="#两个盘软raid命令" class="headerlink" title="两个盘软raid命令"></a>两个盘软raid命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mdadm</span><br><span class="line">#格式化两块硬盘</span><br><span class="line">#sudo mkfs.ext4 -F /dev/sdb</span><br><span class="line">#sudo mkfs.ext4 -F /dev/sdc</span><br><span class="line">#mdadm管理 raid0</span><br><span class="line">sudo mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sd&#123;b,c&#125;</span><br><span class="line">#格式化并挂载</span><br><span class="line">sudo mkfs.ext4 -F /dev/md0 sudo mkdir -p /home/md0 sudo mount /dev/md0 /home/md0</span><br></pre></td></tr></table></figure>
+
+<h2 id="每隔时间杀程序"><a href="#每隔时间杀程序" class="headerlink" title="每隔时间杀程序"></a>每隔时间杀程序</h2><p>kill_python.py</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while [ true ];do</span><br><span class="line">	sleep 5</span><br><span class="line">	ps -ef |grep -w  python |grep -v grep | awk &#x27;&#123;print $2&#125;&#x27; | xargs kill -9</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>然后再讲其添加到crontab中，执行crontab -e，添加如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/30 * * * * /usr/bin/sh /aa/bb/cleanFfmpegProcess.sh</span><br></pre></td></tr></table></figure>
+
+<p>:wq即可。</p>
+<h2 id="关闭服务器自动休眠"><a href="#关闭服务器自动休眠" class="headerlink" title="关闭服务器自动休眠"></a>关闭服务器自动休眠</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target</span><br></pre></td></tr></table></figure>
+
+<p>查看系统休眠状态</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status sleep.target</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置github的ssh连上github"><a href="#设置github的ssh连上github" class="headerlink" title="设置github的ssh连上github"></a>设置github的ssh连上github</h2><p>生成ssh key</p>
+<p>读取公钥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+<p>复制粘贴到github。github配置ssh key的地方在<br><a target="_blank" rel="noopener" href="https://github.com/settings/keys">https://github.com/settings/keys</a></p>
+<p>测试ssh key是否配置成功，在linux开发机上输入<br>$ ssh -T <a href="mailto:git@github.com">git@github.com</a></p>
+<p>如果出现Hi xxx! You’ve successfully authenticated, but GitHub does not provide shell access 。这就表示已成功连上github</p>
+<p>3、配置git的用户名和邮箱</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;your name&quot;</span><br><span class="line">$ git config --global user.email &quot;your_email@youremail.com&quot;</span><br></pre></td></tr></table></figure>
+
+<p>以后可以通过git config –global -l来查看全局设置，git config –global -e来编辑</p>
+<h2 id="更新包导致cuda和驱动版本不对应，NVIDIA-SMI-has-failed-because-it-couldn‘t-communicate-with-the-NVIDIA-driver"><a href="#更新包导致cuda和驱动版本不对应，NVIDIA-SMI-has-failed-because-it-couldn‘t-communicate-with-the-NVIDIA-driver" class="headerlink" title="更新包导致cuda和驱动版本不对应，NVIDIA-SMI has failed because it couldn‘t communicate with the NVIDIA driver"></a>更新包导致cuda和驱动版本不对应，NVIDIA-SMI has failed because it couldn‘t communicate with the NVIDIA driver</h2><p>终端nvidia-smi出现这样，<strong>是内核版本更新的问题，导致新版本内核和原来显卡驱动不匹配</strong></p>
+<p>查看已安装内核</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg --get-selections |grep linux-image</span><br></pre></td></tr></table></figure>
+
+<p>查看正在使用的内核</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -a</span><br></pre></td></tr></table></figure>
+
+<p>利用命令 <code>ll /usr/src/</code> 可查看下面有一个nvidia-470.82.00文件夹，版本号因电脑而异。</p>
+<p>只需执行两条命令就好：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install dkms</span><br><span class="line">sudo dkms install -m nvidia -v 470.82.00</span><br></pre></td></tr></table></figure>
+
+<p>（470.82.00表示的是驱动版本号）</p>
+<h3 id="禁止内核自动更新"><a href="#禁止内核自动更新" class="headerlink" title="禁止内核自动更新"></a>禁止内核自动更新</h3><p>1）命令行关闭系统自动更新，使用命令打开文件并编辑</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/apt/apt.conf.d/<span class="number">10</span>periodic</span><br></pre></td></tr></table></figure>
+
+<p>将双引号中的“1”全部置“0”即可，修改后保存。</p>
+<p>ubuntu默认启动了自动更新内核，为了避免出现重启系统后遇到错误进入不到系统中去，我们可以进一步关闭内核更新，使用当前内核。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-mark hold linux-image-generic linux-headers-generic </span><br><span class="line">linux-image-generic set on hold.</span><br><span class="line">linux-headers-generic set on hold.</span><br></pre></td></tr></table></figure>
+
+<p>如果要重启启动内核更新：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-mark unhold linux-image-generic linux-headers-generic</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件格式问题"><a href="#文件格式问题" class="headerlink" title="文件格式问题"></a>文件格式问题</h2><p>qsub:script is written in DOS&#x2F;Windows text format</p>
+<p>dos格式文件传输到unix系统时，会在每行的结尾多一个^M（&#x2F;r），当然也有可能看不到。但是在vim的时候，会在下面显示此文件的格式，比如 “dos.txt” [dos] 120L, 2532C 字样,表示是一个[dos]格式文件，如果是MAC系统的，会显示[MAC]。因为文件格式的原因有时会导致我们的unix程序，或者shell程序出现错误，那么需要把这些dos文件格式转换成unix格式，方法是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim dos.txt</span><br><span class="line">:set fileformat=unix</span><br><span class="line">:w</span><br></pre></td></tr></table></figure>
+<h2 id="centos7安装驱动"><a href="#centos7安装驱动" class="headerlink" title="centos7安装驱动"></a>centos7安装驱动</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/2012blog/p/9431432.html">https://www.cnblogs.com/2012blog/p/9431432.html</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</span><br><span class="line">conda config --set show_channel_urls yes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="彻底卸载wsl"><a href="#彻底卸载wsl" class="headerlink" title="彻底卸载wsl"></a>彻底卸载wsl</h2><p>在powerShell上<br>先看还有哪些子系统</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --list --all</span><br></pre></td></tr></table></figure>
+<p>注销子系统</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --unregister Ubuntu</span><br></pre></td></tr></table></figure>
+<h2 id="只读文件系统"><a href="#只读文件系统" class="headerlink" title="只读文件系统"></a>只读文件系统</h2><p>在linux硬盘挂载时候，部分情况磁盘变成ro只读而不是rw<br>一般df查看挂载设备</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount -i 挂载路径</span><br></pre></td></tr></table></figure>
+<p>rm -rf 目录&#x2F;文件</p>
+<p>在部分情况下，先使用windows系统，后使用linux，可能有系统挂载问题，即使chmod 777 也没用，出现错误：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/1574965/1686624159673-46c0501d-26b9-4be0-bec6-c00734c44457.png#averageHue=%23494987&clientId=u0a0e9a42-e178-4&from=paste&id=ub16ae097&originHeight=511&originWidth=731&originalType=url&ratio=1&rotation=0&showTitle=false&size=227551&status=done&style=none&taskId=uf0e26c5b-4947-41a0-9fe8-88fcfdde31b&title=" alt="image.png"><br>需要重新挂载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount /dev/sda2</span><br></pre></td></tr></table></figure>
+<p>报错target busy<br>杀死使用该目录的进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fuser  -<span class="built_in">mv</span> -k /dev/sda2</span><br></pre></td></tr></table></figure>
+
+<p> 再次卸载，卸载成功后重新挂载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sda2 /data</span><br></pre></td></tr></table></figure>
+<p>报错解决：<br>报错1：“The disk contains an unclean file system (0, 0). Metadata kept in Windows cache, refused to mount. Falling back to read-only mount because the NTFS partition is in an unsafe state. Please resume and shutdown Windows fully (no hibernation or fast restarting.)”。说明是NTFS分区格式错误<br>解决方法：ntfsfix修复，需要安装工具：<br>sudo apt-get install ntfs-3g<br>安装完成后进行ntfsfix修复：<br>sudo ntfsfix &#x2F;dev&#x2F;sda2<br>提示修复成功。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/1574965/1686624306481-25bc2efc-93dd-4ee3-9879-ac9de7acd84c.png#averageHue=%232f0c25&clientId=u0a0e9a42-e178-4&from=paste&id=ubdb60eaa&originHeight=271&originWidth=733&originalType=url&ratio=1&rotation=0&showTitle=false&size=68979&status=done&style=none&taskId=ud4e2cb07-b9f3-4227-a7bf-4cae6c054db&title=" alt="image.png"></p>
+<p>报错2：“没有那个文件或目录”。说明&#x2F;data目录不存在，需要创建。<br>解决方法：media根目录下创建新目录：<br>mkdir &#x2F;media&#x2F;jngk&#x2F;data<br>然后重新挂载，即可挂载成功。<br>mount &#x2F;dev&#x2F;sda2 &#x2F;media&#x2F;jngk&#x2F;data<br>现在该目录就不是只读文件系统了，在该目录下右键，新建文件夹选项也不再是灰色不可选状态了。</p>
+<h1 id="无法将“XXX”项识别为-cmdlet、函数、脚本文件或可运行程序的名称。请检查名称的拼写，如果包括路径，请确保路径正确，然后再试一次"><a href="#无法将“XXX”项识别为-cmdlet、函数、脚本文件或可运行程序的名称。请检查名称的拼写，如果包括路径，请确保路径正确，然后再试一次" class="headerlink" title="无法将“XXX”项识别为 cmdlet、函数、脚本文件或可运行程序的名称。请检查名称的拼写，如果包括路径，请确保路径正确，然后再试一次"></a>无法将“XXX”项识别为 cmdlet、函数、脚本文件或可运行程序的名称。请检查名称的拼写，如果包括路径，请确保路径正确，然后再试一次</h1><p>进入PowerShell 模式<br>Get-ExecutionPolicy -List 查看当前所有作用域<br>1</p>
+<p>上图显示就最后一个作用域有权限，其他作用域都没有权限，那么我们就需要去给它设置权限</p>
+<p>设置权限<br>Set-ExecutionPolicy RemoteSigned -Scope &lt; scopeName &gt;,设置当前用户作用域具备权限，具体设置格</p>
+<p>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser<br>1</p>
+<p>按照上面的格式，执行需要加权限的作用域，然后再去尝试之前的方法，发现就不会报错提示了。</p>
+<h1 id="挖矿病毒处理"><a href="#挖矿病毒处理" class="headerlink" title="挖矿病毒处理"></a>挖矿病毒处理</h1><p>找到病毒文件：</p>
+<p>方法一：由于入侵者对程序的名称做了伪装，无法直接通过其进行查找。因此使用PID入手，查找其在&#x2F;proc里的文件，进而发现了关键路径</p>
+<p>将所有病毒文件展示出来，可以发现关键词miner</p>
+<p>对里面的文件作进一步的查看，可以看到ETH（以太坊）、POOL、WALLET等关键词，实锤中了挖矿病毒</p>
+<p>此外，查看run文件，可以发现这个病毒文件确实做了伪装</p>
+<p>方法二：考虑到入侵者可能会用某些方式将病毒程序作一定的隐藏，这里通过查看用户的计划任务来定位病毒文件，因为病毒文件可能被kill掉而入侵者不会每次都自己手动启动的，肯定会设置自动启动。查看计划任务的命令为crontab -l<br>为了查看病毒文件在服务器上是否有多份，可以使用如下命令一次性查看所有用户的计划任务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> u <span class="keyword">in</span> $(<span class="built_in">cat</span> /etc/passwd | <span class="built_in">cut</span> -d<span class="string">&quot;:&quot;</span> -f1)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$u</span>&gt;&gt;temp.txt</span><br><span class="line">    crontab -l -u <span class="variable">$u</span> &gt;&gt; temp.txt</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">cat</span> temp.txt</span><br><span class="line"><span class="built_in">rm</span> temp.txt</span><br></pre></td></tr></table></figure>
+<p>方法三：尝试定位病毒文件中的特有关键词，比如“miner”<br>updatedb<br>locate miner</p>
+<h1 id="由于locate命令不能查找-x2F-dev-x2F-shm之类的路径，以防万一可以使用find命令，不过会很慢"><a href="#由于locate命令不能查找-x2F-dev-x2F-shm之类的路径，以防万一可以使用find命令，不过会很慢" class="headerlink" title="由于locate命令不能查找&#x2F;dev&#x2F;shm之类的路径，以防万一可以使用find命令，不过会很慢"></a>由于locate命令不能查找&#x2F;dev&#x2F;shm之类的路径，以防万一可以使用find命令，不过会很慢</h1><h1 id="find-x2F-name-miner"><a href="#find-x2F-name-miner" class="headerlink" title="find &#x2F; -name miner"></a>find &#x2F; -name miner</h1><p>应对方法：</p>
+<p>删除整个病毒文件夹（python），kill相关的PID，并删除相关定时任务（使用命令crontab -e，或者如果只有一个定时任务的话可以用命令crontab -r）</p>
+<p>更改所有用户的密码，并设置一定的密码复杂度（可以使用cracklib）</p>
+<p>移除所有除了管理员以外用户的sudo权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">admin=<span class="string">&quot;root,sudo,%sudo&quot;</span> <span class="comment"># 填入管理员账号（前三个不能删）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">cat</span> /etc/sudoers|grep  <span class="string">&quot;ALL=(ALL:ALL) ALL&quot;</span>|<span class="built_in">cut</span> -f 1|<span class="built_in">cut</span> -f 1 -d <span class="string">&#x27; &#x27;</span>)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line">    <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="subst">$(echo $admin|grep $i)</span>&quot;</span> ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;*** deluser <span class="variable">$i</span> sudo&quot;</span></span><br><span class="line">        deluser <span class="variable">$i</span> sudo</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(getent group sudo|<span class="built_in">cut</span> -f 4 -d :|<span class="built_in">tr</span> -s <span class="string">&#x27;,&#x27;</span> <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line">    <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="subst">$(echo $admin|grep $i)</span>&quot;</span> ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;*** deluser <span class="variable">$i</span> sudo&quot;</span></span><br><span class="line">        deluser <span class="variable">$i</span> sudo</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>删除现有的所有密钥&amp;授权</p>
+<p>updatedb</p>
+<h1 id="删除公钥-密钥"><a href="#删除公钥-密钥" class="headerlink" title="删除公钥+密钥"></a>删除公钥+密钥</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> pub <span class="keyword">in</span> $(locate .pub|grep .pub$)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    u=$(ll <span class="variable">$pub</span>|awk <span class="string">&#x27;&#123;printf $3&#125;&#x27;</span>)</span><br><span class="line">    <span class="comment"># 根据UID判断所属用户是否为普通用户</span></span><br><span class="line">    <span class="keyword">if</span> [ 999 -lt $(<span class="built_in">id</span> -u <span class="variable">$u</span>) ]</span><br><span class="line">        <span class="keyword">then</span></span><br><span class="line">            pri=$(<span class="built_in">echo</span> <span class="variable">$&#123;pub%????&#125;</span>)</span><br><span class="line">            <span class="built_in">rm</span> <span class="variable">$pub</span></span><br><span class="line">            <span class="built_in">rm</span> <span class="variable">$pri</span></span><br><span class="line">            <span class="built_in">echo</span> del  <span class="variable">$u</span> <span class="variable">$pub</span> <span class="variable">$pri</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">echo</span> save <span class="variable">$u</span> <span class="variable">$pub</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment"># 删除knowN_hosts</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(locate known_hosts|grep known_hosts$)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">rm</span> <span class="variable">$i</span></span><br><span class="line">    <span class="built_in">echo</span> del <span class="variable">$i</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment"># 删除authorized_keys</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(locate authorized_keys|grep authorized_keys$)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">rm</span> <span class="variable">$i</span></span><br><span class="line">    <span class="built_in">echo</span> del <span class="variable">$i</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="查看剩余"><a href="#查看剩余" class="headerlink" title="查看剩余"></a>查看剩余</h1><p>updatedb<br>locate .pub|grep .pub$<br>locate known_hosts<br>locate authorized_keys</p>
+<p>可能会遇到某个文件用root权限也删除不了</p>
+<p>如果使用命令lsattr发现该文件的隐藏属性中存在除了e以外的属性，则用命令chattr来移除这些属性</p>
+<p>设置远程连接只能使用密钥，不能使用密码</p>
+<p>禁止使用root账号进行远程连接</p>
+<p>使用终端安全杀毒软件、内网安全监控产品、漏洞扫描设备等专业工具</p>
+<h2 id="查杀病毒"><a href="#查杀病毒" class="headerlink" title="查杀病毒"></a>查杀病毒</h2><p>1、crontab -e 发现一条自启动任务，且为“python”程序，但不确定是否为挖矿程序，暂时保留<br>2、根据挖矿程序PID，进入&#x2F;proc&#x2F;PID目录下检查<br>进入&#x2F;tmp&#x2F;…&#x2F;Python目录<br><img src="https://cdn.nlark.com/yuque/0/2023/png/1574965/1689070347004-16d1a524-b664-44d5-98e9-63f5b403f7db.png#averageHue=%23110d0b&clientId=ueafc49ba-9eef-4&from=paste&id=ue0c46f68&originHeight=360&originWidth=739&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=45515&status=done&style=none&taskId=udfdf55c1-e0e5-4cb9-83ba-8362e70783a&title=" alt="image.png"><br>通过sudo vim config.ini检查config.ini文件，发现正是挖矿配置文件，从而自启动任务为挖矿任务<br><img src="https://cdn.nlark.com/yuque/0/2023/png/1574965/1689070347131-1ddec4a9-2d86-427a-b31b-4ff5bd5c4a9b.png#averageHue=%23576a59&clientId=ueafc49ba-9eef-4&from=paste&id=ub54dee6b&originHeight=308&originWidth=430&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=198750&status=done&style=none&taskId=ud460194b-3c02-433d-a7a9-bf6ba1090b2&title=" alt="image.png"><br>4、kill挖矿进程，删除挖矿文件及自启动任务，同时关闭挖矿病毒使用的端口<br>5、使用杀毒软件全盘查杀</p>
+<h2 id="在cuda版本过高的情况nvidia官方bug，会出现内存泄露no-such-progress"><a href="#在cuda版本过高的情况nvidia官方bug，会出现内存泄露no-such-progress" class="headerlink" title="在cuda版本过高的情况nvidia官方bug，会出现内存泄露no such progress"></a>在cuda版本过高的情况nvidia官方bug，会出现内存泄露no such progress</h2><p>使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pip install --upgrade nvidia-ml-py</span><br></pre></td></tr></table></figure>
+
+<h2 id="fsl-安装"><a href="#fsl-安装" class="headerlink" title="fsl 安装"></a>fsl 安装</h2><p>使用本地安装包<br>解压缩到要安装的文件夹。推荐和我一样解压缩到&#x2F;usr&#x2F;local目录下<br>有可能会出现权限不足的问题无法解压缩，可以在usr目录中打开终端，输入<br>sudo chmod -R 777 local<br>输入密码后，打开权限<br>配置环境变量.bashrc</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export FSLDIR=/usr/local/fsl</span><br><span class="line">export PATH=$PATH:$FSLDIR/bin</span><br><span class="line">source $FSLDIR/etc/fslconf/fsl.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="卸载cuda"><a href="#卸载cuda" class="headerlink" title="卸载cuda"></a>卸载cuda</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/cuda-xx.x/bin/</span><br><span class="line">sudo ./cuda-uninstaller</span><br><span class="line">sudo rm -rf /usr/local/cuda-xx.x</span><br></pre></td></tr></table></figure>
+
+<h1 id="微星tpm"><a href="#微星tpm" class="headerlink" title="微星tpm"></a>微星tpm</h1><p>微星gl63有TPM的，下面教你如何操作：<br>首先进bios<br>然后按右边的CTRL+SHIFT+左边的ALT+F2开启超级模式。<br>之后在高级选项中找到PCH-FW Configuration<br>找到PTT Configuratio<br>把dTPM改为PTT（如果已经是PTT可以跳过此步）。<br>之后在高级选项中找到Trusted Computing<br>找到Security Device Support，将Disable改为Enable<br>按F10保存。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Jack Zhu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="http://jackzhu.top/">http://jackzhu.top/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="http://jackzhu.top/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Jack's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98/">技术问题</a></div><div class="post_share"><div class="social-share" data-image="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/03/03/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8/" title="博客配置Github Actions和仓库分支存储"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">博客配置Github Actions和仓库分支存储</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jack Zhu</div><div class="author-info__description">过好每一天</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderJackZhu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderJackZhu" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zhuyijie151@sina.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.zhihu.com/people/zhu-yijie-51" target="_blank" title="知乎"><i class="fab zhihu"></i></a><a class="social-icon" href="https://space.bilibili.com/355295657/" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">目前碰到的一些技术问题与知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu%E5%AE%89%E8%A3%85%E9%A9%B1%E5%8A%A8%E6%97%B6%E5%80%99%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.</span> <span class="toc-text">ubuntu安装驱动时候出现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu%E5%AE%89%E8%A3%85cuda%E9%A9%B1%E5%8A%A8%E6%97%B6%E5%80%99%E5%87%BA%E7%8E%B0%E6%8A%A5%E9%94%99"><span class="toc-number">1.2.</span> <span class="toc-text">ubuntu安装cuda驱动时候出现报错</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu%E6%8B%A8%E5%8F%B7%E4%B8%8A%E7%BD%91%E4%BB%A5%E5%8F%8A%E5%90%84%E7%A7%8D%E6%96%B9%E5%BC%8F%E4%B8%8A%E7%BD%91%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">ubuntu拨号上网以及各种方式上网设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu22-04-%E5%90%91%E6%97%A5%E8%91%B5%E8%BF%9C%E7%A8%8B%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F"><span class="toc-number">1.4.</span> <span class="toc-text">ubuntu22.04 向日葵远程无法连接成功</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu%E6%9C%BA%E6%A2%B0%E7%9B%98%E6%8C%82%E8%BD%BD"><span class="toc-number">1.5.</span> <span class="toc-text">ubuntu机械盘挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8yaml%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="toc-number">1.6.</span> <span class="toc-text">使用yaml创建虚拟环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-gitkeep%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98%E7%A9%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">1.7.</span> <span class="toc-text">使用.gitkeep文件保存空文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7"><span class="toc-number">1.8.</span> <span class="toc-text">创建一个新的普通用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E6%B7%BB%E5%8A%A0sudo%E6%9D%83%E9%99%90"><span class="toc-number">1.9.</span> <span class="toc-text">为普通用户添加sudo权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E6%96%B0%E5%BB%BA%E7%94%A8%E6%88%B7%E4%B9%9F%E4%BD%BF%E7%94%A8%E5%8E%9F%E6%9D%A5conda%E7%8E%AF%E5%A2%83"><span class="toc-number">1.10.</span> <span class="toc-text">linux新建用户也使用原来conda环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99%E7%94%A8%E6%88%B7%E6%8E%88%E4%BA%88docker%E4%BD%BF%E7%94%A8%E6%9D%83%E9%99%90"><span class="toc-number">1.11.</span> <span class="toc-text">给用户授予docker使用权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#neofetch"><span class="toc-number">1.12.</span> <span class="toc-text">neofetch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2"><span class="toc-number">1.13.</span> <span class="toc-text">卸载图形界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-number">1.14.</span> <span class="toc-text">ssh免密登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cudnn-source-problem"><span class="toc-number">1.15.</span> <span class="toc-text">cudnn source problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E7%9B%98%E8%BD%AFraid%E5%91%BD%E4%BB%A4"><span class="toc-number">1.16.</span> <span class="toc-text">两个盘软raid命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%8F%E9%9A%94%E6%97%B6%E9%97%B4%E6%9D%80%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.17.</span> <span class="toc-text">每隔时间杀程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%87%AA%E5%8A%A8%E4%BC%91%E7%9C%A0"><span class="toc-number">1.18.</span> <span class="toc-text">关闭服务器自动休眠</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEgithub%E7%9A%84ssh%E8%BF%9E%E4%B8%8Agithub"><span class="toc-number">1.19.</span> <span class="toc-text">设置github的ssh连上github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E5%8C%85%E5%AF%BC%E8%87%B4cuda%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%89%88%E6%9C%AC%E4%B8%8D%E5%AF%B9%E5%BA%94%EF%BC%8CNVIDIA-SMI-has-failed-because-it-couldn%E2%80%98t-communicate-with-the-NVIDIA-driver"><span class="toc-number">1.20.</span> <span class="toc-text">更新包导致cuda和驱动版本不对应，NVIDIA-SMI has failed because it couldn‘t communicate with the NVIDIA driver</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%81%E6%AD%A2%E5%86%85%E6%A0%B8%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0"><span class="toc-number">1.20.1.</span> <span class="toc-text">禁止内核自动更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E9%97%AE%E9%A2%98"><span class="toc-number">1.21.</span> <span class="toc-text">文件格式问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7%E5%AE%89%E8%A3%85%E9%A9%B1%E5%8A%A8"><span class="toc-number">1.22.</span> <span class="toc-text">centos7安装驱动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%BB%E5%BA%95%E5%8D%B8%E8%BD%BDwsl"><span class="toc-number">1.23.</span> <span class="toc-text">彻底卸载wsl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AA%E8%AF%BB%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.24.</span> <span class="toc-text">只读文件系统</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E6%B3%95%E5%B0%86%E2%80%9CXXX%E2%80%9D%E9%A1%B9%E8%AF%86%E5%88%AB%E4%B8%BA-cmdlet%E3%80%81%E5%87%BD%E6%95%B0%E3%80%81%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E6%88%96%E5%8F%AF%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%90%8D%E7%A7%B0%E3%80%82%E8%AF%B7%E6%A3%80%E6%9F%A5%E5%90%8D%E7%A7%B0%E7%9A%84%E6%8B%BC%E5%86%99%EF%BC%8C%E5%A6%82%E6%9E%9C%E5%8C%85%E6%8B%AC%E8%B7%AF%E5%BE%84%EF%BC%8C%E8%AF%B7%E7%A1%AE%E4%BF%9D%E8%B7%AF%E5%BE%84%E6%AD%A3%E7%A1%AE%EF%BC%8C%E7%84%B6%E5%90%8E%E5%86%8D%E8%AF%95%E4%B8%80%E6%AC%A1"><span class="toc-number">2.</span> <span class="toc-text">无法将“XXX”项识别为 cmdlet、函数、脚本文件或可运行程序的名称。请检查名称的拼写，如果包括路径，请确保路径正确，然后再试一次</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%96%E7%9F%BF%E7%97%85%E6%AF%92%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">挖矿病毒处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%B1%E4%BA%8Elocate%E5%91%BD%E4%BB%A4%E4%B8%8D%E8%83%BD%E6%9F%A5%E6%89%BE-x2F-dev-x2F-shm%E4%B9%8B%E7%B1%BB%E7%9A%84%E8%B7%AF%E5%BE%84%EF%BC%8C%E4%BB%A5%E9%98%B2%E4%B8%87%E4%B8%80%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8find%E5%91%BD%E4%BB%A4%EF%BC%8C%E4%B8%8D%E8%BF%87%E4%BC%9A%E5%BE%88%E6%85%A2"><span class="toc-number">4.</span> <span class="toc-text">由于locate命令不能查找&#x2F;dev&#x2F;shm之类的路径，以防万一可以使用find命令，不过会很慢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#find-x2F-name-miner"><span class="toc-number">5.</span> <span class="toc-text">find &#x2F; -name miner</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%85%AC%E9%92%A5-%E5%AF%86%E9%92%A5"><span class="toc-number">6.</span> <span class="toc-text">删除公钥+密钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%89%A9%E4%BD%99"><span class="toc-number">7.</span> <span class="toc-text">查看剩余</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E6%9D%80%E7%97%85%E6%AF%92"><span class="toc-number">7.1.</span> <span class="toc-text">查杀病毒</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8cuda%E7%89%88%E6%9C%AC%E8%BF%87%E9%AB%98%E7%9A%84%E6%83%85%E5%86%B5nvidia%E5%AE%98%E6%96%B9bug%EF%BC%8C%E4%BC%9A%E5%87%BA%E7%8E%B0%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2no-such-progress"><span class="toc-number">7.2.</span> <span class="toc-text">在cuda版本过高的情况nvidia官方bug，会出现内存泄露no such progress</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fsl-%E5%AE%89%E8%A3%85"><span class="toc-number">7.3.</span> <span class="toc-text">fsl 安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BDcuda"><span class="toc-number">7.4.</span> <span class="toc-text">卸载cuda</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%AE%E6%98%9Ftpm"><span class="toc-number">8.</span> <span class="toc-text">微星tpm</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/03/%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="常见技术问题与技巧"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="常见技术问题与技巧"/></a><div class="content"><a class="title" href="/2024/03/03/%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="常见技术问题与技巧">常见技术问题与技巧</a><time datetime="2024-03-03T02:29:37.000Z" title="发表于 2024-03-03 02:29:37">2024-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/03/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8/" title="博客配置Github Actions和仓库分支存储"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="博客配置Github Actions和仓库分支存储"/></a><div class="content"><a class="title" href="/2024/03/03/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8/" title="博客配置Github Actions和仓库分支存储">博客配置Github Actions和仓库分支存储</a><time datetime="2024-03-03T02:19:37.000Z" title="发表于 2024-03-03 02:19:37">2024-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅谈《原神》游戏的理解"/></a><div class="content"><a class="title" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解">浅谈《原神》游戏的理解</a><time datetime="2023-02-07T00:00:00.000Z" title="发表于 2023-02-07 00:00:00">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ActionFormer论文分享"/></a><div class="content"><a class="title" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享">ActionFormer论文分享</a><time datetime="2022-11-09T18:01:37.000Z" title="发表于 2022-11-09 18:01:37">2022-11-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Ubuntu的基本使用"/></a><div class="content"><a class="title" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用">Ubuntu的基本使用</a><time datetime="2022-11-01T23:17:37.000Z" title="发表于 2022-11-01 23:17:37">2022-11-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Jack Zhu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><span>本网站由 </span><a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/logo5.png"align="absmiddle"width="59px" height="30px" /></a><span>提供加速服务</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'hGtO6K0x6GlrX1FhjTwfMaWM-gzGzoHsz',
+      appKey: 'Nzeyk2Mmrhm9kBQtsXVYd4QA',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

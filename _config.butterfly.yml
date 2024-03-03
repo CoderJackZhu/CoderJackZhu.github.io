@@ -381,6 +381,7 @@ footer:
     enable: true
     since: 2020
   custom_text: <span>本网站由 </span><a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/logo5.png"align="absmiddle"width="59px" height="30px" /></a><span>提供加速服务</span>
+  # 添加备案号
   copyright: true # Copyright of theme and framework
   ICP: # Chinese ICP License
     enable: true

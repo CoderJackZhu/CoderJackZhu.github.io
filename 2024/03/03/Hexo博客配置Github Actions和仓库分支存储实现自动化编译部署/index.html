@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署 | 学习笔记记录感悟</title><meta name="author" content="Jack Zhu"><meta name="copyright" content="Jack Zhu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文介绍如何使用Github Actions自动部署博客，并且使用仓库分支存储图片等资源。"><link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/art_favicon.webp"><link rel="canonical" href="http://example.com/2024/03/03/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-06 16:38:44'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="学习笔记记录感悟" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png')"><nav id="nav"><span id="blog-info"><a href="/" title="学习笔记记录感悟"><span class="site-name">学习笔记记录感悟</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-03T02:19:37.000Z" title="发表于 2024-03-03 02:19:37">2024-03-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-06T16:38:44.608Z" title="更新于 2024-03-06 16:38:44">2024-03-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AE/">博客配置</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">955</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Hexo博客配置Github-Actions和仓库分支存储实现自动化编译部署"><a href="#Hexo博客配置Github-Actions和仓库分支存储实现自动化编译部署" class="headerlink" title="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署"></a>Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署</h1><p>之前的博客是源文件建了一个github仓库，然后一个仓库只用作github pages，这样的话，每次写博客都要手动编译，使用<code>hexo g</code>然后<code>hexo d</code>，部署，最后使用另外一个仓库提交更改，然后commit，push到github pages仓库，这样很麻烦，所以我就想到了使用github actions自动部署博客，然后使用仓库分支存储图片等资源。（虽然不怎么写博客）<br>这块我参考了之前浪潮的一次技术讲座，不过那个稍微麻烦了一些，我这里就简化了一下，把之前的文件迁移到这里。</p>
+<h2 id="1-把源文件和github-pages的文件分开"><a href="#1-把源文件和github-pages的文件分开" class="headerlink" title="1.把源文件和github pages的文件分开"></a>1.把源文件和github pages的文件分开</h2><p>source文件和在github上编译好的github pages还是要区分开，这里选择的还是原来github pages的仓库，clone到本地后</p>
+<p>随后建立静态界面的分支，同一个Bash窗口，键入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 你的Github用户名.github.io <span class="comment"># 进入博客仓库文件夹</span></span><br><span class="line">git branch html <span class="comment"># 新建静态页面分支，存放生成的博客页面</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-main分支文件修改"><a href="#2-main分支文件修改" class="headerlink" title="2. main分支文件修改"></a>2. main分支文件修改</h2><p>首先将你的仓库文件夹清空。</p>
+<p>注：所有清空操作建议在Git Bash窗口中进行，键入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -f * -r <span class="comment"># 强制递归清空仓库文件夹</span></span><br></pre></td></tr></table></figure>
+
+<p>这样不会将.git&#x2F;文件夹中的仓库记录(这里此文件夹作为隐藏文件没有显示)删除，否则后续Git无法定位，也就无法继续操作<br>随后将之前博客的文件夹中的所有文件复制到这个仓库文件夹中，注意不要复制.git&#x2F;文件夹，因为这是仓库记录，复制后Git无法定位，也就无法继续操作；另外node_modules&#x2F;文件夹也不需要复制，因为这是node.js的依赖包，不需要上传到仓库中，不然可能会报错。</p>
+<h2 id="3-推送main分支更改"><a href="#3-推送main分支更改" class="headerlink" title="3. 推送main分支更改"></a>3. 推送main分支更改</h2><p>回到仓库文件夹下的Git Bash窗口，输入:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add . <span class="comment"># 添加所有文件</span></span><br><span class="line">git commit -m <span class="string">&quot;update branch main&quot;</span> <span class="comment"># 提交更改</span></span><br><span class="line">git push <span class="comment"># 将修改推送到远程仓库</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-配置GiHub-Actions工作流文件"><a href="#4-配置GiHub-Actions工作流文件" class="headerlink" title="4. 配置GiHub Actions工作流文件"></a>4. 配置GiHub Actions工作流文件</h2><p>在仓库文件夹.github&#x2F;下新建一个目录workflows&#x2F;(注意有两层目录)，在里面新建一个hexo_build_deploy.yml文件，内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Hexo</span> <span class="string">Build</span> <span class="string">&amp;</span> <span class="string">Deploy</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line"><span class="comment"># 触发事件</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="comment"># 排除分支</span></span><br><span class="line">    <span class="attr">branches-ignore:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;html&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 工作流</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">branch</span> <span class="string">main</span></span><br><span class="line">          <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">          <span class="attr">with:</span></span><br><span class="line">            <span class="attr">ref:</span> <span class="string">main</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">.</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 工具安装</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Use</span> <span class="string">Node.js</span></span><br><span class="line">          <span class="attr">uses:</span> <span class="string">actions/setup-node@v3</span></span><br><span class="line">          <span class="attr">with:</span></span><br><span class="line">            <span class="attr">node-version:</span> <span class="string">&#x27;20&#x27;</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">          <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 构建</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span></span><br><span class="line">          <span class="attr">run:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">build</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 部署</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span></span><br><span class="line">          <span class="attr">uses:</span> <span class="string">JamesIves/github-pages-deploy-action@v4.5.0</span></span><br><span class="line">          <span class="attr">with:</span></span><br><span class="line">            <span class="attr">branch:</span> <span class="string">html</span></span><br><span class="line">            <span class="attr">folder:</span> <span class="string">public</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303020755.png" alt="20240303020755"></p>
+<h2 id="5-修改GitHub仓库设置"><a href="#5-修改GitHub仓库设置" class="headerlink" title="5.修改GitHub仓库设置"></a>5.修改GitHub仓库设置</h2><p>先在博客仓库Settings的Pages中将Branch设置为html<br><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303020837.png" alt="20240303020837"></p>
+<p>然后将Actions下的General中的Workflow permissons设置为Read and write permissions<br><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303020935.png" alt="20240303020935"></p>
+<h2 id="6-推送更改"><a href="#6-推送更改" class="headerlink" title="6. 推送更改"></a>6. 推送更改</h2><p>然后将更改推送到远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;update&quot;</span></span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-等待部署完成"><a href="#7-等待部署完成" class="headerlink" title="7. 等待部署完成"></a>7. 等待部署完成</h2><p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303021139.png" alt="20240303021139"><br>没有报错的话就完成了<br><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303021234.png" alt="20240303021234"><br>https最好也打开。</p>
+<h2 id="一些其他问题"><a href="#一些其他问题" class="headerlink" title="一些其他问题"></a>一些其他问题</h2><p>我在配置过程中碰到了一些其他问题，腾讯云配置DNS我开始弄的有点问题，就重新配的DNS Pod 。</p>
+<p>除此之外，在配置的过程中node_modules是不需要的，我开始这里加了，后面报错，去掉就好了。</p>
+<p>另外一个问题是我把源文件复制过去之后，最后部署完成之后网页是空白，最后发现是theme文件下的butterfly主题文件夹是空的，我把这个文件夹删了，然后重新clone了一遍butterfly主题，再部署就好了。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="https://www.xdu-inspur.club/blog/site/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/get_a_blog.html#_7">https://www.xdu-inspur.club/blog/site/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/get_a_blog.html#_7</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Jack Zhu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="http://jackzhu.top/">http://jackzhu.top/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="http://jackzhu.top/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">学习笔记记录感悟</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AE/">博客配置</a></div><div class="post_share"><div class="social-share" data-image="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="服务器常见技术问题与技巧"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">服务器常见技术问题与技巧</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jack Zhu</div><div class="author-info__description">过好每一天</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderJackZhu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderJackZhu" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zhuyijie151@sina.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.zhihu.com/people/zhu-yijie-51" target="_blank" title="知乎"><i class="fab fa-zhihu"></i></a><a class="social-icon" href="https://space.bilibili.com/355295657/" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a><a class="social-icon" href="tencent://message/?uin=1363160029&amp;Site=qq&amp;Menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub-Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2"><span class="toc-number">1.</span> <span class="toc-text">Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8A%8A%E6%BA%90%E6%96%87%E4%BB%B6%E5%92%8Cgithub-pages%E7%9A%84%E6%96%87%E4%BB%B6%E5%88%86%E5%BC%80"><span class="toc-number">1.1.</span> <span class="toc-text">1.把源文件和github pages的文件分开</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-main%E5%88%86%E6%94%AF%E6%96%87%E4%BB%B6%E4%BF%AE%E6%94%B9"><span class="toc-number">1.2.</span> <span class="toc-text">2. main分支文件修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8E%A8%E9%80%81main%E5%88%86%E6%94%AF%E6%9B%B4%E6%94%B9"><span class="toc-number">1.3.</span> <span class="toc-text">3. 推送main分支更改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AEGiHub-Actions%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.</span> <span class="toc-text">4. 配置GiHub Actions工作流文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%BF%AE%E6%94%B9GitHub%E4%BB%93%E5%BA%93%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.5.</span> <span class="toc-text">5.修改GitHub仓库设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%8E%A8%E9%80%81%E6%9B%B4%E6%94%B9"><span class="toc-number">1.6.</span> <span class="toc-text">6. 推送更改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%AD%89%E5%BE%85%E9%83%A8%E7%BD%B2%E5%AE%8C%E6%88%90"><span class="toc-number">1.7.</span> <span class="toc-text">7. 等待部署完成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="toc-number">1.8.</span> <span class="toc-text">一些其他问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">1.9.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/03/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2/" title="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署"/></a><div class="content"><a class="title" href="/2024/03/03/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2/" title="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署">Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署</a><time datetime="2024-03-03T02:19:37.000Z" title="发表于 2024-03-03 02:19:37">2024-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="服务器常见技术问题与技巧"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="服务器常见技术问题与技巧"/></a><div class="content"><a class="title" href="/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="服务器常见技术问题与技巧">服务器常见技术问题与技巧</a><time datetime="2023-09-03T12:29:37.000Z" title="发表于 2023-09-03 12:29:37">2023-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅谈《原神》游戏的理解"/></a><div class="content"><a class="title" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解">浅谈《原神》游戏的理解</a><time datetime="2023-02-07T00:00:00.000Z" title="发表于 2023-02-07 00:00:00">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ActionFormer论文分享"/></a><div class="content"><a class="title" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享">ActionFormer论文分享</a><time datetime="2022-11-09T18:01:37.000Z" title="发表于 2022-11-09 18:01:37">2022-11-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Ubuntu的基本使用"/></a><div class="content"><a class="title" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用">Ubuntu的基本使用</a><time datetime="2022-11-01T23:17:37.000Z" title="发表于 2022-11-01 23:17:37">2022-11-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Jack Zhu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<a href="https://beian.miit.gov.cn/" target="_blank">陕ICP备2023003055号-1</a></div><div class="footer_custom_text"><span>本网站由 </span><a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/logo5.png"align="absmiddle"width="59px" height="30px" /></a><span>提供加速服务</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'hGtO6K0x6GlrX1FhjTwfMaWM-gzGzoHsz',
+      appKey: 'Nzeyk2Mmrhm9kBQtsXVYd4QA',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

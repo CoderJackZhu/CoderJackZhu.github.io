@@ -1,5 +1,5 @@
 ---
-title: 博客配置Github Actions和仓库分支存储
+title: Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署
 date: 2024-03-03 02:19:37
 tags: 博客配置
 categories: 博客配置
@@ -22,7 +22,7 @@ highlight_shrink:
 aside: 
 ---
 
-# 博客配置Github Actions和仓库分支存储
+# Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署
 
 之前的博客是源文件建了一个github仓库，然后一个仓库只用作github pages，这样的话，每次写博客都要手动编译，使用`hexo g`然后`hexo d`，部署，最后使用另外一个仓库提交更改，然后commit，push到github pages仓库，这样很麻烦，所以我就想到了使用github actions自动部署博客，然后使用仓库分支存储图片等资源。（虽然不怎么写博客）
 这块我参考了之前浪潮的一次技术讲座，不过那个稍微麻烦了一些，我这里就简化了一下，把之前的文件迁移到这里。

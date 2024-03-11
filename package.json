@@ -31,6 +31,6 @@
     "hexo-theme-landscape": "^0.0.3",
     "hexo-wordcount": "^6.0.1",
     "or": "^0.2.0",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.22"
   }
 }

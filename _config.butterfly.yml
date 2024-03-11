@@ -97,14 +97,14 @@ avatar:
 index_img: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/top_image.webp
 
 # If the banner of page not setting, it will show the top_img
-default_top_img:
+default_top_img: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/top_image.webp
 
 # The banner image of archive page
-archive_img:
+archive_img: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/top_image.webp
 
 # If the banner of tag page not setting, it will show the top_img
 # note: tag page, not tags page (子標籤頁面的 top_img)
-tag_img:
+tag_img: 
 
 # The banner image of tag page
 # format:

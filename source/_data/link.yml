@@ -1,6 +1,10 @@
 - class_name: 友情链接
   class_desc: 那些人，那些事
   link_list:
+    - name: 散步
+      link: https://www.aispacewalk.cn/
+      avatar: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240311234109.png
+      descr: 开源社区算法工程师
     - name: 冉崇治
       link: http://resetran.top/
       avatar: https://gcore.jsdelivr.net/gh/ranchongzhi/ranchongzhi.github.io@master/medias/logo.png

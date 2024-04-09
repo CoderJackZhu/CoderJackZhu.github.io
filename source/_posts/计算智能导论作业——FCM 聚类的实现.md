@@ -1,6 +1,6 @@
 ---
 title: 计算智能导论作业——FCM 聚类的实现
-date: 2021-05-30 12:29:37
+date: 2021-05-30 10:29:37
 tags: 计算智能
 categories: 计算智能
 keywords: FCM聚类

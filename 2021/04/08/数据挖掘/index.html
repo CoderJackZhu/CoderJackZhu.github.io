@@ -1,0 +1,890 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据挖掘报告——MIMC数据集的预处理 | 学习笔记记录感悟</title><meta name="author" content="Jack Zhu"><meta name="copyright" content="Jack Zhu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="摘 要在本次的大作业中，这里首先利用 MySQL 对数据进行整合，并提取出包含 $CO_2$ 和 $O_2$ 相应指标的数据，然后将提取的数据导出，并导入到 Python 中。然后利用第一组数据为示例分别进行缺失值、离群点处理，并完成去噪以及插值处理。随后选出另两组为示例进行可视化，最后得出实验感想"><link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/art_favicon.webp"><link rel="canonical" href="http://example.com/2021/04/08/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据挖掘报告——MIMC数据集的预处理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-04-09 15:35:47'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="学习笔记记录感悟" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png')"><nav id="nav"><span id="blog-info"><a href="/" title="学习笔记记录感悟"><span class="site-name">学习笔记记录感悟</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据挖掘报告——MIMC数据集的预处理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-08T12:29:37.000Z" title="发表于 2021-04-08 12:29:37">2021-04-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-09T15:35:47.897Z" title="更新于 2024-04-09 15:35:47">2024-04-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/">数据挖掘</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>15分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数据挖掘报告——MIMC数据集的预处理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="摘-要"><a href="#摘-要" class="headerlink" title="摘 要"></a>摘 要</h2><p>在本次的大作业中，这里首先利用 MySQL 对数据进行整合，并提取出包含 $CO_2$ 和 $O_2$ 相应指标的数据，然后将提取的数据导出，并导入到 Python 中。然后利用第一组数据为示例分别进行缺失值、离群点处理，并完成去噪以及插值处理。随后选出另两组为示例进行可视化，最后得出实验感想与分析，这里去噪利用了 $3\sigma$ 原则。</p>
+<p>关键词: $\quad$ MySQL Python $\quad 3\sigma$ 原则</p>
+<h2 id="目-录"><a href="#目-录" class="headerlink" title="目 录"></a>目 录</h2><p>1 数据处理 1<br>1.1 数据提取 1<br>1.2 数据具体处理 1<br>1.3 数据合并 1<br>1.4 缺失值处理 2<br>1.5 离群点处理 2<br>1.6 去噪 4<br>1.7 插值 5<br>2 第二组数据 5<br>2.1 离群点处理 5<br>2.2 去噪 6<br>2.3 插值 7<br>3 第三组数据 8<br>3.1 离群点处理 8<br>3.2 去噪 9<br>3.3 插值 9<br>4 总结 10<br>A SQL 程序代码 1 11<br>B SQL 程序代码 2 11<br>(\mathrm{C}) 主程序代码 11<br>D 作业要求 14<br>D. 1 数据集说明 14<br>D. 2 任务说明 14</p>
+<h2 id="1-数据处理"><a href="#1-数据处理" class="headerlink" title="1 数据处理"></a>1 数据处理</h2><h2 id="1-1-数据提取"><a href="#1-1-数据提取" class="headerlink" title="1.1 数据提取"></a>1.1 数据提取</h2><p>这次作业中数据较大, 直接读取很难看出数据具体细节, 直接打开会崩溃, 因此这里开始使用 MySQL, 将提供的三个文件导入进去, 然后进行初步处理, 利用附录 A 和附录 B 中所示代码, 将 PO2 和 PCO2 两个指标提取出来, 得到数据 CO2 如下图所示。</p>
+<table>
+<thead>
+<tr>
+<th>f1</th>
+<th>ROW ID</th>
+<th>SUBJECT ID</th>
+<th>HADM ID</th>
+<th>ITEMID</th>
+<th>CHARTTIMEVALUE</th>
+<th>VALUENUM</th>
+<th>VALUEUOM</th>
+<th>FLAG</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>974</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2204:31:0025</td>
+<td>25.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>231</td>
+<td>988</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2207:13:0028</td>
+<td>28.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>240</td>
+<td>997</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2210:16:0028</td>
+<td>28.0</td>
+<td>mmHg</td>
+<td>(NuII)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>249</td>
+<td>1006</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2211:21:0027</td>
+<td>27.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>262</td>
+<td>1019</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2213:02:0026</td>
+<td>26.0</td>
+<td>mmHg</td>
+<td>CNUII</td>
+<td>0</td>
+</tr>
+<tr>
+<td>271</td>
+<td>1028</td>
+<td>a</td>
+<td>145B34.0</td>
+<td>50818</td>
+<td>2101-10-2215:59:0024</td>
+<td>24.0</td>
+<td>mmHg</td>
+<td>(NuII)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>285</td>
+<td>1042</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2216:02:0030</td>
+<td>30.0</td>
+<td>mmHg</td>
+<td>(Nuith</td>
+<td>0</td>
+</tr>
+<tr>
+<td>310</td>
+<td>1067</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2221:20:0027</td>
+<td>27.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>325</td>
+<td>1082</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2302:46:0029</td>
+<td>29.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>338</td>
+<td>1095</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2302:49:0033</td>
+<td>33.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>379</td>
+<td>1136</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2310:14:0025</td>
+<td>25.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>392</td>
+<td>1149</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2310:22:0030</td>
+<td>30.0</td>
+<td>mmHg</td>
+<td>CNUI</td>
+<td>0</td>
+</tr>
+<tr>
+<td>406</td>
+<td>1163</td>
+<td>a</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2316:10:0029</td>
+<td>29.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>468</td>
+<td>588</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2020:04:0028</td>
+<td>28.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>486</td>
+<td>606</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2021:51:0033</td>
+<td>33.0</td>
+<td>mmHg</td>
+<td>(Nuil)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>502</td>
+<td>622</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2100:42:0030</td>
+<td>30.0</td>
+<td>mmHg</td>
+<td>(NuII)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>568</td>
+<td>506</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2019:12:0040</td>
+<td>40.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>580</td>
+<td>518</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2019:14:0028</td>
+<td>28.0</td>
+<td>mmHg</td>
+<td>(Num</td>
+<td>0</td>
+</tr>
+<tr>
+<td>783</td>
+<td>189</td>
+<td>3</td>
+<td>(NuII)</td>
+<td>50818</td>
+<td>2101-10-1209:18:00338</td>
+<td>38.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>802</td>
+<td>208</td>
+<td>3</td>
+<td>(NuM)</td>
+<td>50818</td>
+<td>2101-10-1210:51:0039</td>
+<td>39.0</td>
+<td>mmHg</td>
+<td>(Num</td>
+<td>0</td>
+</tr>
+<tr>
+<td>820</td>
+<td>226</td>
+<td>2</td>
+<td>(NuM)</td>
+<td>50818</td>
+<td>2101-10-12 12:05:0044</td>
+<td>44.0</td>
+<td>mmHg</td>
+<td>(NuII)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>836</td>
+<td>242</td>
+<td>3</td>
+<td>(NuII)</td>
+<td>50818</td>
+<td>2101-10-1213:00:0040</td>
+<td>40.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>853</td>
+<td>259</td>
+<td>3</td>
+<td>(Nu 0)</td>
+<td>50818</td>
+<td>2101-10-1214:22:0042</td>
+<td>42.0</td>
+<td>mmHg</td>
+<td>(NuII)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1089</td>
+<td>2509</td>
+<td>4</td>
+<td>CNUM</td>
+<td>50818</td>
+<td>2191-05-1813:16:0027</td>
+<td>27.0</td>
+<td>mmHg</td>
+<td>abnormal</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1281</td>
+<td>687</td>
+<td>3</td>
+<td>145834.0</td>
+<td>SO818</td>
+<td>2101-10-2103:09:0029</td>
+<td>29.0</td>
+<td>mmHg</td>
+<td>(Null</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1313</td>
+<td>719</td>
+<td>a</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2109:46:0026</td>
+<td>26.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1322</td>
+<td>728</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2109:51:0033</td>
+<td>33.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1330</td>
+<td>736</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2110:23:0027</td>
+<td>27.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1379</td>
+<td>785</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2115:48:0028</td>
+<td>28.0</td>
+<td>mmHg</td>
+<td>(NoII)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1393</td>
+<td>799</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2115:52:0036</td>
+<td>36.0</td>
+<td>mmHg</td>
+<td>(Null)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1409</td>
+<td>815</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2117:33:0030</td>
+<td>30.0</td>
+<td>mmHg</td>
+<td>(NuII)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1424</td>
+<td>830</td>
+<td>3</td>
+<td>145834.0</td>
+<td>50818</td>
+<td>2101-10-2117:37:0037</td>
+<td>37.0</td>
+<td>mmHg</td>
+<td>(Nuti)</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>图 1: 初步提取数据图</p>
+<h2 id="1-2-数据具体处理"><a href="#1-2-数据具体处理" class="headerlink" title="1.2 数据具体处理"></a>1.2 数据具体处理</h2><p>由于 MySQL 时间戳利用的 Unix 时间只能表示到 2038 年, 不便于后续处理, 因此这<br>段用 Python 语言进行处理。<br>将上部分的数据导出为 (\mathrm{csv}) 格式,并利用 python 读取。这里首先选择 SUBJECT_ID<br>为 3 的数据作为示例。</p>
+<h2 id="1-3-数据合并"><a href="#1-3-数据合并" class="headerlink" title="1.3 数据合并"></a>1.3 数据合并</h2><p>这里首先将 PO2 和 PCO2 中 SUBJECT_ID 相同的数据合并到一个表格中, 并删除其余无关列, 仅保留下时间 CHARTTIME、住院时期 HADM_ID 以及 O2 和 CO2 的值。这里用的数据 SUBJECT_ID 分别为 3 ,</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HADM_ID_X</th>
+<th>CHARTTIME</th>
+<th>CO2</th>
+<th>02</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>NaN</td>
+<td>2101-10-12 09:18:00</td>
+<td>38</td>
+<td>244</td>
+</tr>
+<tr>
+<td>1</td>
+<td>NaN</td>
+<td>2101-10-12 10:51:00</td>
+<td>39</td>
+<td>159</td>
+</tr>
+<tr>
+<td>2</td>
+<td>NaN</td>
+<td>2101-10-12 12:05:00</td>
+<td>44</td>
+<td>173</td>
+</tr>
+<tr>
+<td>3</td>
+<td>NaN</td>
+<td>2101-10-12 13:00:00</td>
+<td>40</td>
+<td>151</td>
+</tr>
+<tr>
+<td>4</td>
+<td>NaN</td>
+<td>2101-10-12 14:22:00</td>
+<td>42</td>
+<td>138</td>
+</tr>
+<tr>
+<td>5</td>
+<td>NaN</td>
+<td>2101-10-12 18:17:00</td>
+<td>33</td>
+<td>80</td>
+</tr>
+<tr>
+<td>6</td>
+<td>145834.0</td>
+<td>2101-10-20 19:12:00</td>
+<td>40</td>
+<td>20</td>
+</tr>
+<tr>
+<td>7</td>
+<td>145834.0</td>
+<td>2101-10-20 19:14:00</td>
+<td>28</td>
+<td>313</td>
+</tr>
+<tr>
+<td>8</td>
+<td>145834.0</td>
+<td>2101-10-2020:04:00</td>
+<td>28</td>
+<td>329</td>
+</tr>
+<tr>
+<td>9</td>
+<td>145834.0</td>
+<td>2101-10-2021:51:00</td>
+<td>33</td>
+<td>287</td>
+</tr>
+<tr>
+<td>10</td>
+<td>145834.0</td>
+<td>2101-10-2100:42:00</td>
+<td>30</td>
+<td>175</td>
+</tr>
+<tr>
+<td>11</td>
+<td>145834.0</td>
+<td>2101-10-21 03:09:00</td>
+<td>29</td>
+<td>181</td>
+</tr>
+</tbody></table>
+<p>图 2: 初步处理数据图</p>
+<h2 id="1-4-缺失值处理"><a href="#1-4-缺失值处理" class="headerlink" title="1.4 缺失值处理"></a>1.4 缺失值处理</h2><p>可以看到此时的数据中存在一些缺失值, 根据分析, 前部分确实的为一次住院, 最后有<br>一个数据异常, 因此不妨将缺失的值赋为 1 。<br>此时准备对结果进行可视化, 发现氧气和二氧化碳的数据值并非为数型, 而是为字符<br>型, 因此将这两列转为数字型, 此时将数据可视化得到下图:</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_4.jpg?x=131&y=649&w=580&h=232 "/>
+
+<p>图 3: 离群点处理前</p>
+<h2 id="1-5-离群点处理"><a href="#1-5-离群点处理" class="headerlink" title="1.5 离群点处理"></a>1.5 离群点处理</h2><p>由于离群点仅有一个, 一个病人再住院期间可以进行一次或者多次血气指标收集, 对于一个病人, 在单次住院期间仅收集一次是无意义的, 也无法进行插值, 只有在一个病人单次住院期间收集多次的情况下, 插值才有意义。因此可将该点去除, 去除后数据如下图所<br>示。</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_5.jpg?x=131&y=94&w=580&h=235 "/>
+
+<p>图 4: 离群点处理后</p>
+<p>由于数据明显可分为两部分, 因此数据应为两次住院期间的数据, 因此将数据分为两<br>部分, 即两次住院的数据。<br>第一部分可视化</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_5.jpg?x=133&y=466&w=577&h=238 "/>
+
+<p>图 5: 一部分去噪前</p>
+<p>由于该部分数据量较少, 插值准确率低, 因此不采用第一部分数据进行处理。第二部分可视化的结果如下图所示:<br><img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_6.jpg?x=130&y=62&w=581&h=238 "/></p>
+<p>图 6: 二部分去噪前</p>
+<h2 id="1-6-去噪"><a href="#1-6-去噪" class="headerlink" title="1.6 去噪"></a>1.6 去噪</h2><p>这里使用了 (3\sigma) 原则进行去噪 (\lbrack 1\rbrack) ,由于样本处于 ((\mu {-} 3\sigma,\mu + 3\sigma)) 的概率为 0.9973 。因<br>此用此原则进行去噪有很大的作用。具体代码如下:</p>
+<hr>
+<p>def drop_noisy(df):<br>(\mathrm{df}) _copy ( &#x3D; \mathrm{df} {\cdot} \operatorname{copy}())<br>df_describe &#x3D; df_copy.describe()<br>for column in [‘CO2’,’O2’]:<br>mean ( &#x3D; ) df_describe.loc [‘mean’,column]<br>std ( &#x3D; ) df_describe.loc [‘std’,column]<br>minvalue ( &#x3D; ) mean ( {-} 3 * ) std<br>maxvalue ( &#x3D; ) mean ( + 3 * ) std<br>df_copy &#x3D; df_copy[df_copy[column] &gt;&#x3D; minvalue]<br>df_copy &#x3D; df_copy[df_copy[column] &lt;&#x3D; maxvalue]<br>return df_copy</p>
+<hr>
+<p>去噪后的结果如下图所示:</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_6.jpg?x=131&y=774&w=579&h=236 "/>
+
+<p>图 7: 二部分去噪后</p>
+<h2 id="1-7-插值"><a href="#1-7-插值" class="headerlink" title="1.7 插值"></a>1.7 插值</h2><p>在插值地方, 首先将时间一列转为时间戳的形式, 然后分别对每一天的数据进行插值, 这里对于时间使用了线性插值,对 (\mathrm{CO}2) 和 (\mathrm{O}2) 使用了阶梯插值,最后将数据整合到一起, 并将时间戳转化为时间的形式, 从而完成插值。<br>插值前, 结果如下图所示:</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_7.jpg?x=131&y=199&w=579&h=238 "/>
+
+<p>图 8: 样本三第二部分部分数据插值前</p>
+<p>经过插值后, 结果如下图所示:</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_7.jpg?x=131&y=529&w=579&h=237 "/>
+
+<p>图 9: 样本三第二部分部分数据插值后</p>
+<h2 id="2-第二组数据"><a href="#2-第二组数据" class="headerlink" title="2 第二组数据"></a>2 第二组数据</h2><p>由上述第一组数据的处理可以得到处理方法, 下述处理同上。</p>
+<h2 id="2-1-离群点处理"><a href="#2-1-离群点处理" class="headerlink" title="2.1 离群点处理"></a>2.1 离群点处理</h2><img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_8.jpg?x=133&y=62&w=578&h=235 "/>
+
+<p>图 10: 第二组数据离群点处理前</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_8.jpg?x=133&y=365&w=577&h=235 "/>
+
+<p>图 11: 第二组数据离群点处理后</p>
+<p>2.2 去噪<br><img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_9.jpg?x=157&y=62&w=524&h=211 "/></p>
+<p>图 12: 第二组数据去噪处理后</p>
+<p>2.3 插值<br>插值前:</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_9.jpg?x=131&y=404&w=580&h=233 "/>
+
+<p>图 13: 第二组数据插值前<br><img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_10.jpg?x=129&y=61&w=583&h=234 "/></p>
+<p>图 14: 第二组数据插值后</p>
+<h2 id="3-第三组数据"><a href="#3-第三组数据" class="headerlink" title="3 第三组数据"></a>3 第三组数据</h2><p>3.1 离群点处理</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_10.jpg?x=128&y=477&w=583&h=240 "/>
+
+<p>图 15: 第三组数据去离群点前<br><img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_11.jpg?x=131&y=62&w=582&h=235 "/></p>
+<p>图 16: 第三组数据去离群点后</p>
+<p>3.2 去噪</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_11.jpg?x=131&y=422&w=583&h=235 "/>
+
+<p>图 17: 第三组数据去噪后</p>
+<p> 3.3 插值<br><img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_12.jpg?x=133&y=62&w=579&h=238 "/></p>
+<p>图 18: 第三组数据插值前</p>
+<img src="https://cdn.noedgeai.com/a33d2563-22a5-40a9-9c0b-dd358f6aff7d_12.jpg?x=132&y=368&w=579&h=239 "/>
+
+<p>图 19: 第三组数据插值后</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>这次作业在很多地方都有较大的坑, 也是很久以来最难的一次大作业, 以至于做了很久才有一点头绪, 对于我而言, 最难的地方在于插值部分, 由于作为横轴的时间必须经过处理后才能进行相关处理, 在这方面进行插值以及可视化都出现了不小的问题, 经过反复思考并请教相关同学才成功解决。<br>通过这次数据挖掘的作业, 我感觉自己收获很大, 也学到了很多知识, 我有了一些新的认识, 数据预处理很重要, 未处理过的数据中往往有很多问题, 如果直接拿去用由于数据中存在的很多有问题的地方会使得结果与预期有很大的差异, 因此做好数据预处理是很有必要的一个步骤。在近期的学习中我学习到了数据库以及数据处理方面的很多技巧, 这对于进一步的数据挖掘应该有着不小的帮助, 也有助于今后在该领域的发展。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 刘彬, 戴桂平. 基于白化检验和 3 准则的小波阈值去噪算法 [J]. 传感技术学报,2005,18(3):473-476. DOI:10.3969&#x2F;j.issn.1004-1699.2005.03.008.</p>
+<h2 id="A-SQL-程序代码-1"><a href="#A-SQL-程序代码-1" class="headerlink" title="A SQL 程序代码 1"></a>A SQL 程序代码 1</h2><p>提取 PO2 数据</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>USE hello_mysql;</td>
+<td>SELECT</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>*:</td>
+<td></td>
+</tr>
+<tr>
+<td>FROM</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>labevents mini</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>WHERE</td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td>ITEMID &#x3D; 490</td>
+<td></td>
+</tr>
+<tr>
+<td>M</td>
+<td>OR ITEMID &#x3D; 3785</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>OR ITEMID &#x3D; 3837</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>OR ITEMID &#x3D; 50821</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>B SQL 程序代码 2<br>提取 PCO2 数据</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>USE hello_mysql;</td>
+<td>SELECT</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>*:</td>
+<td></td>
+</tr>
+<tr>
+<td>FROM</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>labevents_mini</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>WHERE</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>ITEMID &#x3D; 3784</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>OR ITEMID &#x3D; 3835</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>OR ITEMID &#x3D; 50818</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="C-主程序代码"><a href="#C-主程序代码" class="headerlink" title="C 主程序代码"></a>C 主程序代码</h2><ul>
+<li>Data enhancement.py</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Created on Thu Apr  8 20:01:07 2021</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">@author: tremble</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> sklearn</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> interpolate</span><br><span class="line"><span class="keyword">import</span> time </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">plot_img</span>(<span class="params">df</span>):</span><br><span class="line">    t=df.loc[:,<span class="string">&#x27;CHARTTIME&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    t=[datetime.datetime.strptime(i,<span class="string">&#x27;%Y-%m-%d %H:%M:%S&#x27;</span>) <span class="keyword">for</span> i <span class="keyword">in</span> t]</span><br><span class="line"></span><br><span class="line">    co2 = [<span class="built_in">float</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> df.loc[:,<span class="string">&#x27;CO2&#x27;</span>]]</span><br><span class="line">    o2 = [<span class="built_in">float</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> df.loc[:,<span class="string">&#x27;O2&#x27;</span>]]</span><br><span class="line"></span><br><span class="line">    fig = plt.figure(figsize=(<span class="number">20</span>,<span class="number">8</span>))</span><br><span class="line">    plt.subplot(<span class="number">211</span>)</span><br><span class="line">    plt.plot(t,co2,<span class="string">&#x27;o-&#x27;</span>)</span><br><span class="line">    plt.xlabel(<span class="string">&#x27;data&#x27;</span>)</span><br><span class="line">    plt.ylabel(<span class="string">&#x27;CO2&#x27;</span>)</span><br><span class="line">    plt.grid(ls=<span class="string">&#x27;--&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.subplot(<span class="number">212</span>)</span><br><span class="line">    plt.plot(t,o2,<span class="string">&#x27;o-&#x27;</span>)</span><br><span class="line">    plt.xlabel(<span class="string">&#x27;data &#x27;</span>)</span><br><span class="line">    plt.ylabel(<span class="string">&#x27;O2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    plt.grid(ls=<span class="string">&#x27;--&#x27;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">drop_noisy</span>(<span class="params">df</span>):</span><br><span class="line">    df_copy = df.copy()</span><br><span class="line">    df_describe = df_copy.describe()</span><br><span class="line">    <span class="keyword">for</span> column <span class="keyword">in</span> [<span class="string">&#x27;CO2&#x27;</span>,<span class="string">&#x27;O2&#x27;</span>]:</span><br><span class="line">        mean = df_describe.loc[<span class="string">&#x27;mean&#x27;</span>,column]</span><br><span class="line">        std = df_describe.loc[<span class="string">&#x27;std&#x27;</span>,column]</span><br><span class="line">        minvalue = mean - <span class="number">3</span>*std</span><br><span class="line">        maxvalue = mean + <span class="number">3</span>*std</span><br><span class="line">        df_copy = df_copy[df_copy[column] &gt;= minvalue]</span><br><span class="line">        df_copy = df_copy[df_copy[column] &lt;= maxvalue]</span><br><span class="line">        <span class="keyword">return</span> df_copy</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">date_to_timestamp</span>(<span class="params">date, format_string=<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span></span>):</span><br><span class="line"> time_array = time.strptime(date, format_string)</span><br><span class="line"> time_stamp = <span class="built_in">int</span>(time.mktime(time_array))</span><br><span class="line"> <span class="keyword">return</span> time_stamp</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">timestamp_to_date</span>(<span class="params">time_stamp, format_string=<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span></span>):</span><br><span class="line"> time_array = time.localtime(time_stamp)</span><br><span class="line"> str_date = time.strftime(format_string, time_array)</span><br><span class="line"> <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line">data_co2=pd.read_csv(<span class="string">r&#x27;D:\桌面\data mining\PCO2.csv&#x27;</span>)</span><br><span class="line">data_o2=pd.read_csv(<span class="string">r&#x27;D:\桌面\data mining\PO2.csv&#x27;</span>) </span><br><span class="line">df1=pd.DataFrame(data_co2)</span><br><span class="line">df2=pd.DataFrame(data_o2)</span><br><span class="line"></span><br><span class="line">df1=df1.loc[df1[<span class="string">&#x27;SUBJECT_ID&#x27;</span>] == <span class="number">3</span>]</span><br><span class="line">df2=df2.loc[df2[<span class="string">&#x27;SUBJECT_ID&#x27;</span>] == <span class="number">3</span>]</span><br><span class="line">df1.rename(columns=&#123;<span class="string">&#x27;VALUE&#x27;</span>:<span class="string">&#x27;CO2&#x27;</span>&#125;,inplace=<span class="literal">True</span>) </span><br><span class="line">df2.rename(columns=&#123;<span class="string">&#x27;VALUE&#x27;</span>:<span class="string">&#x27;O2&#x27;</span>&#125;,inplace=<span class="literal">True</span>) </span><br><span class="line"></span><br><span class="line">df=pd.DataFrame.merge(df1, df2, how=<span class="string">&#x27;inner&#x27;</span>, on=<span class="string">&#x27;CHARTTIME&#x27;</span>, left_on=<span class="literal">None</span>, right_on=<span class="literal">None</span>,   </span><br><span class="line">      left_index=<span class="literal">False</span>, right_index=<span class="literal">False</span>, sort=<span class="literal">True</span>,   </span><br><span class="line">      suffixes=(<span class="string">&#x27;_x&#x27;</span>, <span class="string">&#x27;_y&#x27;</span>), copy=<span class="literal">True</span>, indicator=<span class="literal">False</span>)</span><br><span class="line">df=df[[<span class="string">&#x27;HADM_ID_x&#x27;</span>,<span class="string">&#x27;CHARTTIME&#x27;</span>,<span class="string">&#x27;CO2&#x27;</span>,<span class="string">&#x27;O2&#x27;</span>]]</span><br><span class="line"></span><br><span class="line">df=df.fillna(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">df[[<span class="string">&#x27;CO2&#x27;</span>,<span class="string">&#x27;O2&#x27;</span>]] = df[[<span class="string">&#x27;CO2&#x27;</span>,<span class="string">&#x27;O2&#x27;</span>]].apply(pd.to_numeric)</span><br><span class="line">plot_img(df) </span><br><span class="line">df=df.drop([<span class="number">44</span>],axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">df1=df.loc[df[<span class="string">&#x27;HADM_ID_x&#x27;</span>] == <span class="number">1</span>]</span><br><span class="line">df2=df.loc[df[<span class="string">&#x27;HADM_ID_x&#x27;</span>] == <span class="number">145834.0</span>]</span><br><span class="line"></span><br><span class="line">plot_img(df2)</span><br><span class="line"></span><br><span class="line">df2=drop_noisy(df2)</span><br><span class="line"></span><br><span class="line">plot_img(df2)</span><br><span class="line"></span><br><span class="line">df2.interpolate(method=<span class="string">&#x27;time&#x27;</span>,axis=<span class="number">0</span>)</span><br><span class="line">plot_img(df2)</span><br><span class="line"></span><br><span class="line">df2_1=df2[<span class="number">4</span>:<span class="number">17</span>]</span><br><span class="line">plot_img(df2_1)</span><br><span class="line"><span class="built_in">set</span>=df2_1</span><br><span class="line"><span class="built_in">set</span>=np.array(<span class="built_in">set</span>)</span><br><span class="line">x=np.linspace(<span class="number">0</span>,<span class="built_in">len</span>(<span class="built_in">set</span>)-<span class="number">1</span>,<span class="built_in">len</span>(<span class="built_in">set</span>))</span><br><span class="line">value=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(<span class="built_in">set</span>)):</span><br><span class="line">    value.append(date_to_timestamp(<span class="built_in">set</span>[i, <span class="number">1</span>]))</span><br><span class="line">value=np.array(value)</span><br><span class="line">diff=value[-<span class="number">1</span>]-value[<span class="number">0</span>]</span><br><span class="line">location=np.linspace(<span class="number">0</span>,<span class="built_in">len</span>(<span class="built_in">set</span>)-<span class="number">1</span>,diff//<span class="number">3600</span>+<span class="number">1</span>)</span><br><span class="line">f0=interpolate.interp1d(x,value,kind=<span class="string">&#x27;linear&#x27;</span>)</span><br><span class="line">f1=interpolate.interp1d(x,np.array(<span class="built_in">set</span>[:,<span class="number">2</span>]),kind=<span class="string">&#x27;zero&#x27;</span>)</span><br><span class="line">f2=interpolate.interp1d(x,np.array(<span class="built_in">set</span>[:,<span class="number">3</span>]),kind=<span class="string">&#x27;zero&#x27;</span>)</span><br><span class="line">F0=f0(location)</span><br><span class="line">F0_time=[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(F0)):</span><br><span class="line"> F0_time.append(timestamp_to_date(F0[i]))</span><br><span class="line"> F1 = f1(location)</span><br><span class="line"> F2 = f2(location)</span><br><span class="line">combined_data = np.vstack((np.array(F0_time),F1, F2))</span><br><span class="line">df2_2= np.transpose(combined_data)</span><br><span class="line"></span><br><span class="line">df2_2=pd.DataFrame(columns=[<span class="string">&#x27;CHARTTIME&#x27;</span>,<span class="string">&#x27;CO2&#x27;</span>,<span class="string">&#x27;O2&#x27;</span>,],data=df2_2)</span><br><span class="line">plot_img(df2_2)</span><br></pre></td></tr></table></figure>
+
+<h2 id="D-作业要求"><a href="#D-作业要求" class="headerlink" title="D 作业要求"></a>D 作业要求</h2><h2 id="D-1-数据集说明"><a href="#D-1-数据集说明" class="headerlink" title="D. 1 数据集说明"></a>D. 1 数据集说明</h2><p>该数据集是一个免费的大型数据库, 包含与 2001 年至 2012 年之某医疗机构重症监护<br>室收治的 40,000 多名患者相关的健康相关数据。该数据集已进行数据脱敏。<br>数据集的说明参阅 <a target="_blank" rel="noopener" href="https://mimic.physionet.org/about/mimic/%E3%80%82%E6%AD%A4%E6%AC%A1%E4%BB%BB%E5%8A%A1%E6%B6%89%E5%8F%8A%E5%88%B0%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E8%A1%A8%E6%A0%BC">https://mimic.physionet.org/about/mimic/。此次任务涉及到数据集中的三个表格</a>, PATIENTS, CHARTEVENTS 和 LABEVENTS, 表格的说明分别参考<br><a target="_blank" rel="noopener" href="https://mimic.physionet.org/mimictables/patients/">https://mimic.physionet.org/mimictables/patients/</a> <a target="_blank" rel="noopener" href="https://mimic.physionet.org/mimictables/chartevents/">https://mimic.physionet.org/mimictables/chartevents/</a> <a target="_blank" rel="noopener" href="https://mimic.physionet.org/mimictables/labevents/">https://mimic.physionet.org/mimictables/labevents/</a></p>
+<h2 id="D-2-任务说明"><a href="#D-2-任务说明" class="headerlink" title="D. 2 任务说明"></a>D. 2 任务说明</h2><p>本次任务的目的是处理 (\mathrm{pO}2,\mathrm{pCO}2) 两个指标。这两个指标均为病人的血气指标,以一定的时间间隔采集。一个病人一次住院期间可能收集一次或者多次。要求, 按照采集时间的前后顺序,汇总每个病人每次住院期间的所有的 (\mathrm{pO}2,\mathrm{pCO}2) 指标值。涉及到的预处理方法包括插值, 去噪, 缺失值填充, 离群点数据处理, 可视化等。<br>pO2 和 PCO2 数据存储在 CHARTEVENTS 和 LABEVENTS 两个表格中 (不是分别存储, 而是每个表格都包括这两个指标)。两个表格中以 ITEMID 字段进行标注, 其中 PO2 的 ITEMID 为 (\lbrack 490,3785,3837,50821\rbrack) 之一,PCO2 的 ITEMID 为 (\lbrack 3784,3835,50818\rbrack) 之一。SUBJECT_ID 字段指示不同的病人 (如张三和李四的 SUBJECT_ID 分别为 00001<br>和 00002), HADM_ID 指示一次住院时期 (一个病人可能多次入院, 同一 SUBJECT_ID, HADM_ID 不同则认为是同一病人不同的住院经历, 在收集数据时需要区分)。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Jack Zhu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="http://jackzhu.top/">http://jackzhu.top/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="http://jackzhu.top/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">学习笔记记录感悟</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/">数据挖掘</a></div><div class="post_share"><div class="social-share" data-image="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%88%86%E7%B1%BB%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="机器学习报告——数据分类的实现"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">机器学习报告——数据分类的实现</div></div></a></div><div class="next-post pull-right"><a href="/2020/10/31/%E8%AE%B0%E5%BD%95%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%90%AD%E5%8D%9A%E5%AE%A2/" title="记录我的第一次搭建博客"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/xidian1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">记录我的第一次搭建博客</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jack Zhu</div><div class="author-info__description">过好每一天</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderJackZhu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderJackZhu" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zhuyijie151@sina.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.zhihu.com/people/zhu-yijie-51" target="_blank" title="知乎"><i class="fab fa-zhihu"></i></a><a class="social-icon" href="https://space.bilibili.com/355295657/" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a><a class="social-icon" href="tencent://message/?uin=1363160029&amp;Site=qq&amp;Menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98-%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">摘 要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE-%E5%BD%95"><span class="toc-number">2.</span> <span class="toc-text">目 录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">1 数据处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96"><span class="toc-number">4.</span> <span class="toc-text">1.1 数据提取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E6%95%B0%E6%8D%AE%E5%85%B7%E4%BD%93%E5%A4%84%E7%90%86"><span class="toc-number">5.</span> <span class="toc-text">1.2 数据具体处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E6%95%B0%E6%8D%AE%E5%90%88%E5%B9%B6"><span class="toc-number">6.</span> <span class="toc-text">1.3 数据合并</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-number">7.</span> <span class="toc-text">1.4 缺失值处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-%E7%A6%BB%E7%BE%A4%E7%82%B9%E5%A4%84%E7%90%86"><span class="toc-number">8.</span> <span class="toc-text">1.5 离群点处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-%E5%8E%BB%E5%99%AA"><span class="toc-number">9.</span> <span class="toc-text">1.6 去噪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-%E6%8F%92%E5%80%BC"><span class="toc-number">10.</span> <span class="toc-text">1.7 插值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%AC%AC%E4%BA%8C%E7%BB%84%E6%95%B0%E6%8D%AE"><span class="toc-number">11.</span> <span class="toc-text">2 第二组数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E7%A6%BB%E7%BE%A4%E7%82%B9%E5%A4%84%E7%90%86"><span class="toc-number">12.</span> <span class="toc-text">2.1 离群点处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%AC%AC%E4%B8%89%E7%BB%84%E6%95%B0%E6%8D%AE"><span class="toc-number">13.</span> <span class="toc-text">3 第三组数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%80%BB%E7%BB%93"><span class="toc-number">14.</span> <span class="toc-text">4 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">15.</span> <span class="toc-text">参考文献</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A-SQL-%E7%A8%8B%E5%BA%8F%E4%BB%A3%E7%A0%81-1"><span class="toc-number">16.</span> <span class="toc-text">A SQL 程序代码 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E4%B8%BB%E7%A8%8B%E5%BA%8F%E4%BB%A3%E7%A0%81"><span class="toc-number">17.</span> <span class="toc-text">C 主程序代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-%E4%BD%9C%E4%B8%9A%E8%A6%81%E6%B1%82"><span class="toc-number">18.</span> <span class="toc-text">D 作业要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-1-%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AF%B4%E6%98%8E"><span class="toc-number">19.</span> <span class="toc-text">D. 1 数据集说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-2-%E4%BB%BB%E5%8A%A1%E8%AF%B4%E6%98%8E"><span class="toc-number">20.</span> <span class="toc-text">D. 2 任务说明</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/03/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2/" title="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署"/></a><div class="content"><a class="title" href="/2024/03/03/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2/" title="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署">Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署</a><time datetime="2024-03-03T02:19:37.000Z" title="发表于 2024-03-03 02:19:37">2024-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="服务器常见技术问题与技巧"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="服务器常见技术问题与技巧"/></a><div class="content"><a class="title" href="/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="服务器常见技术问题与技巧">服务器常见技术问题与技巧</a><time datetime="2023-09-03T12:29:37.000Z" title="发表于 2023-09-03 12:29:37">2023-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅谈《原神》游戏的理解"/></a><div class="content"><a class="title" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解">浅谈《原神》游戏的理解</a><time datetime="2023-02-07T00:00:00.000Z" title="发表于 2023-02-07 00:00:00">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ActionFormer论文分享"/></a><div class="content"><a class="title" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享">ActionFormer论文分享</a><time datetime="2022-11-09T18:01:37.000Z" title="发表于 2022-11-09 18:01:37">2022-11-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Ubuntu的基本使用"/></a><div class="content"><a class="title" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用">Ubuntu的基本使用</a><time datetime="2022-11-01T23:17:37.000Z" title="发表于 2022-11-01 23:17:37">2022-11-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Jack Zhu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<a href="https://beian.miit.gov.cn/" target="_blank">陕ICP备2023003055号-1</a></div><div class="footer_custom_text"><span>本网站由 </span><a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/logo5.png"align="absmiddle"width="59px" height="30px" /></a><span>提供加速服务</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'hGtO6K0x6GlrX1FhjTwfMaWM-gzGzoHsz',
+      appKey: 'Nzeyk2Mmrhm9kBQtsXVYd4QA',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

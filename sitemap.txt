@@ -13,6 +13,9 @@ http://example.com/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%9
 http://example.com/2021/04/28/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E9%AB%98%E5%85%89%E8%B0%B1%E9%81%A5%E6%84%9F%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/
 http://example.com/2021/06/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E6%B3%A2%E5%A3%AB%E9%A1%BF%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/
 http://example.com/2021/05/30/%E8%AE%A1%E7%AE%97%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA%E4%BD%9C%E4%B8%9A%E2%80%94%E2%80%94FCM%20%E8%81%9A%E7%B1%BB%E7%9A%84%E5%AE%9E%E7%8E%B0/
+http://example.com/2021/05/30/%E8%AE%A1%E7%AE%97%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA%E4%BD%9C%E4%B8%9A%E2%80%94%E2%80%94%E6%84%9F%E7%9F%A5%E5%99%A8%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E7%B1%BB/
+http://example.com/2021/04/16/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/
+http://example.com/Gallery/index.html
 http://example.com/categories/index.html
 http://example.com/about/index.html
 http://example.com/movies/index.html
@@ -20,7 +23,6 @@ http://example.com/link/index.html
 http://example.com/music/index.html
 http://example.com/tags/index.html
 http://example.com/photos/index.html
-http://example.com/Gallery/index.html
 http://example.com/
 http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/
 http://example.com/tags/Ubuntu/

@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算智能导论作业——遗传算法的实现 | 学习笔记记录感悟</title><meta name="author" content="Jack Zhu"><meta name="copyright" content="Jack Zhu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="目 录1 背景知识 11.1 最优化问题 11.2 进化算法 11.3 遗传算法的基本知识 11.3.1 生物背景 21.3.2 基本思想 21.4 遗传算法的组成部分 21.4.1 编码机制 31.4.2 种群初始化 31.4.3 适应度函数 31.4.4 遗传算子 32 算法步骤 43 实验过程"><link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/art_favicon.webp"><link rel="canonical" href="http://example.com/2021/04/16/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算智能导论作业——遗传算法的实现',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-04-09 15:14:23'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="学习笔记记录感悟" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png')"><nav id="nav"><span id="blog-info"><a href="/" title="学习笔记记录感悟"><span class="site-name">学习笔记记录感悟</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算智能导论作业——遗传算法的实现</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-16T12:29:37.000Z" title="发表于 2021-04-16 12:29:37">2021-04-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-09T15:14:23.860Z" title="更新于 2024-04-09 15:14:23">2024-04-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%99%BA%E8%83%BD/">计算智能</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算智能导论作业——遗传算法的实现"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="目-录"><a href="#目-录" class="headerlink" title="目 录"></a>目 录</h2><p>1 背景知识 1<br>1.1 最优化问题 1<br>1.2 进化算法 1<br>1.3 遗传算法的基本知识 1<br>1.3.1 生物背景 2<br>1.3.2 基本思想 2<br>1.4 遗传算法的组成部分 2<br>1.4.1 编码机制 3<br>1.4.2 种群初始化 3<br>1.4.3 适应度函数 3<br>1.4.4 遗传算子 3<br>2 算法步骤 4<br>3 实验过程 4<br>3.1 代码实现 4<br>4 结果分析 5<br>5 总结 5<br>A 程序代码 7</p>
+<h2 id="1-背景知识"><a href="#1-背景知识" class="headerlink" title="1 背景知识"></a>1 背景知识</h2><h2 id="1-1-最优化问题"><a href="#1-1-最优化问题" class="headerlink" title="1.1 最优化问题"></a>1.1 最优化问题</h2><p>工程设计中最优化问题 (optimization problem) 的一般提法是要选择一组参数 (变量),<br>在满足一系列有关的限制条件 (约束) 下, 使设计指标 (目标) 达到最优值。<br>最优化问题一般包括两方面问题: 线性问题和非线性问题。一方面是线性问题的求解, 主要在经济活动及工程技术中出现。这类问题一般采用单纯形法来求解。另一方面是非线性问题的求解, 这类问题在工程中经常碰到, 是最为常见的一类问题, 尤其是在物理学和决策中, 许多问题常常可以归结为非线性规划问题。这类问题一般需要先建立一个数学模型, 再进行求解。<br>最优化问题的求解实质就是将物理问题数学化, 把最优化问题的求解转化为目标函数<br>最优解的求解, 利用遗传算法在求解最优解方面的特点, 达到事半功倍的效果。</p>
+<h2 id="1-2-进化算法"><a href="#1-2-进化算法" class="headerlink" title="1.2 进化算法"></a>1.2 进化算法</h2><p>进化算法, 或 “演化算法” (evolutionary algorithms) 是一个 “算法簇”, 是在达尔文 (Darwin) 的进化论和孟德尔 (Mendel) 的遗传变异理论的基础上产生的一种在基因和种群层次上模拟自然界生物进化过程与机制, 进行问题求解的自组织、自适应的随机搜索技术。它以达尔文进化论的 “物竞天择、适者生存” 作为算法的进化规则, 并结合孟德尔的遗传变异理论, 将生物进化过程中的繁殖 (Reproduction), 变异 (Mutation), 竞争 (Competition)、选择 (Selection) 引入到了算法中, 是一种对人类智能的演化模拟, 主要有遗传算法、演化策略、演化规划和遗传规划四大分支。<br>尽管它有很多的变化, 有不同的遗传基因表达方式, 不同的交叉和变异算子, 特殊算子的引用, 以及不同的再生和选择方法, 但它们产生的灵感都来自于大自然的生物进化。<br>与传统的基于微积分的方法和穷举法等优化算法相比, 进化计算是一种成熟的具有高鲁棒性和广泛适用性的全局优化方法, 具有自组织、自适应、自学习的特性, 能够不受问题性质的限制, 有效地处理传统优化算法难以解决的复杂问题。</p>
+<h2 id="1-3-遗传算法的基本知识"><a href="#1-3-遗传算法的基本知识" class="headerlink" title="1.3 遗传算法的基本知识"></a>1.3 遗传算法的基本知识</h2><p>遗传算法 (Genetic Algorithm, GA) 是进化算法的一个分支, 是一种模拟自然界生物进化过程的随机搜索算法。其将 “优胜劣汰, 适者生存” 的生物进化原理引入优化参数形成的编码串联群体中, 按所选择的适应度函数并通过遗传中的复制、交叉及变异对个体进行筛选, 使适应度高的个体被保留下来, 组成新的群体。<br>新的群体既继承了上一代的信息, 又优于上一代, 这样周而复始, 群体中个体适应度不断提高, 直到满足一定的条件。同时, 遗传算法的原理简单, 可并行处理, 并能得到全局最优解。<br>遗传算法是模拟达尔文生物进化论的自然选择和遗传学机理的生物进化过程的计算模型, 是一种通过模拟自然进化过程搜索最优解的方法。该算法通过数学的方式, 利用计算机仿真运算, 将问题的求解过程转换成类似生物进化中的染色体基因的交叉、变异等过程。在求解较为复杂的组合优化问题时, 相对一些常规的优化算法, 通常能够较快地获得较好的优化结果。遗传算法已被人们广泛地应用于组合优化、机器学习、信号处理、自适应控制和人工生命等领域。<br>遗传算法直接以目标函数值作为搜索信息。传统的优化算法往往不只需要目标函数值,<br>还需要目标函数的导数等其它信息。这样对许多目标函数无法求导或很难求导的函数, 遗传算法就比较方便。<br>同常规算法相比, 遗传算法有以下特点:<br>遗传算法是对决策变量的编码进行操作, 这样提供的参数信息量大, 优化效果好。遗传算法是从许多点开始并行操作, 因而可以有效地防止搜索过程收玫于局部最优解。遗传算法通过目标函数来计算适配值, 而不需要其他推导和附加信息, 从而对问题的依赖性小。遗传算法的寻优规则是由概率决定的, 而非确定性的。遗传算法在解空间进行高效启发式搜索, 而非盲目地穷举或完全随机搜索。遗传算法对于待寻优的函数基本无限制, 因而应用范围较广。遗传算法具有并行计算的特点, 因而可通过大规模并行计算来提高计算速度。遗传算法更适合大规模复杂问题的优化。遗传算法计算简单, 功能强。</p>
+<h2 id="1-3-1-生物背景"><a href="#1-3-1-生物背景" class="headerlink" title="1.3.1 生物背景"></a>1.3.1 生物背景</h2><ul>
+<li>基因: 一个遗传因子。</li>
+<li>染色体: 包含一组的基因。</li>
+<li>个体: 组成种群的单个生物。</li>
+<li>种群: 生物的进化以群体的形式进行, 这样的一个群体称为种群。</li>
+<li>生存竞争, 适者生存: 对环境适应度高的个体参与繁殖的机会比较多, 后代就会越来越多: 适应度低的个体参与繁殖的机会比较少, 后代就会越来越少。</li>
+</ul>
+<h2 id="1-3-2-基本思想"><a href="#1-3-2-基本思想" class="headerlink" title="1.3.2 基本思想"></a>1.3.2 基本思想</h2><ul>
+<li>遗传算法把问题的解表示成 “染色体”, 在算法中即是以一定方式编码的串。</li>
+<li>在执行遗传算法之前, 给出一群 “染色体”, 也即一组候选解 (种群)。</li>
+<li>把这些假设解置于问题的 “环境” 中, 并按适者生存的原则, 从中选择出较适应环境的 “染色体” 进行复制, 再通过交叉, 变异过程产生更适应环境的新一代 “染色体”群。<br>这样, 一代一代地进化, 最后就会收玫到最适应环境的一个 “染色体” 上, 它就是求解<br>到的最优解。</li>
+</ul>
+<h2 id="1-4-遗传算法的组成部分"><a href="#1-4-遗传算法的组成部分" class="headerlink" title="1.4 遗传算法的组成部分"></a>1.4 遗传算法的组成部分</h2><p>一般的遗传算法由四个部分组成: 1. 编码机制 2. 种群初始化 3. 适应度函数<br>4. 遗传算子 (选择、交叉、变异)</p>
+<h2 id="1-4-1-编码机制"><a href="#1-4-1-编码机制" class="headerlink" title="1.4.1 编码机制"></a>1.4.1 编码机制</h2><p>用遗传算法解决问题时, 首先要对待解决问题的模型结构和参数进行编码, 一般用字符串表示。GA 中的编码方法: 二进制编码、浮点数编码方法、格雷码编码、符号编码等。<br>二进制编码所构成的个体的基因型是一个由 0 或 1 组成的编码串,其符号串的长度 $L$ 与问题所要求的求解精度有关。设某一变量的取值范围是 $\left[ X_{\min}, X_{\max} \right]$, $X_{\min} &lt; X_{\max}$ 则二进制编码的编码精度为:</p>
+<p>$$<br>\delta &#x3D; \frac{X_{\max} - X_{\min}}{2^{L} - 1}<br>$$</p>
+<p>如果某一个体的编码是: $b_{L}b_{L - 1}b_{L - 2} \cdots b_{2}b_{1}$, 则对应的解码公式为:</p>
+<p>$$<br>X &#x3D; X_{\min} + \frac{X_{\max} - X_{\min}}{2^{L} - 1} \left( \sum_{i &#x3D; 1}^L b_{i} 2^{i - 1} \right)<br>$$</p>
+<h2 id="1-4-2-种群初始化"><a href="#1-4-2-种群初始化" class="headerlink" title="1.4.2 种群初始化"></a>1.4.2 种群初始化</h2><p>对种群个体的编码进行随机初始化。首先, 我们需要建立种群个体与遗传算法中有效解的对应概念。其次针对于每个个体,在固定长度的染色体下,对每个基因位进行随机 (0&#x2F;1) 赋值, 也就是对有效解进行初始化的过程。</p>
+<h2 id="1-4-3-适应度函数"><a href="#1-4-3-适应度函数" class="headerlink" title="1.4.3 适应度函数"></a>1.4.3 适应度函数</h2><p>遗传算法以个体适应度的大小来评定各个个体的优劣程度, 从而决定其遗传机会的大小。一般情况下, 可以将目标函数作为适应度函数, 也就是求解问题的优化目标。将种群中的个体的染色体进行解码, 可以得到对应的十进制值, 代入适应度函数即可求得适应值。</p>
+<h2 id="1-4-4-遗传算子"><a href="#1-4-4-遗传算子" class="headerlink" title="1.4.4 遗传算子"></a>1.4.4 遗传算子</h2><p>(1)选择操作<br>选择是对当前种群内的所有个体进行筛选, 流出进入到后续繁殖环节的父代个体的过程, 常采用轮盘赌选择。轮盘赌选择依据个体的适应度值计算每个个体在下一代中出现的概率, 并按照此概率随机选择个体构成子代种群。选择某个体的概率为</p>
+<p>$$<br>p(I_{i}) &#x3D; \frac{f(I_{i})}{\sum_{i &#x3D; 1}^N f(I_{i})}<br>$$</p>
+<p>其中, $f(I_{i})$ 是个体 $I_{i}$ 的适应度值, $N$ 是种群大小。轮盘赌选择的流程如下:</p>
+<ul>
+<li>计算种群中所有个体的适应度值之和, $F &#x3D; \sum_{k &#x3D; 1}^N \text{eval}(v_{k})$ ;</li>
+<li>计算每个个体 $v_{k}$ 的选择概率 $p_{k}$, $p_{k} &#x3D; \frac{\text{eval}(v_{k})}{F}$, $k &#x3D; 1, 2, \ldots, \text{popSize}$ ;</li>
+<li>计算每个个体 $v_{k}$ 的累积概率 $q_{k}$, $q_{k} &#x3D; \sum_{j &#x3D; 1}^k p_{j}$, $k &#x3D; 1, 2, \ldots, \text{popSize}$ ;</li>
+<li>随机产生 $N$ 个 $[0,1]$ 的随机数 $r_{i}$ ;</li>
+<li>对于每一个 $r_{i}$ : 如果 $r_{i} \leq q_{1}$, 选择第一个个体 $v_{1}$; 否则, 如果 $q_{k - 1} &lt; r_{i} &lt; q_{k}$, 选择第 $k$ 个个体 $v_{k}(2 \leq k \leq \text{popSize})$ 。</li>
+</ul>
+<h2 id="2-交叉操作"><a href="#2-交叉操作" class="headerlink" title="(2)交叉操作"></a>(2)交叉操作</h2><p>交叉操作是选中的两个父代个体交换莱些基因位形成子代个体的过程。交叉概率 (P_{c}) 是在种群中个体被选择出进行交叉的概率, 一般的交叉方式有单点交叉、两点交叉、多点交叉、均匀交叉等。其中, 单点交叉是随机产生一个有效的交叉位置, 染色体交换位于该交叉位置后的所有基因。<br>(3)变异操作<br>变异操作是编码按小概率扰动产生的变化,类似于基因的突变。变异概率 (P_{m}) 是控制算法中变异操作的使用频率。常用的变异方式有单点变异、均匀变异、高斯变异等。其中, 单点变异指的是对于某一基因位,产生的随机数小于 (P_{m}) 则改变该基因的取值,否则该基因不发生变异, 保持不变。</p>
+<h2 id="2-算法步骤"><a href="#2-算法步骤" class="headerlink" title="2 算法步骤"></a>2 算法步骤</h2><p>该算法可分为以下 7 步。<br>Step1: 初始化种群;<br>Step2: 计算种群中每个个体的适应度值;<br>Step3: 按由个体适应度值决定的某个规则选择将进入下一代的个体; Step4: 按概率 (P_{c}) 进行交叉操作; Step5: 按概率 (P_{m}) 进行变异操作;<br>Step6: 若没有满足某种终止条件, 则转第 2 步, 否则进入下一步; Step7: 输出种群中适应度值最优的染色体作为问题的满意解或最优解。</p>
+<h2 id="3-实验过程"><a href="#3-实验过程" class="headerlink" title="3 实验过程"></a>3 实验过程</h2><p>本文中采用的函数为 (f(x) &#x3D; {\sum}<em>{i &#x3D; 1}^n\left\lbrack x</em>{i}^{2} {-} 10\cos\left( 2\pi x_{i} + 10 \right) \right\rbrack) ,自变量的定义域为 (\lbrack{-}5.12,5.12\rbrack) , 函数的最小值为 0 。</p>
+<h2 id="3-1-代码实现"><a href="#3-1-代码实现" class="headerlink" title="3.1 代码实现"></a>3.1 代码实现</h2><p>作为遗传算法中较为重要的交叉模块, 我们进行了如下设计。首先, 遍历种群中的每一个个体, 将该个体作为父代, 而子代首先得到父代的全部基因, 父代产生子代时不是必然发生交叉, 而是以一定的概率发生交叉。从种群中选择令一个个体, 将该个体作为另一个附带, 随机产生交叉点后, 子代得到此父代交叉点后的全部基因。同时, 此子代也具有相应的变异概率。<br>这里首先确定了相关参数, 然后定义主要的几个函数, 包括三维作图函数、解码函数、适应度计算函数、交叉变异函数, 然后进行操作整合, 并将函数整合起来, 代码见附录。<br>在本代码中, 不仅对遗传算法中不同个体的适应度情况实时展示, 而且对迭代过程中<br>最小的值进行记录, 画出折线图, 从而使得展示过程更加直观。<br><img src="https://cdn.noedgeai.com/e291bc60-ee22-4de1-aca0-eb54cd5a99af_6.jpg?x=242&y=62&w=409&h=397 "/></p>
+<p>图 1: 函数图</p>
+<h2 id="4-结果分析"><a href="#4-结果分析" class="headerlink" title="4 结果分析"></a>4 结果分析</h2><p>上图为运算过程中的函数以及整个种群的情况:<br>当迭代完成后, 可以看到仅函数中心处有一点, 说明整个种群都收玫到了一处, 如下图<br>所示。<br>下图为迭代过程的最小适应度函数值的变化折线图。<br>由图中可以看出, 所求适应度函数最小的值在不断下降, 最终达到稳定值, 而且最终所<br>处数值接近 5 , 与题中一直条件相吻合, 证明了该遗传算法解决问题的效果较好。<br>最终得到最优的基因型为 [1100000000000000000001100100101111110100010100001], 其中 (x) 和 (y) 分别为 0.006485290913897046,0.003113098330086217,此时的值为: 0.01027 。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>在这次实验中, 开始在理解题意方面遇到了很多问题, 后来经过多方询问才明白。这次实验中我通过广泛查询资料了解到了相关的知识, 也认真写代码来完成任务, 这份作业的完成确实比较艰巨, 一份顶多份, 但是我还是有很大的收获, 能力也得到了提升。<br><img src="https://cdn.noedgeai.com/e291bc60-ee22-4de1-aca0-eb54cd5a99af_7.jpg?x=193&y=172&w=415&h=275 "/></p>
+<p>图 2: 函数图</p>
+<img src="https://cdn.noedgeai.com/e291bc60-ee22-4de1-aca0-eb54cd5a99af_7.jpg?x=189&y=643&w=442&h=348 "/>
+
+<p>图 3: 函数图</p>
+<h2 id="A-程序代码"><a href="#A-程序代码" class="headerlink" title="A 程序代码"></a>A 程序代码</h2><p>遗传算法程序 - GA.py </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> cm</span><br><span class="line"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">DNA_SIZE = <span class="number">24</span></span><br><span class="line">POP_SIZE = <span class="number">200</span></span><br><span class="line">CROSSOVER_RATE = <span class="number">0.8</span></span><br><span class="line">MUTATION_RATE1 = <span class="number">0.03</span></span><br><span class="line">MUTATION_RATE2 = <span class="number">0.001</span></span><br><span class="line">N_GENERATIONS = <span class="number">100</span></span><br><span class="line">arr = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取值范围</span></span><br><span class="line">X_BOUND = [-<span class="number">5.12</span>, <span class="number">5.12</span>]</span><br><span class="line">Y_BOUND = [-<span class="number">5.12</span>, <span class="number">5.12</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">F</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="keyword">return</span> x**<span class="number">2</span> - <span class="number">10</span>* np.cos(<span class="number">2</span>*math.pi*x) + <span class="number">10</span> + y**<span class="number">2</span> - <span class="number">10</span>* np.cos(<span class="number">2</span>*math.pi*y) + <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 画图</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">plot_3D</span>(<span class="params">ax</span>):</span><br><span class="line">    X = np.linspace(*X_BOUND, <span class="number">100</span>)</span><br><span class="line">    Y = np.linspace(*Y_BOUND, <span class="number">100</span>)</span><br><span class="line">    X, Y = np.meshgrid(X, Y)</span><br><span class="line">    Z = F(X, Y)</span><br><span class="line">    ax.plot_surface(X, Y, Z, rstride=<span class="number">1</span>, cstride=<span class="number">1</span>, cmap=cm.coolwarm)</span><br><span class="line">    ax.set_zlim(-<span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">    ax.set_xlabel(<span class="string">&#x27;X&#x27;</span>)</span><br><span class="line">    ax.set_ylabel(<span class="string">&#x27;Y&#x27;</span>)</span><br><span class="line">    ax.set_zlabel(<span class="string">&#x27;Z&#x27;</span>)</span><br><span class="line">    plt.pause(<span class="number">3</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解码DNA</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">translateDNA</span>(<span class="params">pop</span>):</span><br><span class="line">    x_pop = pop[:, <span class="number">1</span>::<span class="number">2</span>]</span><br><span class="line">    y_pop = pop[:, ::<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">    x = x_pop.dot(<span class="number">2</span> ** np.arange(DNA_SIZE)[::-<span class="number">1</span>]) / <span class="built_in">float</span>(<span class="number">2</span> ** DNA_SIZE - <span class="number">1</span>) * (X_BOUND[<span class="number">1</span>] - X_BOUND[<span class="number">0</span>]) + X_BOUND[<span class="number">0</span>]</span><br><span class="line">    y = y_pop.dot(<span class="number">2</span> ** np.arange(DNA_SIZE)[::-<span class="number">1</span>]) / <span class="built_in">float</span>(<span class="number">2</span> ** DNA_SIZE - <span class="number">1</span>) * (Y_BOUND[<span class="number">1</span>] - Y_BOUND[<span class="number">0</span>]) + Y_BOUND[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 适应度</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_fitness</span>(<span class="params">pop</span>):</span><br><span class="line">    x, y = translateDNA(pop)</span><br><span class="line">    pred = F(x, y)</span><br><span class="line">    arr.append(np.<span class="built_in">min</span>(pred))</span><br><span class="line">    <span class="keyword">return</span> - (pred - np.<span class="built_in">max</span>(pred)) + <span class="number">1e-3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#淘汰机制</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">select</span>(<span class="params">pop, fitness</span>):</span><br><span class="line">    idx = np.random.choice(np.arange(POP_SIZE), size=POP_SIZE, replace=<span class="literal">True</span>, p=fitness/fitness.<span class="built_in">sum</span>())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> pop[idx]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交叉变异</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">crossover_and_mutation</span>(<span class="params">pop, CROSSOVER_RATE = <span class="number">0.8</span>, MUTATIONS_RATE = <span class="number">0.01</span></span>):</span><br><span class="line">    new_pop = []</span><br><span class="line">    <span class="keyword">for</span> father <span class="keyword">in</span> pop:</span><br><span class="line">        child = father</span><br><span class="line">        <span class="keyword">if</span> np.random.rand() &lt; CROSSOVER_RATE:</span><br><span class="line">            mother = pop[np.random.randint(POP_SIZE)]</span><br><span class="line">            cross_points = np.random.randint(low=<span class="number">0</span>, high=DNA_SIZE*<span class="number">2</span>)</span><br><span class="line">            child[cross_points:] = mother[cross_points:]</span><br><span class="line">        mutation(child, MUTATIONS_RATE)</span><br><span class="line">        new_pop.append(child)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> new_pop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 变异</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mutation</span>(<span class="params">child, MUTATION_RATE</span>):</span><br><span class="line">    <span class="keyword">if</span> np.random.rand() &lt; MUTATION_RATE:  <span class="comment"># 以MUTATION_RATE的概率进行变异</span></span><br><span class="line">        mutate_point = np.random.randint(<span class="number">0</span>, DNA_SIZE)  <span class="comment"># 随机产生一个实数，代表要变异基因的位置</span></span><br><span class="line">        child[mutate_point] = child[mutate_point] ^ <span class="number">1</span>  <span class="comment"># 将变异点的二进制为反转</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">print_info</span>(<span class="params">pop</span>):</span><br><span class="line">    fitness = get_fitness(pop)</span><br><span class="line">    max_fitness_index = np.argmax(fitness)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;max_fitness:&quot;</span>, fitness[max_fitness_index])</span><br><span class="line">    x,y = translateDNA(pop)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;最优的基因型:&quot;</span>, pop[max_fitness_index])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;(x, y ):&#x27;</span>, (x[max_fitness_index], y[max_fitness_index]))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;此时的值为:&quot;</span>, F(x[max_fitness_index], y[max_fitness_index]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    fig = plt.figure()</span><br><span class="line">    ax = Axes3D(fig)</span><br><span class="line">    plt.ion()</span><br><span class="line">    plot_3D(ax)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 随机生成种群矩阵，奇数列表示X，偶数列表示Y</span></span><br><span class="line">    pop = np.random.randint(<span class="number">2</span>, size=(POP_SIZE, DNA_SIZE * <span class="number">2</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N_GENERATIONS):</span><br><span class="line">        x, y = translateDNA(pop)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;sca&#x27;</span> <span class="keyword">in</span> <span class="built_in">locals</span>():</span><br><span class="line">            sca.remove()</span><br><span class="line"></span><br><span class="line">        sca = ax.scatter(x, y, F(x, y), c=<span class="string">&#x27;black&#x27;</span>, marker=<span class="string">&#x27;o&#x27;</span>)</span><br><span class="line">        plt.show()</span><br><span class="line">        plt.pause(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i &lt; <span class="number">7</span>*i/<span class="number">10</span>:</span><br><span class="line">            pop = np.array(crossover_and_mutation(pop, CROSSOVER_RATE, MUTATIONS_RATE = MUTATION_RATE1 ))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            pop = np.array(crossover_and_mutation(pop, CROSSOVER_RATE, MUTATIONS_RATE = MUTATION_RATE2 ))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        fitness = get_fitness(pop)</span><br><span class="line">        pop = select(pop, fitness)</span><br><span class="line"></span><br><span class="line">    print_info(pop)</span><br><span class="line">    plt.ioff()</span><br><span class="line">    plot_3D(ax)</span><br><span class="line"></span><br><span class="line">    x = np.arange(<span class="number">0</span>, <span class="number">101</span>)</span><br><span class="line">    plt.xlabel(<span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">    plt.ylabel(<span class="string">&#x27;Minimum&#x27;</span>)</span><br><span class="line">    <span class="comment"># plt.ylim((-0.1, 5))  # y坐标的范围</span></span><br><span class="line">    <span class="comment"># 画图</span></span><br><span class="line">    plt.plot(x, arr, <span class="string">&#x27;b&#x27;</span>, marker=<span class="string">&#x27;o&#x27;</span>, markersize=<span class="number">4</span>)</span><br><span class="line">    plt.savefig(<span class="string">&quot;折线图F5_2.png&quot;</span>, dpi=<span class="number">2000</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Jack Zhu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="http://jackzhu.top/">http://jackzhu.top/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="http://jackzhu.top/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">学习笔记记录感悟</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%99%BA%E8%83%BD/">计算智能</a></div><div class="post_share"><div class="social-share" data-image="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/28/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E9%AB%98%E5%85%89%E8%B0%B1%E9%81%A5%E6%84%9F%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" title="机器学习作业——高光谱遥感特征选择"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">机器学习作业——高光谱遥感特征选择</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%88%86%E7%B1%BB%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="机器学习报告——数据分类的实现"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">机器学习报告——数据分类的实现</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/05/30/%E8%AE%A1%E7%AE%97%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA%E4%BD%9C%E4%B8%9A%E2%80%94%E2%80%94FCM%20%E8%81%9A%E7%B1%BB%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="计算智能导论作业——FCM 聚类的实现"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-30</div><div class="title">计算智能导论作业——FCM 聚类的实现</div></div></a></div><div><a href="/2021/05/30/%E8%AE%A1%E7%AE%97%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA%E4%BD%9C%E4%B8%9A%E2%80%94%E2%80%94%E6%84%9F%E7%9F%A5%E5%99%A8%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%88%86%E7%B1%BB/" title="计算智能导论作业——感知器实现二分类"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-30</div><div class="title">计算智能导论作业——感知器实现二分类</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jack Zhu</div><div class="author-info__description">过好每一天</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderJackZhu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderJackZhu" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zhuyijie151@sina.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.zhihu.com/people/zhu-yijie-51" target="_blank" title="知乎"><i class="fab fa-zhihu"></i></a><a class="social-icon" href="https://space.bilibili.com/355295657/" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a><a class="social-icon" href="tencent://message/?uin=1363160029&amp;Site=qq&amp;Menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE-%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">目 录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-number">2.</span> <span class="toc-text">1 背景知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">1.1 最优化问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E8%BF%9B%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">1.2 进化算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="toc-number">5.</span> <span class="toc-text">1.3 遗传算法的基本知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-1-%E7%94%9F%E7%89%A9%E8%83%8C%E6%99%AF"><span class="toc-number">6.</span> <span class="toc-text">1.3.1 生物背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-2-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="toc-number">7.</span> <span class="toc-text">1.3.2 基本思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E7%9A%84%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="toc-number">8.</span> <span class="toc-text">1.4 遗传算法的组成部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-1-%E7%BC%96%E7%A0%81%E6%9C%BA%E5%88%B6"><span class="toc-number">9.</span> <span class="toc-text">1.4.1 编码机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-2-%E7%A7%8D%E7%BE%A4%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">10.</span> <span class="toc-text">1.4.2 种群初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-3-%E9%80%82%E5%BA%94%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="toc-number">11.</span> <span class="toc-text">1.4.3 适应度函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-4-%E9%81%97%E4%BC%A0%E7%AE%97%E5%AD%90"><span class="toc-number">12.</span> <span class="toc-text">1.4.4 遗传算子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BA%A4%E5%8F%89%E6%93%8D%E4%BD%9C"><span class="toc-number">13.</span> <span class="toc-text">(2)交叉操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-number">14.</span> <span class="toc-text">2 算法步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%9E%E9%AA%8C%E8%BF%87%E7%A8%8B"><span class="toc-number">15.</span> <span class="toc-text">3 实验过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">16.</span> <span class="toc-text">3.1 代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="toc-number">17.</span> <span class="toc-text">4 结果分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">18.</span> <span class="toc-text">5 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A-%E7%A8%8B%E5%BA%8F%E4%BB%A3%E7%A0%81"><span class="toc-number">19.</span> <span class="toc-text">A 程序代码</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/03/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2/" title="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署"/></a><div class="content"><a class="title" href="/2024/03/03/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEGithub%20Actions%E5%92%8C%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E5%AD%98%E5%82%A8%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2/" title="Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署">Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署</a><time datetime="2024-03-03T02:19:37.000Z" title="发表于 2024-03-03 02:19:37">2024-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="服务器常见技术问题与技巧"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="服务器常见技术问题与技巧"/></a><div class="content"><a class="title" href="/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/" title="服务器常见技术问题与技巧">服务器常见技术问题与技巧</a><time datetime="2023-09-03T12:29:37.000Z" title="发表于 2023-09-03 12:29:37">2023-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅谈《原神》游戏的理解"/></a><div class="content"><a class="title" href="/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="浅谈《原神》游戏的理解">浅谈《原神》游戏的理解</a><time datetime="2023-02-07T00:00:00.000Z" title="发表于 2023-02-07 00:00:00">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ActionFormer论文分享"/></a><div class="content"><a class="title" href="/2022/11/09/%E5%AD%A6%E6%9C%AF%E4%BA%A4%E6%B5%81%E5%88%86%E4%BA%ABActionFormer/" title="ActionFormer论文分享">ActionFormer论文分享</a><time datetime="2022-11-09T18:01:37.000Z" title="发表于 2022-11-09 18:01:37">2022-11-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Ubuntu的基本使用"/></a><div class="content"><a class="title" href="/2022/11/01/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Ubuntu的基本使用">Ubuntu的基本使用</a><time datetime="2022-11-01T23:17:37.000Z" title="发表于 2022-11-01 23:17:37">2022-11-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Jack Zhu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<a href="https://beian.miit.gov.cn/" target="_blank">陕ICP备2023003055号-1</a></div><div class="footer_custom_text"><span>本网站由 </span><a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/logo5.png"align="absmiddle"width="59px" height="30px" /></a><span>提供加速服务</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'hGtO6K0x6GlrX1FhjTwfMaWM-gzGzoHsz',
+      appKey: 'Nzeyk2Mmrhm9kBQtsXVYd4QA',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

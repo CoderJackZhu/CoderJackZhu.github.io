@@ -247,6 +247,24 @@ print(torch.backends.cudnn.version()) # Corresponding cuDNN version
 print(torch.cuda.get_device_name(0)) # GPU type
 ```
 
+当然你如果想测试一下，也可以跑一下官方示例（非必须）
+
+```shell
+mkdir ~/CUDA_test
+cd ~/CUDA_test
+git clone https://github.com/nvidia/cuda-samples
+cd ~/CUDA_test/cuda-samples/Samples/1_Utilities/deviceQuery
+make
+./deviceQuery
+```
+
+
+可以得到下面这个结果：
+
+![20240531013518](https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240531013518.png)
+
+检查完用不到也可以把这个samples删了。
+
 即可查看详细情况，若cuda可用这里显示true就说明安装成功。
 
 ## 常用软件

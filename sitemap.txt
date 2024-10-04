@@ -1,3 +1,4 @@
+http://example.com/music/index.html
 http://example.com/tags/index.html
 http://example.com/photos/index.html
 http://example.com/2020/10/31/%E8%AE%B0%E5%BD%95%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%90%AD%E5%8D%9A%E5%AE%A2/
@@ -17,7 +18,6 @@ http://example.com/categories/index.html
 http://example.com/about/index.html
 http://example.com/movies/index.html
 http://example.com/link/index.html
-http://example.com/music/index.html
 http://example.com/2023/02/07/%E6%B5%85%E8%B0%88%E3%80%8A%E5%8E%9F%E7%A5%9E%E3%80%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E7%90%86%E8%A7%A3/
 http://example.com/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%88%86%E7%B1%BB%E7%9A%84%E5%AE%9E%E7%8E%B0/
 http://example.com/2021/04/28/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E9%AB%98%E5%85%89%E8%B0%B1%E9%81%A5%E6%84%9F%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/
@@ -25,8 +25,8 @@ http://example.com/2021/06/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A
 http://example.com/2024/09/18/%E7%A7%8B%E6%8B%9B%E4%B8%AD%E5%85%B4%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/
 http://example.com/2024/09/23/%E7%A7%8B%E6%8B%9B%E5%90%88%E8%82%A5%E5%AE%89%E8%BF%85%E7%B2%BE%E5%AF%86%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/
 http://example.com/2024/09/22/%E7%A7%8B%E6%8B%9B%E5%BE%97%E7%89%A9%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/
-http://example.com/2024/04/29/%E6%B7%98%E5%A4%A9%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/
 http://example.com/2024/09/23/%E7%A7%8B%E6%8B%9B%E5%BF%AB%E6%89%8B%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/
+http://example.com/2024/04/29/%E6%B7%98%E5%A4%A9%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/
 http://example.com/2024/08/06/%E7%A7%8B%E6%8B%9B%E6%8F%90%E5%89%8D%E6%89%B9%E7%99%BE%E5%BA%A6%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/
 http://example.com/2024/09/22/%E7%A7%8B%E6%8B%9B%E6%AF%94%E4%BA%9A%E8%BF%AA%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/
 http://example.com/2022/09/20/HRNet/

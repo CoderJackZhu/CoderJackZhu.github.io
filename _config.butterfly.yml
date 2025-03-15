@@ -388,6 +388,9 @@ footer:
     url: "https://beian.miit.gov.cn/"
     text: 陕ICP备2023003055号-1
     icon: /img/icp.png
+  RSS: true
+
+
   
 
 

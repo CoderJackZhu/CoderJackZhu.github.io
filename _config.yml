@@ -5,7 +5,7 @@
 # Site
 title: Jack's Blog
 subtitle: 不乱于心，不困于情，不念过往，不畏将来。
-description: 过好每一天
+description: feedId:123656790076659712+userId:123654304513999872
 keywords:
 author: Jack Zhu
 language: zh-CN
@@ -112,4 +112,3 @@ feed:
   type: atom
   path: atom.xml
   limit: false
-  description: feedId:123656790076659712+userId:123654304513999872

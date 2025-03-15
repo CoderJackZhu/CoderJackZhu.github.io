@@ -106,3 +106,9 @@ deploy:
   type: git
   repo: git@github.com:CoderJackZhu/CoderJackZhu.github.io.git
   branch: html
+
+# RSS
+feed:
+  type: atom
+  path: atom.xml
+  limit: false

@@ -992,3 +992,5 @@ CDN:
     # valine:
     # waline_css:
     # waline_js:
+
+rss: /atom.xml

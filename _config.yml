@@ -112,3 +112,4 @@ feed:
   type: atom
   path: atom.xml
   limit: false
+  description: feedId:123656790076659712+userId:123654304513999872

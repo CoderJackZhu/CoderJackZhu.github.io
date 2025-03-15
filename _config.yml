@@ -4,7 +4,7 @@
 
 # Site
 title: Jack's Blog
-subtitle: feedId:123656790076659712+userId:123654304513999872
+subtitle: 不乱于心，不困于情，不念过往，不畏将来。
 description: 过好每一天
 keywords:
 author: Jack Zhu
@@ -91,7 +91,7 @@ pagination_dir: page
 
 # Include / Exclude file(s)
 ## include:/exclude: options only apply to the 'source/' folder
-include: .
+include:
 exclude: 
 ignore:
 

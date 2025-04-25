@@ -30,6 +30,8 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+  - baidu_verify_codeva-pcll7x0O4y.html
+
 
 # Writing
 new_post_name: :title.md # File name of new posts

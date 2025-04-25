@@ -112,3 +112,10 @@ feed:
   type: atom
   path: atom.xml
   limit: false
+sitemap:
+  path: sitemap.xml
+
+robots:
+  path: robots.txt
+  sitemap: true
+  allowAll: true

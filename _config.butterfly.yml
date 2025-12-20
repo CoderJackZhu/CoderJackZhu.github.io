@@ -44,7 +44,6 @@ copy:
 #   icon: link || the description
 social:
   fab fa-github: https://github.com/CoderJackZhu || Github
-  fas fa-envelope: mailto:zhuyijie151@sina.com || Email
   fab fa-zhihu: https://www.zhihu.com/people/zhu-yijie-51 || 知乎
   fab fa-bilibili: https://space.bilibili.com/355295657/ || 哔哩哔哩
   fas fa-rss: /atom.xml || RSS

@@ -22,7 +22,7 @@ highlight_shrink:
 aside: 
 ---
 
-在 Python 开发中，使用好的包和项目管理工具，相当于打好基础，相关件将相宜実。这年头，来自 Astral (即 Ruff 和 Black 的开发者) 的新工具「UV」，一上线就引发了广泛关注，以 Rust 高性能实现，目标是替代 pip，virtualenv，poetry 等组合，成为 Python 最新一代的包管理栏杆。
+在 Python 开发中，使用好的包和项目管理工具，相当于打好基础。这年头，来自 Astral (即 Ruff 和 Black 的开发者) 的新工具UV，一上线就引发了广泛关注，以 Rust 高性能实现，目标是替代 pip，virtualenv，poetry 等组合，成为 Python 最新一代的包管理栏杆。
 
 ## 为什么要使用uv
 
@@ -146,7 +146,7 @@ index 可以指定镜像源（如清华 PyPI）
 
 同时 UV 会生成 uv.lock，锁定给定环境下的确定包版本和校验信息，保证可重复性。
 
-常见问题和解决方法
+## 常见问题和解决方法
 
 1. 使用 --system-site-packages 后包无效
 
@@ -177,7 +177,7 @@ uv config set index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 uv lock
 
-在 UV 中管理 PyTorch
+## 在 UV 中管理 PyTorch
 
 1. 基础安装：
 
@@ -216,13 +216,13 @@ print(torch.cuda.get_device_name(0))
 
 uv run python check_cuda.py
 
-常见问题：
+## 常见问题：
 
 如果直接用 uv pip install 安装，pyproject.toml 不会更新，建议终究使用 uv add
 
 如遇到网络慢，同样可配置用国内镜像源
 
-总结
+# 总结
 
 UV 是一款超高性能、全配套、很合于环境及大型项目管理的新世代工具，特别适合对环境素质有严格要求的开发者和研究人员。
 

@@ -22,7 +22,7 @@ highlight_shrink:
 aside: 
 ---
 
-在 Python 开发中，使用好的包和项目管理工具，相当于打好基础。这年头，来自 Astral (即 Ruff 和 Black 的开发者) 的新工具UV，一上线就引发了广泛关注，以 Rust 高性能实现，目标是替代 pip，virtualenv，poetry 等组合，成为 Python 最新一代的包管理栏杆。
+在 Python 开发中，使用好的包和项目管理工具，相当于打好基础。这年头，来自 Astral (即 Ruff 和 Black 的开发者) 的新工具UV，一上线就很受欢迎，在企业场景也广泛使用，以 Rust 高性能实现，目标是替代 pip，virtualenv，poetry 等组合，成为 Python 最新一代的包管理栏杆。
 
 ## 为什么要使用uv
 
@@ -156,9 +156,9 @@ UV 创建虚拟环境时，当使用 --system-site-packages，运行可以访问
 
 2. 删除包后剩余依赖
 
-uv remove xxx 不会自动删除其下气包
+uv remove xxx 不会自动删除其依赖包
 
-请手动执行：
+需要手动执行：
 
 uv lock
 uv sync
@@ -203,6 +203,8 @@ torchaudio = { index = "pytorch-cu126" }
 后执行：
 
 uv sync
+
+不过后面官方有了支持，现在好像不用这么配自动了，直接 uv add torch torchvision torchaudio 就会自动安装对应 CUDA 版本的包了
 
 3. 验证 CUDA 支持
 

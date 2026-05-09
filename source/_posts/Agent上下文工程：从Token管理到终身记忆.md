@@ -5,9 +5,9 @@ tags: Agent
 categories: AI技术
 keywords: Agent,上下文工程,Token管理,记忆系统,RAG,LLM
 description: 深入探讨 AI Agent 的上下文工程，从 Token 预算管理到三层记忆架构，构建能让 Agent 越用越聪明的记忆系统。
-top_img: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-memory-architecture.svg
+top_img: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-context-engineering-cover.jpg
 comments: true
-cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-memory-architecture.svg
+cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-context-engineering-cover.jpg
 toc: true
 toc_number: true
 copyright: true

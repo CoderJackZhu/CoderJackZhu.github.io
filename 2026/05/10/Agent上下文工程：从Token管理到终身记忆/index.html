@@ -1,0 +1,442 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Agent 上下文工程：从 Token 管理到终身记忆 | Jack's Blog</title><meta name="author" content="Jack Zhu"><meta name="copyright" content="Jack Zhu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深入探讨 AI Agent 的上下文工程，从 Token 预算管理到三层记忆架构，构建能让 Agent 越用越聪明的记忆系统。"><link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/art_favicon.webp"><link rel="canonical" href="http://jackzhu.top/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Agent 上下文工程：从 Token 管理到终身记忆',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-05-09 18:53:41'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Jack's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-memory-architecture.svg')"><nav id="nav"><span id="blog-info"><a href="/" title="Jack's Blog"><span class="site-name">Jack's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Agent 上下文工程：从 Token 管理到终身记忆</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-10T02:28:00.000Z" title="发表于 2026-05-10 02:28:00">2026-05-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-09T18:53:41.627Z" title="更新于 2026-05-09 18:53:41">2026-05-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E6%8A%80%E6%9C%AF/">AI技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Agent 上下文工程：从 Token 管理到终身记忆"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="0-引言"><a href="#0-引言" class="headerlink" title="0. 引言"></a>0. 引言</h2><p>想象这样一个场景：你让 Agent 帮你调研一个开源项目。第一轮，你告诉它「只关注 Python 实现，忽略 JS 版本」。第三轮，它兴高采烈地给你推荐了一个 Node.js 库。你纠正了它。到了第五轮，它又忘了。</p>
+<p>你忍不住问：<strong>你的记性为什么这么差？</strong></p>
+<p>这个问题背后，是 AI Agent 领域一个被严重低估的核心挑战——<strong>上下文工程（Context Engineering）</strong>。大多数人以为，只要上下文窗口足够大（比如 Gemini 的 1M tokens），Agent 就能「记住一切」。但真实情况是：<strong>上下文窗口是 Agent 的 RAM，记忆系统才是 Agent 的硬盘——两者缺一不可，且各自有各自的工程难题。</strong></p>
+<p>本文将系统性地拆解 Agent 记忆系统，从问题定义到工程方案，分为六个层次逐步深入。</p>
+<hr>
+<h2 id="1-问题定义：上下文窗口的幻觉"><a href="#1-问题定义：上下文窗口的幻觉" class="headerlink" title="1. 问题定义：上下文窗口的幻觉"></a>1. 问题定义：上下文窗口的幻觉</h2><p>长上下文是必要条件，但它带来的问题远比解决的问题多。我们来看四个核心挑战：</p>
+<h3 id="1-1-注意力稀释：Lost-in-the-Middle"><a href="#1-1-注意力稀释：Lost-in-the-Middle" class="headerlink" title="1.1 注意力稀释：Lost in the Middle"></a>1.1 注意力稀释：Lost in the Middle</h3><p>2023 年，Liu 等人在论文 <em>Lost in the Middle: How Language Models Use Long Contexts</em> 中揭示了一个反直觉的发现：当信息位于上下文窗口的中间位置时，模型的检索准确率会显著下降。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/lost-in-middle-chart.svg" alt="Lost in the Middle 效应"></p>
+<p>这个发现的重要性怎么强调都不为过。模型不是均匀地「注意」所有上下文——它天然倾向于关注开头（首因效应）和结尾（近因效应），中间部分的信息被严重稀释。当你把 100K tokens 的上下文一股脑塞给模型时，中间 40K-60K 位置的关键指令可能已经被「淹没」了。</p>
+<h3 id="1-2-成本爆炸"><a href="#1-2-成本爆炸" class="headerlink" title="1.2 成本爆炸"></a>1.2 成本爆炸</h3><p>以 GPT-4 级别模型为例，输入价格为 $10&#x2F;1M tokens。1M token 上下文的一次推理就要 $10，而一个复杂的 Agent 任务可能需要十几轮甚至几十轮对话。成本不是线性增长，而是飞轮效应——每轮都把历史带上，上下文越来越长，成本越来越高。</p>
+<table>
+<thead>
+<tr>
+<th>上下文长度</th>
+<th>单轮成本（估算）</th>
+<th>10 轮对话成本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>32K tokens</td>
+<td>$0.32</td>
+<td>~$5</td>
+</tr>
+<tr>
+<td>128K tokens</td>
+<td>$1.28</td>
+<td>~$25</td>
+</tr>
+<tr>
+<td>500K tokens</td>
+<td>$5.00</td>
+<td>~$80+</td>
+</tr>
+<tr>
+<td>1M tokens</td>
+<td>$10.00</td>
+<td>~$150+</td>
+</tr>
+</tbody></table>
+<h3 id="1-3-幻觉加剧"><a href="#1-3-幻觉加剧" class="headerlink" title="1.3 幻觉加剧"></a>1.3 幻觉加剧</h3><p>上下文越长，无关信息越多。模型在多轮对话中会逐渐被早期噪声干扰，产生「上下文幻觉」——用错误的记忆覆盖正确的信息。这不是模型本身的幻觉问题，而是上下文工程的问题。</p>
+<h3 id="1-4-延迟不可控"><a href="#1-4-延迟不可控" class="headerlink" title="1.4 延迟不可控"></a>1.4 延迟不可控</h3><p>KV Cache 的大小与上下文长度成正比。1M token 上下文的 prefilling 阶段可能需要数秒甚至数十秒，首 token 延迟（TTFT）从毫秒级膨胀到秒级。对于需要快速响应的 Agent 场景，这是致命的。</p>
+<blockquote>
+<p><strong>结论：</strong> 上下文窗口大 ≠ 记忆好。你需要一套工程体系来管理 Agent 的「注意力预算」。</p>
+</blockquote>
+<hr>
+<h2 id="2-上下文分层架构"><a href="#2-上下文分层架构" class="headerlink" title="2. 上下文分层架构"></a>2. 上下文分层架构</h2><p>Agent 记忆系统的核心设计理念是<strong>分层</strong>——不是一层记忆，而是三层。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-memory-architecture.svg" alt="Agent 记忆系统三层架构"></p>
+<h3 id="2-1-工作记忆（Working-Memory）"><a href="#2-1-工作记忆（Working-Memory）" class="headerlink" title="2.1 工作记忆（Working Memory）"></a>2.1 工作记忆（Working Memory）</h3><p><strong>定义：</strong> 当前对话窗口中的全部信息，4K–32K tokens，严格顺序保留。</p>
+<p>工作记忆是 Agent 的「意识」。它包含系统提示（角色定义、行为规则）、对话历史（用户输入和 Agent 回复的完整序列）、工具定义（函数签名和参数 schema），以及从长期记忆中检索到的相关上下文。</p>
+<p><strong>关键工程挑战：</strong></p>
+<ul>
+<li><strong>触发压缩的时机：</strong> 当 token 预算达到阈值（如 70%）时，必须触发压缩，而不是等 OOM 再处理</li>
+<li><strong>压缩策略选择：</strong> 摘要（保留语义，丢失精确细节）vs 截断（保留最新信息，丢失历史）vs 关键对话提取（保留决策点和纠正，丢弃过程噪音）</li>
+<li><strong>压缩粒度：</strong> 对早期轮次进行激进压缩（只保留摘要），对近期轮次保持原始内容</li>
+</ul>
+<h3 id="2-2-情景记忆（Episodic-Memory）"><a href="#2-2-情景记忆（Episodic-Memory）" class="headerlink" title="2.2 情景记忆（Episodic Memory）"></a>2.2 情景记忆（Episodic Memory）</h3><p><strong>定义：</strong> 历史会话的结构化摘要，向量化存储，支持语义检索。</p>
+<p>情景记忆是 Agent 的「短期记忆」。当一次会话结束后，不是把原始对话全部丢掉，而是提取关键信息——决策、纠正、偏好变化——并以向量的形式存储。</p>
+<p><strong>存储什么：</strong></p>
+<ul>
+<li>用户在这次会话中的偏好表达（「以后用 pytest 不要用 unittest」）</li>
+<li>Agent 在这次会话中的关键决策及其原因</li>
+<li>用户对 Agent 行为的纠正（「上次你说 X，实际是 Y」）</li>
+<li>会话最终产出的摘要</li>
+</ul>
+<p><strong>不存储什么：</strong></p>
+<ul>
+<li>过程性讨论和试探性尝试</li>
+<li>工具调用的中间结果</li>
+<li>用户明确表示「不要记」的内容</li>
+</ul>
+<h3 id="2-3-语义记忆（Semantic-Memory）"><a href="#2-3-语义记忆（Semantic-Memory）" class="headerlink" title="2.3 语义记忆（Semantic Memory）"></a>2.3 语义记忆（Semantic Memory）</h3><p><strong>定义：</strong> 长期累积的结构化知识，包含用户画像、领域知识、工具经验和固化技能。</p>
+<p>语义记忆是 Agent 的「长期记忆」，也是最稳定的一层。它不随会话结束而消失，而是逐步累积和更新。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>示例</th>
+<th>存储方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户画像</td>
+<td>角色、编程风格偏好、时区</td>
+<td>结构化标签</td>
+</tr>
+<tr>
+<td>领域知识</td>
+<td>项目文件结构、常用 API 端点</td>
+<td>文档化存储</td>
+</tr>
+<tr>
+<td>工具经验</td>
+<td>「该 API 超时设为 30s 而非 5s」</td>
+<td>结构化经验库</td>
+</tr>
+<tr>
+<td>固化技能</td>
+<td>从多次重复操作中提取 SOP</td>
+<td>可执行技能定义</td>
+</tr>
+</tbody></table>
+<p><strong>核心原则：</strong> 语义记忆必须是<strong>结构化</strong>的，不能是纯文本堆砌。因为它在每次推理时都会被注入到系统提示中，结构化的信息更容易被模型有效利用。</p>
+<hr>
+<h2 id="3-Token-预算管理"><a href="#3-Token-预算管理" class="headerlink" title="3. Token 预算管理"></a>3. Token 预算管理</h2><p>如果把上下文窗口比作 Agent 的「预算」，那么 Token 就是 Agent 的「货币」。你需要一个精打细算的财务管理系统。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/token-budget-chart.svg" alt="Token 预算分配策略"></p>
+<h3 id="3-1-静态预算分配"><a href="#3-1-静态预算分配" class="headerlink" title="3.1 静态预算分配"></a>3.1 静态预算分配</h3><p>以 128K 上下文窗口为例，建议的分配策略：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>建议占比</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统提示</td>
+<td>10-15%</td>
+<td>角色定义、行为规则、语义记忆注入</td>
+</tr>
+<tr>
+<td>工具定义</td>
+<td>10-15%</td>
+<td>函数签名、参数 schema、工具描述</td>
+</tr>
+<tr>
+<td>对话历史</td>
+<td>40-50%</td>
+<td>工作记忆核心内容</td>
+</tr>
+<tr>
+<td>检索上下文</td>
+<td>15-20%</td>
+<td>从情景记忆中检索到的相关信息</td>
+</tr>
+<tr>
+<td>预留余量</td>
+<td>5-10%</td>
+<td>工具调用返回结果的空间</td>
+</tr>
+</tbody></table>
+<h3 id="3-2-动态调度机制"><a href="#3-2-动态调度机制" class="headerlink" title="3.2 动态调度机制"></a>3.2 动态调度机制</h3><p>静态分配只是起点。真正的挑战在于动态调度：</p>
+<p><strong>工具返回截断：</strong> 当工具调用结果超过预留空间时，不直接截断到固定长度，而是提取关键信息——比如从 10000 行的日志中只保留 ERROR 和 WARNING 级别的内容。</p>
+<p><strong>递进式压缩：</strong> 不是一次性压缩所有历史，而是递进式处理。早期轮次（第 1-5 轮）高度压缩为摘要，中期轮次（第 6-10 轮）保留关键对话，近期轮次（最近 5 轮）完整保留。</p>
+<p><strong>记忆外化：</strong> 当上下文即将耗尽时，主动将部分信息「外化」到外部存储，并在需要时通过检索召回。这类似于操作系统的虚拟内存机制。</p>
+<h3 id="3-3-实践建议"><a href="#3-3-实践建议" class="headerlink" title="3.3 实践建议"></a>3.3 实践建议</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 伪代码：Token 预算检查</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">before_each_turn</span>():</span><br><span class="line">    tokens_used = count_tokens(system_prompt + history + tools)</span><br><span class="line">    tokens_left = max_context - tokens_used - RESERVE</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> tokens_left &lt; SAFETY_THRESHOLD:</span><br><span class="line">        <span class="keyword">if</span> oldest_rounds_not_compressed():</span><br><span class="line">            compress_oldest_rounds()  <span class="comment"># 递进式压缩</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            externalize_to_memory()   <span class="comment"># 记忆外化</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>重要提示：</strong> 不要信任模型自报的 token 计数。始终使用独立的 tokenizer 维护精确计数，在每次工具调用前后检查预算。</p>
+<hr>
+<h2 id="4-记忆检索：Agent-的搜索引擎"><a href="#4-记忆检索：Agent-的搜索引擎" class="headerlink" title="4. 记忆检索：Agent 的搜索引擎"></a>4. 记忆检索：Agent 的搜索引擎</h2><p>存得好不如取得好。如果检索系统不能在海量记忆中精准召回相关信息，那记忆系统就是个昂贵的摆设。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hybrid-retrieval.svg" alt="混合检索流程图"></p>
+<h3 id="4-1-Agent-场景的检索特殊性"><a href="#4-1-Agent-场景的检索特殊性" class="headerlink" title="4.1 Agent 场景的检索特殊性"></a>4.1 Agent 场景的检索特殊性</h3><p>相比传统 RAG，Agent 的记忆检索有三个独特挑战：</p>
+<ul>
+<li><strong>时间敏感性：</strong> 上一条消息中用户说的「不要用 unittest」比三个月前说过的话重要得多</li>
+<li><strong>上下文依赖性：</strong> 同样的查询「跑一下测试」，在不同项目、不同阶段含义完全不同</li>
+<li><strong>精确匹配需求：</strong> 用户可能明确提到实体名（如「那个叫 hermes-agent 的项目」），需要关键词级别的精确匹配</li>
+</ul>
+<h3 id="4-2-混合检索公式"><a href="#4-2-混合检索公式" class="headerlink" title="4.2 混合检索公式"></a>4.2 混合检索公式</h3><p>单一维度无法满足 Agent 的需求。我们需要混合检索：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">score = α × 语义相似度 + β × 时间衰减 + γ × 关键词匹配 + δ × 重要性权重</span><br></pre></td></tr></table></figure>
+
+<p><strong>各维度详解：</strong></p>
+<ul>
+<li><strong>α × 语义相似度（权重 0.40）：</strong> 基于 embedding 的 cosine similarity，捕捉语义层面的相似性</li>
+<li><strong>β × 时间衰减（权重 0.25）：</strong> 指数衰减函数 <code>e^(-λ × Δt)</code>，让近期记忆有更高的召回率</li>
+<li><strong>γ × 关键词匹配（权重 0.20）：</strong> 使用 BM25 算法，确保用户提到的精确实体能被命中</li>
+<li><strong>δ × 重要性权重（权重 0.15）：</strong> 在存储时由 LLM 对记忆的重要性进行预打分</li>
+</ul>
+<h3 id="4-3-检索时机"><a href="#4-3-检索时机" class="headerlink" title="4.3 检索时机"></a>4.3 检索时机</h3><p>Agent 不应该只在用户明确要求时才去检索记忆。三种触发时机：</p>
+<ol>
+<li><strong>主动检索：</strong> 每轮对话开始时，根据用户最新输入检索相关记忆，注入工作记忆</li>
+<li><strong>被动检索：</strong> 当 Agent 对自己的回答不确定时，主动查询记忆进行校验</li>
+<li><strong>触发词检索：</strong> 用户说「上次」「之前」「我记得你说过」时，强制触发跨会话检索</li>
+</ol>
+<hr>
+<h2 id="5-终身学习：让-Agent-越用越聪明"><a href="#5-终身学习：让-Agent-越用越聪明" class="headerlink" title="5. 终身学习：让 Agent 越用越聪明"></a>5. 终身学习：让 Agent 越用越聪明</h2><p>三层记忆架构解决的是「记住什么」和「怎么取」的问题。但还有一个更深刻的问题：<strong>Agent 能不能从经验中学习，而不是每次都需要用户重新教一遍？</strong></p>
+<p>这就是<strong>终身学习（Lifelong Learning）</strong>——Agent 记忆系统的最上层。</p>
+<h3 id="5-1-学习什么"><a href="#5-1-学习什么" class="headerlink" title="5.1 学习什么"></a>5.1 学习什么</h3><p>Agent 可以从以下几个维度持续学习：</p>
+<table>
+<thead>
+<tr>
+<th>学习维度</th>
+<th>触发条件</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户偏好</td>
+<td>用户明确表达或行为暗示</td>
+<td>「回复简洁一点」→ 更新用户画像</td>
+</tr>
+<tr>
+<td>纠正学习</td>
+<td>Agent 犯错后被用户纠正</td>
+<td>「你说的 X 不对，实际是 Y」→ 更新知识</td>
+</tr>
+<tr>
+<td>工具经验</td>
+<td>任务执行中遇到问题并解决</td>
+<td>「此 API 并发限制 10 req&#x2F;s」→ 更新工具使用经验</td>
+</tr>
+<tr>
+<td>项目约定</td>
+<td>用户多次使用相同模式</td>
+<td>连续 5 次用 <code>pytest -n 4</code> → 固化为默认</td>
+</tr>
+<tr>
+<td>成功模式</td>
+<td>某个任务流程多次成功执行</td>
+<td>「这种调研任务分 3 步做最快」→ 固化为技能</td>
+</tr>
+</tbody></table>
+<h3 id="5-2-学习机制"><a href="#5-2-学习机制" class="headerlink" title="5.2 学习机制"></a>5.2 学习机制</h3><p><strong>显式学习：</strong> 用户明确纠正 Agent → 立即更新相关记忆。这是最高优先级的学习信号。</p>
+<p><strong>隐式学习：</strong> Agent 从成功完成的任务中提取模式。不需要用户干预，但需要足够多的样本（连续 3-5 次相同模式）才会触发固化。</p>
+<p><strong>反思学习：</strong> 任务失败后，Agent 进行根因分析（Root Cause Analysis），将教训以「反模式」的形式存入记忆，避免下次犯同样的错误。</p>
+<h3 id="5-3-防止灾难性遗忘"><a href="#5-3-防止灾难性遗忘" class="headerlink" title="5.3 防止灾难性遗忘"></a>5.3 防止灾难性遗忘</h3><p>记忆系统最大的敌人不是「记不住」，而是「记错了」或者「新知识覆盖了旧知识」。</p>
+<p><strong>三大防御机制：</strong></p>
+<ol>
+<li><strong>冲突检测：</strong> 新记忆与旧记忆矛盾时，优先信任用户最新表达，但保留旧记忆作为上下文参考</li>
+<li><strong>衰减而非删除：</strong> 长期未使用的记忆降低检索权重，但不删除。因为「很久没用的知识」可能只是暂时不需要</li>
+<li><strong>定期审计：</strong> 定期让 Agent 自查记忆一致性。例如：用户说他是「Python 开发者」，但某条记忆写的是「主要写 Rust」——这种矛盾应该标记出来</li>
+</ol>
+<hr>
+<h2 id="6-工程实践与总结"><a href="#6-工程实践与总结" class="headerlink" title="6. 工程实践与总结"></a>6. 工程实践与总结</h2><h3 id="6-1-架构全景"><a href="#6-1-架构全景" class="headerlink" title="6.1 架构全景"></a>6.1 架构全景</h3><p>完整的 Agent 记忆系统架构可以总结为三层 + 两个管道：</p>
+<ul>
+<li><strong>三层：</strong> 工作记忆 → 情景记忆 → 语义记忆</li>
+<li><strong>向下管道（压缩沉淀）：</strong> 工作记忆过期 → 压缩为情景记忆 → 长期知识提取为语义记忆</li>
+<li><strong>向上管道（检索召回）：</strong> 语义记忆 + 情景记忆通过混合检索 → 注入工作记忆</li>
+</ul>
+<h3 id="6-2-选型建议"><a href="#6-2-选型建议" class="headerlink" title="6.2 选型建议"></a>6.2 选型建议</h3><table>
+<thead>
+<tr>
+<th>场景规模</th>
+<th>推荐方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>个人开发者 &#x2F; 原型验证</td>
+<td>SQLite + ChromaDB + 简单摘要策略</td>
+</tr>
+<tr>
+<td>小团队 &#x2F; 内部工具</td>
+<td>PostgreSQL + pgvector + Redis 缓存 + 混合检索</td>
+</tr>
+<tr>
+<td>生产级 Agent 系统</td>
+<td>自研记忆服务 + 专用向量数据库 + 事件溯源 + 持续评估管道</td>
+</tr>
+</tbody></table>
+<h3 id="6-3-关键启示"><a href="#6-3-关键启示" class="headerlink" title="6.3 关键启示"></a>6.3 关键启示</h3><p>回顾全文，我想强调三个核心理念：</p>
+<ul>
+<li><strong>「上下文窗口是 Agent 的 RAM，记忆系统是 Agent 的硬盘」</strong>——两者缺一不可，且各自需要精心设计</li>
+<li><strong>「好的记忆系统让 Agent 从工具变成伙伴」</strong>——它不需要你反复交代，能从过往交互中学习成长</li>
+<li><strong>「不要等到上下文不够用了才想记忆——在设计的第一天就要考虑三层架构」</strong></li>
+</ul>
+<h3 id="6-4-展望"><a href="#6-4-展望" class="headerlink" title="6.4 展望"></a>6.4 展望</h3><p>Agent 记忆系统还远未成熟。展望未来，有几个值得关注的方向：</p>
+<ul>
+<li><strong>多模态记忆：</strong> Agent 不仅要记住文本，还要记住图片、代码片段、结构化数据</li>
+<li><strong>联邦记忆：</strong> 多个 Agent 共享部分记忆，形成集体智能</li>
+<li><strong>自适应记忆架构：</strong> 根据用户使用模式自动调整各层容量和检索策略</li>
+<li><strong>隐私感知记忆：</strong> 用户可以选择性地「遗忘」某些信息，符合 GDPR 等隐私法规</li>
+</ul>
+<hr>
+<p><em>本文首发于 <a href="https://jackzhu.top/">jackzhu.top</a>。如果你在大厂 Agent 团队工作或有相关实践经验，欢迎在评论区交流讨论。</em></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://jackzhu.top">Jack Zhu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://jackzhu.top/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/">http://jackzhu.top/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="http://jackzhu.top/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://jackzhu.top" target="_blank">Jack's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Agent/">Agent</a></div><div class="post_share"><div class="social-share" data-image="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-memory-architecture.svg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2025/04/29/%E7%8E%B0%E4%BB%A3%E7%9A%84%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7uv/" title="现代化的包管理工具：uv"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">现代化的包管理工具：uv</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jack Zhu</div><div class="author-info__description">过好每一天</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderJackZhu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderJackZhu" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://www.zhihu.com/people/zhu-yijie-51" target="_blank" title="知乎"><i class="fab fa-zhihu"></i></a><a class="social-icon" href="https://space.bilibili.com/355295657/" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">0. 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%97%AE%E9%A2%98%E5%AE%9A%E4%B9%89%EF%BC%9A%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AA%97%E5%8F%A3%E7%9A%84%E5%B9%BB%E8%A7%89"><span class="toc-number">2.</span> <span class="toc-text">1. 问题定义：上下文窗口的幻觉</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%A8%80%E9%87%8A%EF%BC%9ALost-in-the-Middle"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 注意力稀释：Lost in the Middle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%88%90%E6%9C%AC%E7%88%86%E7%82%B8"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 成本爆炸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%B9%BB%E8%A7%89%E5%8A%A0%E5%89%A7"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 幻觉加剧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%BB%B6%E8%BF%9F%E4%B8%8D%E5%8F%AF%E6%8E%A7"><span class="toc-number">2.4.</span> <span class="toc-text">1.4 延迟不可控</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">2. 上下文分层架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BF%86%EF%BC%88Working-Memory%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 工作记忆（Working Memory）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%83%85%E6%99%AF%E8%AE%B0%E5%BF%86%EF%BC%88Episodic-Memory%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 情景记忆（Episodic Memory）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E8%AF%AD%E4%B9%89%E8%AE%B0%E5%BF%86%EF%BC%88Semantic-Memory%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 语义记忆（Semantic Memory）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Token-%E9%A2%84%E7%AE%97%E7%AE%A1%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">3. Token 预算管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%9D%99%E6%80%81%E9%A2%84%E7%AE%97%E5%88%86%E9%85%8D"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 静态预算分配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%8A%A8%E6%80%81%E8%B0%83%E5%BA%A6%E6%9C%BA%E5%88%B6"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 动态调度机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE"><span class="toc-number">4.3.</span> <span class="toc-text">3.3 实践建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%AE%B0%E5%BF%86%E6%A3%80%E7%B4%A2%EF%BC%9AAgent-%E7%9A%84%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="toc-number">5.</span> <span class="toc-text">4. 记忆检索：Agent 的搜索引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Agent-%E5%9C%BA%E6%99%AF%E7%9A%84%E6%A3%80%E7%B4%A2%E7%89%B9%E6%AE%8A%E6%80%A7"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 Agent 场景的检索特殊性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E5%85%AC%E5%BC%8F"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 混合检索公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E6%A3%80%E7%B4%A2%E6%97%B6%E6%9C%BA"><span class="toc-number">5.3.</span> <span class="toc-text">4.3 检索时机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BB%88%E8%BA%AB%E5%AD%A6%E4%B9%A0%EF%BC%9A%E8%AE%A9-Agent-%E8%B6%8A%E7%94%A8%E8%B6%8A%E8%81%AA%E6%98%8E"><span class="toc-number">6.</span> <span class="toc-text">5. 终身学习：让 Agent 越用越聪明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%AD%A6%E4%B9%A0%E4%BB%80%E4%B9%88"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 学习什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%AD%A6%E4%B9%A0%E6%9C%BA%E5%88%B6"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 学习机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E9%98%B2%E6%AD%A2%E7%81%BE%E9%9A%BE%E6%80%A7%E9%81%97%E5%BF%98"><span class="toc-number">6.3.</span> <span class="toc-text">5.3 防止灾难性遗忘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5%E4%B8%8E%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">6. 工程实践与总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E6%9E%B6%E6%9E%84%E5%85%A8%E6%99%AF"><span class="toc-number">7.1.</span> <span class="toc-text">6.1 架构全景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E9%80%89%E5%9E%8B%E5%BB%BA%E8%AE%AE"><span class="toc-number">7.2.</span> <span class="toc-text">6.2 选型建议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%85%B3%E9%94%AE%E5%90%AF%E7%A4%BA"><span class="toc-number">7.3.</span> <span class="toc-text">6.3 关键启示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E5%B1%95%E6%9C%9B"><span class="toc-number">7.4.</span> <span class="toc-text">6.4 展望</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/" title="Agent 上下文工程：从 Token 管理到终身记忆"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-memory-architecture.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent 上下文工程：从 Token 管理到终身记忆"/></a><div class="content"><a class="title" href="/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/" title="Agent 上下文工程：从 Token 管理到终身记忆">Agent 上下文工程：从 Token 管理到终身记忆</a><time datetime="2026-05-10T02:28:00.000Z" title="发表于 2026-05-10 02:28:00">2026-05-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/29/%E7%8E%B0%E4%BB%A3%E7%9A%84%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7uv/" title="现代化的包管理工具：uv"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="现代化的包管理工具：uv"/></a><div class="content"><a class="title" href="/2025/04/29/%E7%8E%B0%E4%BB%A3%E7%9A%84%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7uv/" title="现代化的包管理工具：uv">现代化的包管理工具：uv</a><time datetime="2025-04-29T22:21:37.000Z" title="发表于 2025-04-29 22:21:37">2025-04-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/30/%E7%A7%8B%E6%8B%9B%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93%E5%88%86%E4%BA%AB/" title="秋招面试总结分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/790dbf2659a8aff75e42f73ecf06fab9.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="秋招面试总结分享"/></a><div class="content"><a class="title" href="/2024/11/30/%E7%A7%8B%E6%8B%9B%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93%E5%88%86%E4%BA%AB/" title="秋招面试总结分享">秋招面试总结分享</a><time datetime="2024-11-30T00:27:37.000Z" title="发表于 2024-11-30 00:27:37">2024-11-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/06/%E7%A7%8B%E6%8B%9B%E9%87%91%E5%B1%B1%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/" title="秋招金山面试分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/2349135dde1b4a4828b209c87569c4a8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="秋招金山面试分享"/></a><div class="content"><a class="title" href="/2024/11/06/%E7%A7%8B%E6%8B%9B%E9%87%91%E5%B1%B1%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/" title="秋招金山面试分享">秋招金山面试分享</a><time datetime="2024-11-06T11:40:37.000Z" title="发表于 2024-11-06 11:40:37">2024-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/01/%E7%A7%8B%E6%8B%9B%E4%B8%AD%E9%87%91%E6%89%80%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/" title="秋招中金所面试分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/cda763e55b037970dd17031cffcd4e97.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="秋招中金所面试分享"/></a><div class="content"><a class="title" href="/2024/11/01/%E7%A7%8B%E6%8B%9B%E4%B8%AD%E9%87%91%E6%89%80%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/" title="秋招中金所面试分享">秋招中金所面试分享</a><time datetime="2024-11-01T14:39:37.000Z" title="发表于 2024-11-01 14:39:37">2024-11-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Jack Zhu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<a href="https://beian.miit.gov.cn/" target="_blank">陕ICP备2023003055号-1</a></div><div class="footer_custom_text"><span>本网站由 </span><a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/logo5.png"align="absmiddle"width="59px" height="30px" /></a><span>提供加速服务</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'hGtO6K0x6GlrX1FhjTwfMaWM-gzGzoHsz',
+      appKey: 'Nzeyk2Mmrhm9kBQtsXVYd4QA',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

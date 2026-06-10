@@ -1,0 +1,421 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程 | Jack's Blog</title><meta name="author" content="Jack Zhu"><meta name="copyright" content="Jack Zhu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="以 PassiveAgent 为案例，记录我如何用 Hermes 作为长期项目工作台，配合 Codex&amp;#x2F;Claude Code 开发一个个人注意力调度系统，以及对 Agent 自进化和工程化实践的思考。"><link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/art_favicon.webp"><link rel="canonical" href="http://jackzhu.top/2026/06/10/Codex%E9%80%A0%E9%9B%B6%E4%BB%B6Hermes%E5%85%BB%E7%B3%BB%E7%BB%9F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-06-10 08:01:07'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Jack's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-cover.svg')"><nav id="nav"><span id="blog-info"><a href="/" title="Jack's Blog"><span class="site-name">Jack's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-10T15:11:04.000Z" title="发表于 2026-06-10 15:11:04">2026-06-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-10T08:01:07.567Z" title="更新于 2026-06-10 08:01:07">2026-06-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Agent%E5%AE%9E%E8%B7%B5/">Agent实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最开始做 PassiveAgent 的时候，我其实一直有一个疑问：如果只是写代码，用 Codex 和 Claude Code 不就够了吗？为什么还要把 Hermes 放进这个开发过程里？</p>
+<p>这个问题很真实。因为在今天，写一个 Python CLI、补几个模块、改几个 bug、加一些测试，Codex &#x2F; Claude Code 确实已经非常强了。甚至可以说，如果目标只是“把代码写出来”，Hermes 并不是最核心的工具。</p>
+<p>但 PassiveAgent 做到初具规模之后，我对这个问题的答案逐渐清晰了：</p>
+<blockquote>
+<p>Codex &#x2F; Claude Code 更像施工队，负责把一个个功能实现出来；Hermes 更像这个项目的长期操作系统，负责记住项目、编排工具、沉淀经验，并让这个系统在真实环境里长期活下去。</p>
+</blockquote>
+<p>这篇文章想分享的，不只是 PassiveAgent 这个项目本身，也包括我在用 Hermes 开发它的过程中，对 Agent 工具分工、自进化、长期个人系统的一些体会。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-cover.svg" alt="Codex 造零件，Hermes 养系统"></p>
+<hr>
+<p>这篇文章可以按两条线看：一条线是 PassiveAgent 作为个人注意力调度系统的项目介绍；另一条线是 Hermes 在这个项目中扮演的角色——它不是替代 Codex&#x2F;Claude Code，而是把一次性 coding 能力放进长期可记忆、可验证、可演化的工程闭环里。</p>
+<hr>
+<h2 id="PassiveAgent-是什么"><a href="#PassiveAgent-是什么" class="headerlink" title="PassiveAgent 是什么"></a>PassiveAgent 是什么</h2><p>PassiveAgent 是我给自己做的一个“个人注意力调度系统”。</p>
+<p>现在资料太多了：Zotero 里有论文，Obsidian 里有摘录和临时链接，GitHub Stars 里有项目，HuggingFace Daily Papers 每天也有新论文。真正的问题不是“没有资料”，而是每天不知道应该先看哪几个。</p>
+<p>PassiveAgent 要解决的问题就是：</p>
+<blockquote>
+<p>每天从多个信息池里挑出少量真正值得看的内容，摘要、打分、排序，然后推送给我。</p>
+</blockquote>
+<p>它的基础流程大概是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Zotero / Obsidian / HuggingFace Daily / GitHub Stars</span><br><span class="line">        ↓</span><br><span class="line">采集与标准化</span><br><span class="line">        ↓</span><br><span class="line">去重</span><br><span class="line">        ↓</span><br><span class="line">LLM 摘要与多维度打分</span><br><span class="line">        ↓</span><br><span class="line">Rank Top N</span><br><span class="line">        ↓</span><br><span class="line">飞书推送 / CLI 查看</span><br><span class="line">        ↓</span><br><span class="line">看、忽略、加入周末、生成面试卡或技术笔记</span><br><span class="line">        ↓</span><br><span class="line">反馈影响后续推荐</span><br></pre></td></tr></table></figure>
+
+<p>它适合的场景很明确：不是替我刷信息流，而是替我减少信息流；不是每天推一堆“可能有用”的东西，而是只推少量和当前目标高度相关的内容。</p>
+<p>当前我的主要目标是 Agent &#x2F; LLM &#x2F; 算法工程方向的学习和面试准备，所以 PassiveAgent 的打分逻辑会围绕这些主题进行。</p>
+<hr>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-architecture.svg" alt="PassiveAgent 架构：从资料池到注意力调度"></p>
+<h2 id="项目结构：一个小型但完整的-Agent-应用"><a href="#项目结构：一个小型但完整的-Agent-应用" class="headerlink" title="项目结构：一个小型但完整的 Agent 应用"></a>项目结构：一个小型但完整的 Agent 应用</h2><p>PassiveAgent 不是一个单文件脚本，而是一个完整的小型 Agent 应用。当前项目结构大致是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">PassiveAgent/</span><br><span class="line">├── config.yaml.example      # 配置模板</span><br><span class="line">├── .env.example             # 环境变量模板，不提交真实密钥</span><br><span class="line">├── prompts/                 # LLM prompt 模板</span><br><span class="line">├── docs/                    # 配置、飞书、定时任务、排障文档</span><br><span class="line">├── scripts/                 # launchd 安装脚本和 plist 模板</span><br><span class="line">├── src/passive_agent/</span><br><span class="line">│   ├── main.py              # CLI 入口</span><br><span class="line">│   ├── pipeline.py          # 每日处理流水线</span><br><span class="line">│   ├── collectors/          # 数据采集器</span><br><span class="line">│   ├── processors/          # 去重、摘要、打分、排序</span><br><span class="line">│   ├── actions/             # 用户操作处理</span><br><span class="line">│   ├── feishu/              # 飞书 Bot、卡片、回调、命令</span><br><span class="line">│   ├── integrations/        # LLM、Obsidian、Zotero 等外部集成</span><br><span class="line">│   └── storage/             # SQLite 数据库和模型</span><br><span class="line">└── tests/</span><br></pre></td></tr></table></figure>
+
+<p>技术栈比较朴素：Python 3.11+、SQLite、Click、Jinja2、OpenAI-compatible LLM API、飞书开放平台。它没有复杂的 Web 前端，也没有刻意追求“平台化”，核心目标就是每天稳定地帮我筛选内容。</p>
+<p>配置集中在 <code>config.yaml</code>，大致分成 8 类：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runtime:</span>          <span class="comment"># 数据库、报告、prompt 路径</span></span><br><span class="line"><span class="attr">llm:</span>              <span class="comment"># LLM provider、model、base_url、并发、重试</span></span><br><span class="line"><span class="attr">goals:</span>            <span class="comment"># 当前目标、优先级主题、低优先级主题</span></span><br><span class="line"><span class="attr">sources:</span>          <span class="comment"># Zotero / Obsidian / GitHub Stars / HF Daily</span></span><br><span class="line"><span class="attr">display:</span>          <span class="comment"># dashboard、推送、报告展示数量</span></span><br><span class="line"><span class="attr">recommendations:</span>  <span class="comment"># 推荐生命周期与关联条目数量</span></span><br><span class="line"><span class="attr">feishu:</span>           <span class="comment"># 飞书异步超时等</span></span><br><span class="line"><span class="attr">scoring:</span>          <span class="comment"># 打分权重、daily_limit、负反馈降权</span></span><br></pre></td></tr></table></figure>
+
+<p>这样做的好处是：这个项目不是“我自己电脑上碰巧能跑的脚本”，而是一个可以解释、可以迁移、可以排障的系统。</p>
+<hr>
+<h2 id="怎么使用"><a href="#怎么使用" class="headerlink" title="怎么使用"></a>怎么使用</h2><p>最短路径其实很简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CoderJackZhu/PassiveAgent.git</span><br><span class="line"><span class="built_in">cd</span> PassiveAgent</span><br><span class="line">uv <span class="built_in">sync</span></span><br><span class="line"><span class="built_in">cp</span> config.yaml.example config.yaml</span><br><span class="line"><span class="built_in">cp</span> .env.example .<span class="built_in">env</span></span><br><span class="line">uv run passive-agent init-db</span><br><span class="line">uv run passive-agent daily</span><br></pre></td></tr></table></figure>
+
+<p>然后可以用这些命令查看结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uv run passive-agent status</span><br><span class="line">uv run passive-agent dashboard</span><br><span class="line">uv run passive-agent list --stage recommended</span><br></pre></td></tr></table></figure>
+
+<p>如果接入飞书，则可以主动推送：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uv run passive-agent feishu-push --stage recommended --<span class="built_in">limit</span> 5</span><br></pre></td></tr></table></figure>
+
+<p>日常使用时，我更希望它不是一个“需要我主动打开的工具”，而是一个低打扰的系统：每天晚上定时跑一次，挑出 3 条左右值得看的内容推给我；周末再推一个适合深读的队列。</p>
+<p>在飞书卡片里，我可以对每条内容做操作：</p>
+<ul>
+<li>展开详情；</li>
+<li>加入周末阅读；</li>
+<li>忽略并记录负反馈；</li>
+<li>在展开后生成面试卡；</li>
+<li>生成技术笔记；</li>
+<li>标记已读。</li>
+</ul>
+<p>其中“面试卡”和“技术笔记”不是只在飞书里展示一下，而是会写入本地 Obsidian vault。例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">01-Interview/&#123;topic&#125;/&#123;title&#125;.md</span><br><span class="line">03-Tech-Notes/&#123;topic&#125;/&#123;title&#125;.md</span><br></pre></td></tr></table></figure>
+
+<p>这点对我很重要。因为 PassiveAgent 不应该只是一个推荐器，它还应该把有价值的信息沉淀到我的知识系统里。</p>
+<hr>
+<h2 id="一个推荐样例"><a href="#一个推荐样例" class="headerlink" title="一个推荐样例"></a>一个推荐样例</h2><p>一个典型的推送条目会包含这些信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">标题：某篇关于 Agent 记忆机制 / Tool Use / RAG 评测的论文或文章</span><br><span class="line">来源：Zotero / HuggingFace Daily / Obsidian / GitHub Stars</span><br><span class="line">摘要：用几句话解释它解决的问题、核心方法和可能价值</span><br><span class="line">评分：目标相关性、新颖性、可操作性、难度匹配、来源质量、时效性</span><br><span class="line">推荐理由：为什么今天值得看</span><br><span class="line">可执行动作：展开 / 周末 / 忽略 / 生成面试卡 / 技术笔记</span><br></pre></td></tr></table></figure>
+
+<p>例如，如果它发现一篇和 Agent memory 相关的论文，它不会只是告诉我“这篇论文很新”，而是会尝试回答：</p>
+<ul>
+<li>它和我当前准备 Agent 算法岗面试有什么关系？</li>
+<li>它适合今天快速浏览，还是适合周末深读？</li>
+<li>它能不能转成一道面试题？</li>
+<li>它能不能沉淀成一张技术笔记？</li>
+</ul>
+<p>这也是我做 PassiveAgent 的初衷：不是追热点，而是让信息进入“学习—理解—沉淀”的链路。</p>
+<hr>
+<h2 id="那为什么不用-Codex-Claude-Code-就行？"><a href="#那为什么不用-Codex-Claude-Code-就行？" class="headerlink" title="那为什么不用 Codex &#x2F; Claude Code 就行？"></a>那为什么不用 Codex &#x2F; Claude Code 就行？</h2><p>回到开头的问题。</p>
+<p>如果只是写 PassiveAgent 的某个模块，比如实现一个 HuggingFace Daily collector、写一个 Feishu card、修一个 SQLite 迁移 bug，Codex 和 Claude Code 完全够用，而且非常适合。</p>
+<p>所以我并不认为 Hermes 的价值是“比 Codex 更会写代码”。这不是它的核心定位。</p>
+<p>我现在更愿意这样理解它们的分工：</p>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>更擅长什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Codex &#x2F; Claude Code</td>
+<td>写代码、改 bug、重构、补测试</td>
+</tr>
+<tr>
+<td>Hermes</td>
+<td>长期上下文、工具编排、跨会话记忆、运行环境排障、经验沉淀</td>
+</tr>
+</tbody></table>
+<p>Codex &#x2F; Claude Code 像施工队。你告诉它：“把这里修一下”“加一个功能”“重构一下这个模块”，它可以快速完成。</p>
+<p>Hermes 更像项目的长期工作台。它知道：</p>
+<ul>
+<li>PassiveAgent repo 在哪里；</li>
+<li>怎么跑测试；</li>
+<li>怎么跑 daily pipeline；</li>
+<li>飞书推送需要哪些权限；</li>
+<li>launchd 有哪些坑；</li>
+<li><code>.env</code> 和继承环境变量可能冲突；</li>
+<li>Zotero 分类应该用 collection，而不是靠 tag 乱贴；</li>
+<li>之前为什么没有推送；</li>
+<li>之前哪些 bug 已经修过；</li>
+<li>这些经验下次应该怎么复用。</li>
+</ul>
+<p>如果每次都从零开始，Codex&#x2F;CC 当然也能做。但一旦项目进入长期维护状态，“从零开始”本身就是成本。</p>
+<p>Hermes 在这里提供的不是一次性智能，而是连续性。</p>
+<hr>
+<h2 id="Hermes-在开发过程里具体做了什么"><a href="#Hermes-在开发过程里具体做了什么" class="headerlink" title="Hermes 在开发过程里具体做了什么"></a>Hermes 在开发过程里具体做了什么</h2><h3 id="1-项目记忆：从“一个-repo”变成“一个长期对象”"><a href="#1-项目记忆：从“一个-repo”变成“一个长期对象”" class="headerlink" title="1. 项目记忆：从“一个 repo”变成“一个长期对象”"></a>1. 项目记忆：从“一个 repo”变成“一个长期对象”</h3><p>在开发 PassiveAgent 的过程中，Hermes 逐渐形成了一个项目级记忆：</p>
+<ul>
+<li>这个项目叫 PassiveAgent；</li>
+<li>它是个人注意力调度系统；</li>
+<li>核心输入源是 Zotero、Obsidian、HF Daily、GitHub Stars；</li>
+<li>核心输出是飞书卡片和 Obsidian 笔记；</li>
+<li>当前目标是 Agent &#x2F; LLM &#x2F; 面试准备；</li>
+<li>运行方式是 CLI + macOS launchd + Feishu long connection；</li>
+<li>配置和密钥不能混在一起；</li>
+<li>文档要面向新用户，而不是只堆配置项。</li>
+</ul>
+<p>这些内容后来被沉淀到了专门的 <code>passive-agent-development</code> skill 里。于是之后我再问 PassiveAgent 相关问题时，Hermes 不需要重新探索一遍项目，它可以直接带着项目上下文开始工作。</p>
+<p>这和普通聊天最大的区别是：项目不再是一段临时上下文，而是一个长期对象。</p>
+<h3 id="2-工程排障：处理真实环境里的非代码问题"><a href="#2-工程排障：处理真实环境里的非代码问题" class="headerlink" title="2. 工程排障：处理真实环境里的非代码问题"></a>2. 工程排障：处理真实环境里的非代码问题</h3><p>PassiveAgent 真正麻烦的地方，很多都不是代码本身。</p>
+<p>比如飞书：</p>
+<ul>
+<li>主动发消息需要 <code>im:message:send_as_bot</code> 或 <code>im:message</code>；</li>
+<li>接收消息需要订阅 <code>im.message.receive_v1</code>；</li>
+<li>卡片按钮需要 <code>card.action.trigger</code>；</li>
+<li>权限或事件改完以后还要发布新版本，并在租户侧升级；</li>
+<li><code>FEISHU_CHAT_ID</code> 必须来自机器人所在的真实目标聊天。</li>
+</ul>
+<p>这些不是“写一个函数”能解决的，它们是系统集成问题。</p>
+<p>再比如 launchd：</p>
+<ul>
+<li>macOS 的 <code>~/Documents</code>、Desktop、Downloads 会受 TCC 保护；</li>
+<li>user LaunchAgent 错过定时点后不会像 systemd <code>Persistent=true</code> 那样自动补跑；</li>
+<li>环境变量来自 launchctl &#x2F; plist &#x2F; <code>.env</code>，不同执行路径可能不一致；</li>
+<li>代理环境变量可能影响飞书长连接。</li>
+</ul>
+<p>这些问题如果只交给 coding agent，很容易变成“改了代码但实际没跑通”。Hermes 的优势是它能在一个会话里查日志、读配置、跑命令、结合历史经验，然后给出可验证的判断。</p>
+<p>比如有一次 6.3 没有正常推送，最后定位不是 Feishu 失败，也不是 pipeline 报错，而是 Mac 在 21:00 定时点时用户 LaunchAgent 不在可执行状态，后来开机&#x2F;登录后 launchd 没有补跑错过的任务。</p>
+<p>这个结论只有把日志、数据库记录、报告文件、launchd 状态和系统启动时间放在一起看，才比较可靠。</p>
+<h3 id="3-工作流沉淀：从“改一下”到-audit-→-fix-→-verify-→-commit"><a href="#3-工作流沉淀：从“改一下”到-audit-→-fix-→-verify-→-commit" class="headerlink" title="3. 工作流沉淀：从“改一下”到 audit → fix → verify → commit"></a>3. 工作流沉淀：从“改一下”到 audit → fix → verify → commit</h3><p>开发过程中逐渐形成了一个固定流程：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">audit → fix → verify → commit</span><br></pre></td></tr></table></figure>
+
+<p>先审查真实代码和日志，再定位根因；做最小修改；跑测试或真实命令验证；确认后提交。这个流程后来也成为我用 Hermes 处理 PassiveAgent 问题的默认方式。</p>
+<p>这件事看起来普通，但很重要。</p>
+<p>因为 Agent 工具最容易出问题的地方不是“不会写代码”，而是“太快给出看似合理的改动，但没有验证”。Hermes 在我的使用里承担了一个“完成前验证”的角色：不只是改完，还要确认它真的跑过。</p>
+<h3 id="4-技能进化：把踩坑写回系统"><a href="#4-技能进化：把踩坑写回系统" class="headerlink" title="4. 技能进化：把踩坑写回系统"></a>4. 技能进化：把踩坑写回系统</h3><p>PassiveAgent 过程中踩过的坑，后来都被写进了 skill 或文档：</p>
+<ul>
+<li>LLM provider 从 DeepSeek 切到 OpenAI-compatible &#x2F; MiMo 时，不是只改 YAML，还要确认 LLM factory 是否支持；</li>
+<li>WebUI 能用某个 provider，不代表 launchd daily job 也能用同一套环境；</li>
+<li><code>python-dotenv</code> 默认不覆盖已经存在的环境变量，所以从 Hermes&#x2F;WebUI 里手动跑 PassiveAgent 时，可能继承到 Hermes 自己的飞书环境变量；</li>
+<li>所有新采集内容都被去重后，也不能直接结束 pipeline，而应该从 existing recommendations 里继续推送；</li>
+<li>Feishu 卡片上“面试卡”按钮和展开后的“生成面试卡”重复，会造成交互困惑，应该把生成动作放到详情页之后。</li>
+</ul>
+<p>这些经验如果只停留在一次对话里，很快就会消失。Hermes 的意义是把它们变成下一次可加载的 procedure memory。</p>
+<hr>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-evolution-loop.svg" alt="Hermes 自进化闭环"></p>
+<h2 id="我理解的“自进化”"><a href="#我理解的“自进化”" class="headerlink" title="我理解的“自进化”"></a>我理解的“自进化”</h2><p>这里的自进化不是说模型权重变强了，也不是说 Agent 突然能自己完成一切。</p>
+<p>在 PassiveAgent 这个案例里，自进化更像是：</p>
+<blockquote>
+<p>每一次真实开发和排障之后，系统都会把经验写回自己的工作流。下一次面对类似问题时，它不再从零开始，而是带着上一次的经验继续工作。</p>
+</blockquote>
+<p>我觉得可以分成四层。</p>
+<h3 id="第一层：记忆进化"><a href="#第一层：记忆进化" class="headerlink" title="第一层：记忆进化"></a>第一层：记忆进化</h3><p>一开始 Hermes 只知道“有个 PassiveAgent 项目”。后来它知道项目路径、运行方式、常见命令、部署方式、数据源、飞书交互、Zotero 分类习惯、用户目标和偏好。</p>
+<p>这让后续维护不再是冷启动。</p>
+<h3 id="第二层：技能进化"><a href="#第二层：技能进化" class="headerlink" title="第二层：技能进化"></a>第二层：技能进化</h3><p>项目中反复出现的操作，被沉淀成 skill：</p>
+<ul>
+<li>如何运行测试；</li>
+<li>如何手动触发 daily；</li>
+<li>如何排查飞书；</li>
+<li>如何检查 launchd；</li>
+<li>如何做 Zotero taxonomy dry-run；</li>
+<li>如何迁移 LLM provider；</li>
+<li>如何写面向用户的 README。</li>
+</ul>
+<p>Skill 本质上是 Agent 的操作手册。它不是知识库里的静态资料，而是下一次执行任务时会真的进入上下文的工作规程。</p>
+<h3 id="第三层：流程进化"><a href="#第三层：流程进化" class="headerlink" title="第三层：流程进化"></a>第三层：流程进化</h3><p>从“帮我改一下”，变成“先审查、再修复、再验证、再提交”。</p>
+<p>这其实是我对 Agent 工程最深的体会之一：Agent 要可靠，不能只靠更强的模型，还要靠更稳定的流程。</p>
+<h3 id="第四层：系统进化"><a href="#第四层：系统进化" class="headerlink" title="第四层：系统进化"></a>第四层：系统进化</h3><p>PassiveAgent 自己也在这个过程中变得更成熟：</p>
+<ul>
+<li>配置从硬编码走向显式 YAML；</li>
+<li>LLM 输出增加类型校验和兜底；</li>
+<li>推荐逻辑支持无新增时从 existing pool 推送；</li>
+<li>飞书按钮交互变清晰；</li>
+<li>data 目录区分业务报告和运行日志；</li>
+<li>README、配置文档、Feishu 文档、定时任务文档逐渐补齐。</li>
+</ul>
+<p>所以自进化不是玄学，而是一个很工程化的闭环：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">真实使用 → 暴露问题 → 修复问题 → 验证结果 → 沉淀经验 → 下一次更快更稳</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="这个过程给我的几个感受"><a href="#这个过程给我的几个感受" class="headerlink" title="这个过程给我的几个感受"></a>这个过程给我的几个感受</h2><h3 id="1-不要把-Hermes-当“另一个-Coding-Agent”"><a href="#1-不要把-Hermes-当“另一个-Coding-Agent”" class="headerlink" title="1. 不要把 Hermes 当“另一个 Coding Agent”"></a>1. 不要把 Hermes 当“另一个 Coding Agent”</h3><p>如果把 Hermes 和 Codex&#x2F;CC 放在同一个维度比较，它并没有明显优势。</p>
+<p>但如果把 Hermes 放在“长期个人 Agent 环境”的维度，它的定位就清楚很多：它不是替代 coding agent，而是承接 coding agent 的产物，并负责长期运行、记忆和演化。</p>
+<p>一句话概括：</p>
+<blockquote>
+<p>Codex 帮我造零件，Hermes 帮我养系统。</p>
+</blockquote>
+<h3 id="2-真正有价值的-Agent-项目，通常不是一次性任务"><a href="#2-真正有价值的-Agent-项目，通常不是一次性任务" class="headerlink" title="2. 真正有价值的 Agent 项目，通常不是一次性任务"></a>2. 真正有价值的 Agent 项目，通常不是一次性任务</h3><p>PassiveAgent 的价值不在于某个单点功能多复杂，而在于它每天进入我的信息流。</p>
+<p>这类项目需要长期运行、长期调参、长期排障、长期根据反馈变化。它更像一个个人系统，而不是一个 demo。</p>
+<p>Hermes 适合的也正是这种场景：有状态、有历史、有工具、有运行环境、有反馈闭环。</p>
+<h3 id="3-Agent-的难点经常不在模型，而在边界条件"><a href="#3-Agent-的难点经常不在模型，而在边界条件" class="headerlink" title="3. Agent 的难点经常不在模型，而在边界条件"></a>3. Agent 的难点经常不在模型，而在边界条件</h3><p>LLM 摘要和打分只是中间一环。真正花时间的是：</p>
+<ul>
+<li>数据源质量；</li>
+<li>去重；</li>
+<li>评分权重；</li>
+<li>负反馈；</li>
+<li>推送节奏；</li>
+<li>飞书权限；</li>
+<li>launchd 环境；</li>
+<li>配置与密钥隔离；</li>
+<li>失败后的可观测性。</li>
+</ul>
+<p>这些都是 Agent 应用工程化的一部分。</p>
+<h3 id="4-自进化的前提是“把经验写回系统”"><a href="#4-自进化的前提是“把经验写回系统”" class="headerlink" title="4. 自进化的前提是“把经验写回系统”"></a>4. 自进化的前提是“把经验写回系统”</h3><p>如果每次只是让 Agent 改完代码，然后关掉窗口，那么不会有什么自进化。</p>
+<p>自进化发生在这些动作里：</p>
+<ul>
+<li>把踩坑写进 skill；</li>
+<li>把稳定流程写进文档；</li>
+<li>把用户偏好写进 memory；</li>
+<li>把反复出现的问题变成检查项；</li>
+<li>把一次性排障变成下一次的默认知识。</li>
+</ul>
+<p>这也是 Hermes 相比普通一次性问答工具更有意义的地方。</p>
+<hr>
+<h2 id="后续想继续做什么"><a href="#后续想继续做什么" class="headerlink" title="后续想继续做什么"></a>后续想继续做什么</h2><p>PassiveAgent 现在只是初具规模，后面还有很多可以继续演进的方向：</p>
+<ol>
+<li><strong>补偿机制</strong>：如果 macOS 错过 daily 定时任务，登录后自动检测并补跑。</li>
+<li><strong>更细的反馈学习</strong>：不仅记录忽略，还区分“不相关”“太简单”“重复”“暂时不看”。</li>
+<li><strong>更强的知识沉淀</strong>：从推荐条目自动生成 Obsidian 结构化笔记，并建立和已有笔记的链接。</li>
+<li><strong>面试准备闭环</strong>：把高价值内容进一步转成面试题、回答卡、追问链路。</li>
+<li><strong>推荐质量评估</strong>：定期回看过去一周推送，统计真正被阅读、被沉淀、被忽略的比例。</li>
+</ol>
+<p>这些方向都不是单纯“再加一个功能”，而是让 PassiveAgent 更像一个能陪我长期学习和筛选信息的个人系统。</p>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>做 PassiveAgent 让我重新理解了 Hermes 的价值。</p>
+<p>它不是用来证明“我也有一个 coding agent”。写代码这件事，Codex 和 Claude Code 已经做得很好。Hermes 真正有意思的地方，是它让一个项目拥有长期记忆，让开发过程能沉淀为技能，让排障经验能进入下一次执行，让一个个人 Agent 系统在真实环境里持续演化。</p>
+<p>PassiveAgent 管理的是我的信息注意力；Hermes 管理的是这个项目的工程记忆。</p>
+<p>前者帮我每天少看一点没那么重要的东西，后者帮我下次少重复一次已经踩过的坑。</p>
+<p>这就是我目前理解的 Hermes 实践价值：</p>
+<blockquote>
+<p>不是替代 Codex&#x2F;CC，而是把一次性 coding 能力放进一个长期可记忆、可执行、可调度、可演化的个人工程环境里。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://jackzhu.top">Jack Zhu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://jackzhu.top/">http://jackzhu.top/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="http://jackzhu.top/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://jackzhu.top" target="_blank">Jack's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Agent-Hermes-PassiveAgent-AI%E5%B7%A5%E5%85%B7-%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">Agent, Hermes, PassiveAgent, AI工具, 工程实践</a></div><div class="post_share"><div class="social-share" data-image="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-cover.svg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2026/05/12/hermes-self-evolving-blog-engine/" title="Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环"><img class="cover" src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hermes-blog-engine-cover.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/mingzi.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jack Zhu</div><div class="author-info__description">过好每一天</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/CoderJackZhu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CoderJackZhu" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://www.zhihu.com/people/zhu-yijie-51" target="_blank" title="知乎"><i class="fab fa-zhihu"></i></a><a class="social-icon" href="https://space.bilibili.com/355295657/" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PassiveAgent-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">PassiveAgent 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%9E%8B%E4%BD%86%E5%AE%8C%E6%95%B4%E7%9A%84-Agent-%E5%BA%94%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">项目结构：一个小型但完整的 Agent 应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">怎么使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%8E%A8%E8%8D%90%E6%A0%B7%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">一个推荐样例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%A3%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8-Codex-Claude-Code-%E5%B0%B1%E8%A1%8C%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">那为什么不用 Codex &#x2F; Claude Code 就行？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hermes-%E5%9C%A8%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B%E9%87%8C%E5%85%B7%E4%BD%93%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">6.</span> <span class="toc-text">Hermes 在开发过程里具体做了什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BF%86%EF%BC%9A%E4%BB%8E%E2%80%9C%E4%B8%80%E4%B8%AA-repo%E2%80%9D%E5%8F%98%E6%88%90%E2%80%9C%E4%B8%80%E4%B8%AA%E9%95%BF%E6%9C%9F%E5%AF%B9%E8%B1%A1%E2%80%9D"><span class="toc-number">6.1.</span> <span class="toc-text">1. 项目记忆：从“一个 repo”变成“一个长期对象”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%B7%A5%E7%A8%8B%E6%8E%92%E9%9A%9C%EF%BC%9A%E5%A4%84%E7%90%86%E7%9C%9F%E5%AE%9E%E7%8E%AF%E5%A2%83%E9%87%8C%E7%9A%84%E9%9D%9E%E4%BB%A3%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-number">6.2.</span> <span class="toc-text">2. 工程排障：处理真实环境里的非代码问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%B2%89%E6%B7%80%EF%BC%9A%E4%BB%8E%E2%80%9C%E6%94%B9%E4%B8%80%E4%B8%8B%E2%80%9D%E5%88%B0-audit-%E2%86%92-fix-%E2%86%92-verify-%E2%86%92-commit"><span class="toc-number">6.3.</span> <span class="toc-text">3. 工作流沉淀：从“改一下”到 audit → fix → verify → commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%8A%80%E8%83%BD%E8%BF%9B%E5%8C%96%EF%BC%9A%E6%8A%8A%E8%B8%A9%E5%9D%91%E5%86%99%E5%9B%9E%E7%B3%BB%E7%BB%9F"><span class="toc-number">6.4.</span> <span class="toc-text">4. 技能进化：把踩坑写回系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%90%86%E8%A7%A3%E7%9A%84%E2%80%9C%E8%87%AA%E8%BF%9B%E5%8C%96%E2%80%9D"><span class="toc-number">7.</span> <span class="toc-text">我理解的“自进化”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%B1%82%EF%BC%9A%E8%AE%B0%E5%BF%86%E8%BF%9B%E5%8C%96"><span class="toc-number">7.1.</span> <span class="toc-text">第一层：记忆进化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%B1%82%EF%BC%9A%E6%8A%80%E8%83%BD%E8%BF%9B%E5%8C%96"><span class="toc-number">7.2.</span> <span class="toc-text">第二层：技能进化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%B1%82%EF%BC%9A%E6%B5%81%E7%A8%8B%E8%BF%9B%E5%8C%96"><span class="toc-number">7.3.</span> <span class="toc-text">第三层：流程进化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%B1%82%EF%BC%9A%E7%B3%BB%E7%BB%9F%E8%BF%9B%E5%8C%96"><span class="toc-number">7.4.</span> <span class="toc-text">第四层：系统进化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E4%B8%AA%E8%BF%87%E7%A8%8B%E7%BB%99%E6%88%91%E7%9A%84%E5%87%A0%E4%B8%AA%E6%84%9F%E5%8F%97"><span class="toc-number">8.</span> <span class="toc-text">这个过程给我的几个感受</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8D%E8%A6%81%E6%8A%8A-Hermes-%E5%BD%93%E2%80%9C%E5%8F%A6%E4%B8%80%E4%B8%AA-Coding-Agent%E2%80%9D"><span class="toc-number">8.1.</span> <span class="toc-text">1. 不要把 Hermes 当“另一个 Coding Agent”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%9C%9F%E6%AD%A3%E6%9C%89%E4%BB%B7%E5%80%BC%E7%9A%84-Agent-%E9%A1%B9%E7%9B%AE%EF%BC%8C%E9%80%9A%E5%B8%B8%E4%B8%8D%E6%98%AF%E4%B8%80%E6%AC%A1%E6%80%A7%E4%BB%BB%E5%8A%A1"><span class="toc-number">8.2.</span> <span class="toc-text">2. 真正有价值的 Agent 项目，通常不是一次性任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Agent-%E7%9A%84%E9%9A%BE%E7%82%B9%E7%BB%8F%E5%B8%B8%E4%B8%8D%E5%9C%A8%E6%A8%A1%E5%9E%8B%EF%BC%8C%E8%80%8C%E5%9C%A8%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6"><span class="toc-number">8.3.</span> <span class="toc-text">3. Agent 的难点经常不在模型，而在边界条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%87%AA%E8%BF%9B%E5%8C%96%E7%9A%84%E5%89%8D%E6%8F%90%E6%98%AF%E2%80%9C%E6%8A%8A%E7%BB%8F%E9%AA%8C%E5%86%99%E5%9B%9E%E7%B3%BB%E7%BB%9F%E2%80%9D"><span class="toc-number">8.4.</span> <span class="toc-text">4. 自进化的前提是“把经验写回系统”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E6%83%B3%E7%BB%A7%E7%BB%AD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-number">9.</span> <span class="toc-text">后续想继续做什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">10.</span> <span class="toc-text">结语</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/06/10/Codex%E9%80%A0%E9%9B%B6%E4%BB%B6Hermes%E5%85%BB%E7%B3%BB%E7%BB%9F/" title="Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程"/></a><div class="content"><a class="title" href="/2026/06/10/Codex%E9%80%A0%E9%9B%B6%E4%BB%B6Hermes%E5%85%BB%E7%B3%BB%E7%BB%9F/" title="Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程">Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程</a><time datetime="2026-06-10T15:11:04.000Z" title="发表于 2026-06-10 15:11:04">2026-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/05/12/hermes-self-evolving-blog-engine/" title="Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hermes-blog-engine-cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环"/></a><div class="content"><a class="title" href="/2026/05/12/hermes-self-evolving-blog-engine/" title="Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环">Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环</a><time datetime="2026-05-12T22:30:00.000Z" title="发表于 2026-05-12 22:30:00">2026-05-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/" title="Agent 上下文工程：从 Token 管理到终身记忆"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-context-engineering-cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent 上下文工程：从 Token 管理到终身记忆"/></a><div class="content"><a class="title" href="/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/" title="Agent 上下文工程：从 Token 管理到终身记忆">Agent 上下文工程：从 Token 管理到终身记忆</a><time datetime="2026-05-10T02:28:00.000Z" title="发表于 2026-05-10 02:28:00">2026-05-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/29/%E7%8E%B0%E4%BB%A3%E7%9A%84%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7uv/" title="现代化的包管理工具：uv"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="现代化的包管理工具：uv"/></a><div class="content"><a class="title" href="/2025/04/29/%E7%8E%B0%E4%BB%A3%E7%9A%84%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7uv/" title="现代化的包管理工具：uv">现代化的包管理工具：uv</a><time datetime="2025-04-29T22:21:37.000Z" title="发表于 2025-04-29 22:21:37">2025-04-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/30/%E7%A7%8B%E6%8B%9B%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93%E5%88%86%E4%BA%AB/" title="秋招面试总结分享"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/790dbf2659a8aff75e42f73ecf06fab9.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="秋招面试总结分享"/></a><div class="content"><a class="title" href="/2024/11/30/%E7%A7%8B%E6%8B%9B%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93%E5%88%86%E4%BA%AB/" title="秋招面试总结分享">秋招面试总结分享</a><time datetime="2024-11-30T00:27:37.000Z" title="发表于 2024-11-30 00:27:37">2024-11-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Jack Zhu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>
+<a href="https://beian.miit.gov.cn/" target="_blank">陕ICP备2023003055号-1</a></div><div class="footer_custom_text"><span>本网站由 </span><a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/logo5.png"align="absmiddle"width="59px" height="30px" /></a><span>提供加速服务</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'hGtO6K0x6GlrX1FhjTwfMaWM-gzGzoHsz',
+      appKey: 'Nzeyk2Mmrhm9kBQtsXVYd4QA',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

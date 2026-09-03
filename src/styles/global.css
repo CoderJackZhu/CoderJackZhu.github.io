@@ -387,6 +387,8 @@ main {
 .prose {
   font-size: 17px;
   line-height: 1.95;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .prose p {
@@ -417,6 +419,19 @@ main {
   margin: 30px 0;
   border-radius: 3px;
   border: 1px solid var(--line);
+  max-width: 100%;
+}
+
+.prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.prose .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .prose code:not(pre code) {
@@ -832,6 +847,12 @@ html.dark {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     align-items: center;
+  }
+
+  .article-wrap,
+  .article-wrap article {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .site-nav {

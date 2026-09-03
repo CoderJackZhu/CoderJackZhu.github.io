@@ -15,7 +15,7 @@
 
 - [x] 图片与静态资源（Phase E 剩余）：`cdn.nlark.com` 5 条实测 200 有效；gcore 56 张保留确认
 - [x] 旧 URL/SEO/订阅兼容（Phase F）：百度统计入 head、robots→sitemap-index、canonical/sitemap/CNAME/.nojekyll/验证文件/atom.xml 全部验证通过
-- [ ] 本地完整验证（Phase H）：`npm ci` + `npm run build` + Playwright 矩阵（360/390/768/1440px）
+- [x] 本地完整验证（Phase H）：`npm ci` + `npm run build` + `npm run test`(10/10) + `npm run test:e2e`(13/13)，Playwright 矩阵 360/390/768/1440px 全通过
 
 ## Later
 
@@ -26,4 +26,4 @@
 
 ## Backlog
 
-- [ ] npm audit 17 个漏洞（1 low / 6 moderate / 10 high）评估与处置
+- [ ] npm audit 剩余 5 项（1 low / 2 moderate / 2 high，需 `npm audit fix --force` 升 Astro 7 breaking）评估与处置

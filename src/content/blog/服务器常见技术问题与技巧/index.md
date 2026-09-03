@@ -280,7 +280,7 @@ cat ~/.ssh/id_rsa.pub
 [https://github.com/settings/keys](https://github.com/settings/keys)
 
 测试ssh key是否配置成功，在linux开发机上输入
-$ ssh -T [git@github.com](mailto:git@github.com)
+`ssh -T git@github.com`
 
 如果出现Hi xxx! You’ve successfully authenticated, but GitHub does not provide shell access 。这就表示已成功连上github
 

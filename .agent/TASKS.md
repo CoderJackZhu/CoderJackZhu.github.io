@@ -19,7 +19,7 @@
 
 ## Later
 
-- [~] GitHub 审阅与上线（Phase I）：分支 `migration/astro` 已 push，PR #26 已开且 CI build 通过；**待用户明确「可以上线」后 merge（merge 触发部署替换线上站，不可逆）**
+- [x] GitHub 审阅与上线（Phase I）：PR #26 已 merge，`astro_build_deploy.yml` 部署 dist 到 `html` 分支，线上 www.jackzhu.top 已切换为 Astro 新站并回归验证通过
 - [ ] 稳定期清理（Phase J）
 - [ ] 评估从 `html` 分支发布迁移到官方 Pages artifact 模式
 - [ ] 新建 `/photos/` 极简摄影页（仅放用户自拍照片，不放文章插图；范围变更，需单独设计）。cover→og:image 已接线完成

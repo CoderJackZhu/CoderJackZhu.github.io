@@ -1,0 +1,56 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import { FRIEND_LINKS, SITE_LINKS } from "@data/links";
+import { SITE } from "@consts";
+---
+
+<Layout title="友链" description={SITE.DESCRIPTION}>
+  <Container>
+    <div class="animate">
+      <header class="archive-head">
+        <p class="eyebrow">Friends &amp; Sites</p>
+        <h1>友链</h1>
+        <p>一些朋友和值得推荐的网站，按原样保留。</p>
+      </header>
+      <div class="link-groups">
+        <div class="section-head">
+          <h2>友情链接</h2>
+          <span>Friends</span>
+        </div>
+        <ul class="link-list">
+          {FRIEND_LINKS.map((link) => (
+            <li>
+              <a
+                href={link.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.name}
+              </a>
+              <span>{link.descr}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="section-head" style="margin-top:36px">
+          <h2>网站</h2>
+          <span>Sites</span>
+        </div>
+        <ul class="link-list">
+          {SITE_LINKS.map((link) => (
+            <li>
+              <a
+                href={link.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.name}
+              </a>
+              <span>{link.descr}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Container>
+</Layout>

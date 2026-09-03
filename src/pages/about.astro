@@ -1,0 +1,49 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import { SITE, SOCIALS } from "@consts";
+---
+
+<Layout title="关于" description={SITE.DESCRIPTION}>
+  <Container>
+    <div class="animate">
+      <header class="about-head">
+        <p class="eyebrow">About this site</p>
+        <h1>关于</h1>
+        <p>这里不是公开简历，也不是项目展示柜。</p>
+      </header>
+      <div class="about-grid">
+        <div class="about-copy">
+          <p>Jack，一名算法工程师。</p>
+          <p>这里记录我的技术实践、学习过程，以及对一些长期问题的思考。</p>
+          <p>早期文章（尤其技术教程类）随技术演进可能已过时，阅读时请注意发布时间。</p>
+          <p>文章尽量区分亲身经验、资料结论和个人推测。</p>
+          <p>更具体的工作经历和非公开项目信息不会放在这里。</p>
+        </div>
+        <dl class="about-note">
+          <dt>站点</dt>
+          <dd>jackzhu.top</dd>
+          <dt>订阅</dt>
+          <dd>RSS / Atom</dd>
+          <dt>社交</dt>
+          <dd>
+            {
+              SOCIALS.map((social, index) => (
+                <span>
+                  {index > 0 && " · "}
+                  <a
+                    href={social.HREF}
+                    target={social.HREF.startsWith("http") ? "_blank" : "_self"}
+                    rel={social.HREF.startsWith("http") ? "noopener noreferrer" : undefined}
+                  >
+                    {social.NAME}
+                  </a>
+                </span>
+              ))
+            }
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </Container>
+</Layout>

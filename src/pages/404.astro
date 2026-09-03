@@ -1,0 +1,16 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
+import { SITE } from "@consts";
+---
+
+<Layout title="404" description={SITE.DESCRIPTION}>
+  <Container>
+    <div class="archive-head">
+      <p class="eyebrow">Not found</p>
+      <h1>404：页面未找到</h1>
+      <p><BackToPrevious href="/">返回首页</BackToPrevious></p>
+    </div>
+  </Container>
+</Layout>

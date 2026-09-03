@@ -1,0 +1,64 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import PostNavigation from "@components/PostNavigation.astro";
+import TableOfContents from "@components/TableOfContents.astro";
+import { formatDate, parseLegacyPath, readingTime } from "@lib/utils";
+
+type Props = CollectionEntry<"blog">;
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("blog"))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return posts.map((post) => ({
+    params: parseLegacyPath(post.data.legacyPath),
+    props: post,
+  }));
+}
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const post = Astro.props as Props;
+const postIndex = posts.findIndex((item) => item.id === post.id);
+const prevPost = postIndex > 0 ? posts[postIndex - 1] : undefined;
+const nextPost =
+  postIndex >= 0 && postIndex < posts.length - 1
+    ? posts[postIndex + 1]
+    : undefined;
+
+const publishedDateZh = post.data.date.toLocaleDateString("zh-CN", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const updatedDate = post.data.updated ? formatDate(post.data.updated) : "";
+const postReadingTime = post.body ? readingTime(post.body) : "";
+const { Content, headings } = await render(post);
+---
+
+<Layout title={post.data.title} description={post.data.description} image={post.data.cover}>
+  <div class="article-wrap">
+    <article class="animate">
+      <a class="article-back" href="/blog/">← 返回文章列表</a>
+      <header class="article-header">
+        <p class="eyebrow">{post.data.section}</p>
+        <h1>{post.data.title}</h1>
+        <div class="article-meta">
+          <time datetime={post.data.date.toISOString()}>{publishedDateZh}</time>
+          {updatedDate && <span>更新于 {updatedDate}</span>}
+          {postReadingTime && <span>{postReadingTime}</span>}
+        </div>
+        <p class="article-lead">{post.data.description}</p>
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+      <PostNavigation prevPost={prevPost} nextPost={nextPost} />
+    </article>
+    {headings.length > 0 && <TableOfContents headings={headings} />}
+  </div>
+</Layout>

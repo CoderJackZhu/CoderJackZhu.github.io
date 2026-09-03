@@ -1,0 +1,26 @@
+---
+type Props = {
+  href: string;
+  external?: boolean;
+  underline?: boolean;
+  group?: boolean;
+};
+
+const {
+  href,
+  external,
+  underline = true,
+  group = false,
+  ...rest
+} = Astro.props;
+---
+
+<a
+  href={href}
+  target={external ? "_blank" : "_self"}
+  rel={external ? "noopener noreferrer" : undefined}
+  class:list={["inline-link", underline && "inline-link--underline", group && "group"]}
+  {...rest}
+>
+  <slot />
+</a>

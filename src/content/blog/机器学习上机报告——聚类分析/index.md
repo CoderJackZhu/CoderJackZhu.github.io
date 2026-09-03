@@ -1,0 +1,652 @@
+---
+title: 机器学习上机报告——聚类分析
+date: 2021-05-23
+section: 学习与研究
+tags:
+  - 机器学习
+description: 本文使用了 K-means 和 DBSCAN 两种聚类方法, 较好的完成了聚类任务, 并将得到的结果使用了 t-SNE 和 PCA 两种方法进行降维可视化,从而更好的得到聚类的效果,并计算了轮廓系数、 CH score、 DBI 这些聚类指标, 对于 K-means 方法还使用了图片进行聚类, 使得效果更加直观, 实验效果非常好。
+legacyPath: /2021/05/23/机器学习上机报告——聚类分析/
+cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png
+---
+
+# 摘 要
+
+本文使用了K-means和DBSCAN两种聚类方法，较好的完成了聚类任务，并将得到的结果使用了t-SNE和PCA两种方法进行降维可视化，从而更好的得到聚类的效果，并计算了轮廓系数、CH score、DBI这些聚类指标，对于K-means方法还使用了图片进行聚类，使得效果更加直观，实验效果非常好。
+	
+在这次实验中，使用的两种聚类方法，K-means是基于原型的方法，而DBSCAN是基于密度的聚类方法。本文首先介绍了两种聚类方法的背景知识以及相关指标的知识，随后简单介绍了Iris数据集，然后展示出实验环境。
+	
+在代码实现部分，本文分别对两种聚类方法列出了重点的代码，并进行简要的介绍，说明这些部分是如何通过代码实现的。
+	
+在实验结果部分，本文展示了两种聚类方法的结果，对于K-means方法，使用Iris数据集进行了降维可视化，并算出Iris的轮廓系数为0.4976，对图片进行聚类，得到着色后的效果图，并进行降维可视化。对于DBSCAN方法，这里使用了八组数据进行展示，分别对八组数据求出其轮廓系数、CH score、DBI这些聚类指标，并得到了较好的实验效果，数据较多，具体数据以及聚类效果图见正文部分。
+	
+最后对本次实验进行了总结，分析实验得出了收获以及思考。
+
+关键字: K-means DBSCAN 轮廓系数 PCA t-SNE
+
+# 1 背景知识
+
+## 1.1 基于原型的方法
+
+本作业使用的基于原型的方法即 K-means 聚类算法，其原理如下:
+K-均值 (K-means) 聚类算法是应用最广泛的基于划分的聚类算法之一，适用于处理大样本数据。其基础是最小误差平方和准则，若 $N_{i}$ 是第 $i$ 聚类 $\Gamma$ 中的样本数目，$m_{i}$ 是这些样本的均值，即
+
+$$
+m_{i} = \frac{1}{N_{i}} \sum_{y \in \Gamma} y
+$$
+
+把其中的各样本 $y$ 与均值 $m_{i}$ 间的误差平方和对所有类相加后即得目标函数为:
+
+$$
+J_{e} = \sum_{i = 1}^c \sum_{y \in \Gamma_{i}} \left\| y - m_{i} \right\|^2
+$$
+
+即需进行优化使上式的值取得最小。
+该算法的的步骤如下:
+
+1. Step1: 选取 $K$ 个初始聚类中心。
+2. Step2: 根据最小距离标准将要分类的模式样本划分到某个簇中心。
+3. Step3: 计算各个聚类中心的新的向量值及计算各聚类簇中样本数据的均值向量。
+4. Step4: 若聚类中心与上一次的相同，则返回 Step2，否则计算结束。
+
+
+## 1.2 基于密度的方法论
+
+### 1.2.1 基本知识
+
+基于密度的聚类中著名的是 DBSCAN, DBSCAN (Density-Based Spatial Clustering of Applications with Noise, 具有噪声的基于密度的聚类方法) 是一种基于密度的空间聚类算法。该算法将具有足够密度的区域划分为簇, 并在具有噪声的空间数据库中发现任意形状的簇, 它将簇定义为密度相连的点的最大集合。
+该方法主要有以下特点:
+
+- 发现任意类型的聚类
+- 处理噪音
+- 一编扫描
+- 需要密度参数作为终止条件
+在使用密度聚类算法的时候, 有两个超参数, 领域的最大半径 Eps 和领域中最少的点
+数 MinPts。
+
+### 1.2.2 基本概念
+
+此处需要定义几个概念:
+- 核心对象: 一个对象的 $\epsilon$-邻域至少包含最小数目 MinPts 个对象。不是核心点的 Eps 邻域内的对象称为边界点，不属于任何簇的对象为噪声。对于空间中的一个对象，如果它在给定半径 $\epsilon$ 的邻域中的对象个数大于密度阈值 MinPts，则该对象被称为核心对象，否则称为边界对象。
+- 密度可达: 存在一个从 $p$ 到 $q$ 的 DDR 对象链（如果存在一条链 $< p1, p2, \ldots, pi >$，满足 $p1 = p, pi = q, p_{i}$ 直接密度可达 $p_{i + 1}$，则称 $p$ 密度可达 $q$）。
+- 由一个核心对象和其密度可达的所有对象构成一个聚类。
+
+
+## 1.3 轮廓系数
+
+轮廓系数是聚类好坏的一种评价方式，它结合内聚度和分离度两种因素。可以用来在相同原始数据的基础上用来评价不同算法、或者算法不同运行方式对聚类结果所产生的影响。其计算方法如下:
+
+对于其中的一个点 $i$ 而言，首先计算 $a(i)$，即该点到它所属簇中其他点的平均距离。
+
+然后计算 $b(i)$，即该点到最近相邻簇中所有点的平均距离的最小值；点 $i$ 的轮廓系数为：
+
+$$
+S(i) = \frac{b(i) - a(i)}{\max\{a(i), b(i)\}}
+$$
+
+轮廓系数的值是介于 $[-1,1]$，越趋近于 1 则代表内聚度和分离度都相对较优。
+
+
+# 2 Iris 数据集简介
+
+Iris 数据集是著名的数据集之一。Iris 数据集包含 3 个类, 每个类有 50 个实例, 其中每一类都是指一种鸢尾属植物。有一类是与另外两类是线性可分的, 而另外两类之间是线性不可分的。
+
+## 3 实验环境
+
+- 系统: Windows 10
+- 程序运行环境: Python 3.8
+- Python 库: numpy、pandas、matplotlib、sklearn、random
+- 开发工具: Spyder、VSCode
+
+## 4 代码实现
+
+在代码实现中,对于 kmeans 我使用了两种数据集进行实现, 第一种使用了经典的数据集 Iris 鸢尾花, 为了更好的体现聚类的效果, 我使用了一张照片进行聚类, 对不同的聚类使用不同的颜色表示。在评估聚类的效果时,对于 kmeans 聚类, 这里使用了不同聚类的平均轮廓系数来进行分析。对于这两种数据, 都使用了 t-SNE 和 PCA 两种降维方式来展示效果。
+对于 DBSCAN 聚类, 这里使用了一些聚类的数据并可视化, 可以很好的表达密度聚类
+的效果。
+
+## 4.1 kmeans 代码实现
+
+对于 kmeans 的 Iris 实现, 这里建立了一个类来进行处理, 在获取到数据后, 首先根据设置的 $\mathrm{k}$ 值,选出 $\mathrm{k}$ 个初始聚类中心,本代码使用的方法是从数据集中随机抽取 $\mathrm{k}$ 个数据来初始化,并将数据的序号记录下来,其 $\mathrm{k}$ 个点的四维的数据直接存放到建立好的 $k {\times} 4$
+的数组中, 随后按照算法一步一步迭代, 直到达到终止条件, 这里终止条件设置的为迭代的次数, 最后可以得到聚类的中心点以及每个数据的标签, 随后运用两种降维方式可视化出来, 然后利用 sklearn 库来计算平均轮廓系数。
+对于用 kmeans 处理照片, 主函数部分与 Iris 的实现相同, 但是多了一些部分, 首先读取照片, 并将三维转为二维, 从而方便进行处理, 随后进行聚类, 得出结果后, 把数据恢复成三维, 并将图片按照聚类着色为多种颜色, 并利用 t-SNE 和 PCA 进行降维可视化, 得到结果。
+聚类部分建立的类代码如下: 初始化参数, 函数 fit 进行聚类, imshow 降维展示, plot_img 图片着色。
+
+```python
+class Kmeans():
+    def __init__(self,dat,k):
+        data=scale(dat)
+        self.data=data
+        self.row, self.col = data.shape
+        self.k=k
+        self.centers=np.ndarray((k,self.col))
+        choices=random.choices(range(self.row),k=k)
+        for i in range(k):
+            self.centers[i,:]=self.data[choices[i],:]
+    def fit(self,counts=15):
+        count=0
+        while(count<counts):
+            self.labels=np.zeros((self.row))
+            for i in range(self.data.shape[0]):
+                dis=[]
+                for j in range(self.k):
+                    dis.append(np.linalg.norm(self.\
+                    data[i,:]-self.centers[j,:],axis=0))
+                lab=np.argmin(dis,axis=0)
+                self.labels[i]=lab
+            self.result={}
+            for i in range(self.k):
+                type=np.where(self.labels==i)[0]
+                self.result[i]=type
+                if len(type)==0:
+                    self.centers[i, :] =0
+                else:
+                    self.centers[i,:]=np.mean(self.data[type,:],axis=0)
+            count+=1
+
+        return self.centers, self.result
+
+    def imshow(self):
+        tsne = TSNE(n_components=2, learning_rate=100).fit_transform(self.data)
+        pca = PCA().fit_transform(self.data)
+        plt.figure(figsize=(12, 6))
+        plt.subplot(121)
+        plt.scatter(tsne[:, 0], tsne[:, 1], c=self.labels)
+        plt.subplot(122)
+        plt.scatter(pca[:, 0], pca[:, 1], c=self.labels)
+        plt.colorbar()
+        plt.show()
+
+    def plot_img(self,row,col):
+        img=self.labels.reshape(row,col)
+        im = Image.new("RGB", (row, col))  # 创建图片
+        for i in range(row):
+            for j in range(col):
+                if img[i, j] == 0:
+                    im.putpixel((i, j), (255, 0, 0))
+                if img[i, j] == 1:
+                    im.putpixel((i, j), (0, 255, 0))
+                if img[i, j] == 2:
+                    im.putpixel((i, j), (0, 0, 255))
+        im.show()
+        im.save('result.jpg')
+```
+
+主函数代码如下:
+
+```python
+path='./2.bmp'
+file=Image.open(path,'r')
+file=np.array(file)
+row,col,_=file.shape
+data=file.reshape(-1,3)
+kmeans=Kmeans(data,3)
+centers,results=kmeans.fit(10)
+kmeans.imshow()
+kmeans.plot_img(row,col)
+print(centers)
+print(results)
+```
+
+此部分进行图片的读取与降维预处理, 然后进行聚类, 然后可视化。
+Iris 的代码与之相差不大, 不再单独列出, 见附录。
+
+## 4.2 DBSCAN 代码实现
+
+在代码实现的过程中, 主要有以下步骤: 
+
+1. 读取数据
+2. 构建密度聚类函数
+3. 将聚类后的结果可视化 4. 对聚类效果进行评价
+读取数据采用了 scipy 中的 scio 来读取.mat 文件, 然后初步处理并传给聚类函数, 然后对结果可视化,最后利用 sklearn 中的库函数 metrics 来计算轮廓系数、 $\mathrm{CH}$ score 以及 DBI 这三个指标。
+首先定义了两个函数用于计算相关信息:
+
+```python
+def calDist(X1, X2):
+    sum = 0
+    for x1, x2 in zip(X1, X2):
+        sum += (x1 - x2) ** 2
+    return sum ** 0.5
+
+
+def getNeibor(data, dataSet, e):
+    res = []
+    for i in range(dataSet.shape[0]):
+        if calDist(data, dataSet[i]) < e:
+            res.append(i)
+    return res
+```
+
+随后定义密度聚类的主函数:
+    
+```python
+def DBSCAN(dataSet, e, minPts):
+    coreObjs = {}  # 初始化核心对象集合
+    C = {}
+    n = dataSet.shape[0]
+    # 找出所有核心对象，key是核心对象的index，value是ε-邻域中对象的index
+    for i in range(n):
+        neibor = getNeibor(dataSet[i], dataSet, e)
+        if len(neibor) >= minPts:
+            coreObjs[i] = neibor
+    oldCoreObjs = coreObjs.copy()
+    k = 0  # 初始化聚类簇数
+    notAccess = list(range(n))  # 初始化未访问样本集合（索引）
+    while len(coreObjs) > 0:
+        OldNotAccess = []
+        OldNotAccess.extend(notAccess)
+        cores = coreObjs.keys()
+        # 随机选取一个核心对象
+        randNum = random.randint(0, len(cores) - 1)
+        cores = list(cores)
+        core = cores[randNum]
+        queue = []
+        queue.append(core)
+        notAccess.remove(core)
+        while len(queue) > 0:
+            q = queue[0]
+            del queue[0]
+            if q in oldCoreObjs.keys():
+                delte = [val for val in oldCoreObjs[q] if val in notAccess]  # Δ = N(q)∩Γ
+                queue.extend(delte)  # 将Δ中的样本加入队列Q
+                notAccess = [val for val in notAccess if val not in delte]  # Γ = Γ\Δ
+        k += 1
+        C[k] = [val for val in OldNotAccess if val not in notAccess]
+        for x in C[k]:
+            if x in coreObjs.keys():
+                del coreObjs[x]
+    return C
+```
+
+随后定义了一个可视化函数, 主函数算出的聚类结果存在字典里, 这个函数将其标签
+转化为数组形式, 代码如下:
+    
+```python
+def draw(C, D):
+    colors = list(mcolors.TABLEAU_COLORS.keys())
+    predict = np.zeros((D.shape[0], D.shape[1] + 1))
+    j = 0
+    keys = C.keys()
+    print(keys)
+    for k in keys:
+        for i in C[k]:
+            predict[j, 0:2] = D[i]
+            predict[j, 2] = k
+            j = j + 1
+            plt.scatter(D[i, 0], D[i, 1], color=colors[k + 1])
+    plt.show()
+    return predict
+```
+
+随后定义主函数, 读取数据并进行聚类, 随后计算三个指标, 代码如下:
+
+```python
+def main():
+    path = './data-密度聚类/square1.mat'
+    data = scio.loadmat(path)['square1']
+    # plt.scatter(data[:,0],data[:,1])
+    # plt.show()
+    D = data[:, 0:2]
+    label = data[2]
+    C = DBSCAN(D, 0.9, 15)
+    predict = draw(C, D)
+    s1 = metrics.silhouette_score(predict[:, 0:2], predict[:, 2], metric='euclidean')
+    s2 = calinski_harabasz_score(predict[:, 0:2], predict[:, 2])  # 计算CH score
+    s3 = davies_bouldin_score(predict[:, 0:2], predict[:, 2])  # 计算 DBI
+
+    print(s1, s2, s3)
+```
+
+# 5 结果与分析
+
+## 5.1 kmeans 聚类
+
+利用 K-means 聚类对 Iris 数据的处理结果如图 1 所示,其中 $\mathrm{K}$ 设置为 3,迭代次数
+设置为 15 。
+
+
+图 1: kmeans 对 Iris 的聚类效果（原图已失效）
+
+由图片可以看出, 两种降维方式效果都非常好, 三类数据基本可以较好的分出来, 其中
+两类较为相似, 这两类与另一类相差较大, 聚类效果较好。
+此外, 对于 Iris 数据集, 这里还计算了轮廓系数, 在 3 分类迭代次数为 15 的情况下,
+不同类别的平均轮廓系数为 0.4976 。
+下面利用 kmeans 聚类对图像进行处理, 图 2 是一张照片:
+对上面的这张照片聚类处理并着色后,结果如图 3 所示,其中 $\mathrm{K}$ 设置为 3,迭代次数
+设置为 15 。
+由上图处理后的图像可以看出, 图片的聚类效果较好, 图片的轮廓信息可以较好的保
+留下来, 聚类任务完成。
+其中聚类处理后分别使用 t-SNE 和 PCA 降维可视化的效果如图 4 所示。
+
+图 2: 聚类前的原图（原图已失效）
+
+
+图 3: kmeans 对图像的聚类效果（原图已失效）
+
+图 4: kmeans 对图片的聚类效果降维展示（原图已失效）
+
+由上图可以看出, 两种降维方式中 PCA 的效果更好, 对图片的聚类任务完成的很好,
+这也印证了图片的着色图效果较好。
+
+## 5.2 DBSCAN 聚类
+
+以下是利用一些数据进行密度聚类的效果图片。
+
+
+图 5: 密度聚类 1（原图已失效）
+
+
+图 6: 密度聚类 2（原图已失效）
+
+设置半径 $\mathrm{Eps}=0.04$、$\mathrm{MinPts}=5$ 时，可以将数据分为三类，得到图像如图 5 所示；轮廓系数、$\mathrm{CH}$ score、$\mathrm{DBI}$ 分别为 0.356、79.043、1.265。
+设置半径 $\mathrm{Eps}=0.75$、$\mathrm{MinPts}=5$ 时，可以将数据分为四类，得到图像如图 6 所示；轮廓系数、$\mathrm{CH}$ score、$\mathrm{DBI}$ 分别为 0.674、5185.453、0.397。
+设置半径 $\mathrm{Eps}=0.87$、$\mathrm{MinPts}=16$ 时，可以将数据分为三类，得到图像如图 7 所示；轮廓系数、$\mathrm{CH}$ score、$\mathrm{DBI}$ 分别为 0.572、2147.144、5.919。
+设置半径 $\mathrm{Eps}=0.2$、$\mathrm{MinPts}=5$ 时，可以将数据分为二类，得到图像如图 8 所示；轮廓系数、$\mathrm{CH}$ score、$\mathrm{DBI}$ 分别为 0.321、156.074、1.017。
+设置半径 $\mathrm{Eps}=0.2$、$\mathrm{MinPts}=5$ 时，可以将数据分为二类，得到图像如图 9 所示；轮廓系数、$\mathrm{CH}$ score、$\mathrm{DBI}$ 分别为 -0.062、151.734、5.350。
+
+图 7: 密度聚类 3（原图已失效）
+
+
+图 8: 密度聚类 4（原图已失效）
+
+
+图 9: 密度聚类 5（原图已失效）
+
+
+图 10: 密度聚类 6（原图已失效）
+设置半径 $\mathrm{Eps}=1.1$、$\mathrm{MinPts}=10$ 时，可以将数据分为四类，得到图像如图 10 所示；轮廓系数、$\mathrm{CH}$ score、$\mathrm{DBI}$ 分别为 0.664、1509.256、3.146。
+
+
+图 12: 密度聚类 8（原图已失效）
+
+
+图 11: 密度聚类 7（原图已失效）
+
+设置半径 $\mathrm{Eps}=0.2$、$\mathrm{MinPts}=5$ 时，可以将数据分为二类，得到图像如图 11 所示；轮廓系数、$\mathrm{CH}$ score、$\mathrm{DBI}$ 分别为 0.045、13.449、5.843。
+设置半径 $\mathrm{Eps}=0.9$、$\mathrm{MinPts}=15$ 时，可以将数据分为四类，得到图像如图 12 所示；轮廓系数、$\mathrm{CH}$ score、$\mathrm{DBI}$ 分别为 0.664、4527.194、1.435。
+从上面对八个数据集进行的密度聚类, 我们可以看出聚类达到了很好的效果, 不同分布结构的数据在设置不同的参数后都可以很好的被分类, 这样相比 kmeans 适用的范围更广, 缺点是算法相对于 kmeans 更复杂, 而且需要调整合适的参数才能得到较好的结果。
+
+## 6 总结
+
+这次的实验任务相对较多, 完成任务花费了不少的时间, 但在这个过程中我也收获了很多东西, 学习到了新的知识, 也加强了自己的代码能力, 在这个过程中也多方请假同学, 并广泛查阅了资料, 能力得到了提升, 对于聚类的了解增强了, 运用能力也得到了强化。
+## A K-means 程序代码
+
+KMEANS IRIS 程序 - kmeans.py 
+
+```python
+# -*- coding:utf-8 -*-
+# Author : JackZhu
+
+# Data : 2021/5/10 23:10
+import numpy as np
+import pandas as pd
+import sklearn
+import random
+from sklearn import datasets
+from sklearn.preprocessing import scale
+from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+from sklearn.metrics import silhouette_score
+
+
+class Kmeans():
+    def __init__(self,dat,k):
+        data=scale(dat)
+        self.data=data
+        self.row, self.col = data.shape
+        self.k=k
+        self.centers=np.ndarray((k,self.col))
+        choices=random.choices(range(self.row),k=k)
+        for i in range(k):
+            self.centers[i,:]=self.data[choices[i],:]
+    def fit(self):
+        count=0
+        while(count<15):
+            self.labels=np.zeros((self.row))
+            for i in range(self.data.shape[0]):
+                dis=[]
+                for j in range(self.k):
+                    dis.append(np.linalg.norm(self.data[i,:]-self.centers[j,:],axis=0))
+                lab=np.argmin(dis,axis=0)
+                self.labels[i]=lab
+            self.result={}
+            for i in range(self.k):
+                type=np.where(self.labels==i)[0]
+                self.result[i]=type
+                if len(type)==0:
+                    self.centers[i, :] =0
+                else:
+                    self.centers[i,:]=np.mean(self.data[type,:],axis=0)
+            count+=1
+        return self.centers, self.result,self.labels
+
+    def imshow(self):
+        tsne = TSNE(n_components=2, learning_rate=100).fit_transform(self.data)
+        pca = PCA().fit_transform(self.data)
+        plt.figure(figsize=(12, 6))
+        plt.subplot(121)
+        plt.scatter(tsne[:, 0], tsne[:, 1], c=self.labels)
+        plt.title('t-SNE')
+        plt.subplot(122)
+        plt.scatter(pca[:, 0], pca[:, 1], c=self.labels)
+        plt.title('PCA')
+        plt.colorbar()
+        plt.show()
+
+
+if __name__ == "__main__":
+    iris=datasets.load_iris()
+    data=iris.data
+    target=iris.target
+    kmeans=Kmeans(data,3)
+    centers,results,labels=kmeans.fit()
+    kmeans.imshow()
+    s = silhouette_score(data, labels)
+    print(centers)
+    print(results)
+    print(s)
+```
+
+KMEANS 处理照片程序 - kmeans_photo.py 
+
+```python
+# -*- coding:utf-8 -*-
+# Author : JackZhu
+
+# Data : 2021/5/13 12:56
+
+import numpy as np
+import pandas as pd
+import sklearn
+import random
+from sklearn import datasets
+from sklearn.preprocessing import scale
+from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+from PIL import Image
+import cv2
+
+
+class Kmeans():
+    def __init__(self,dat,k):
+        data=scale(dat)
+        self.data=data
+        self.row, self.col = data.shape
+        self.k=k
+        self.centers=np.ndarray((k,self.col))
+        choices=random.choices(range(self.row),k=k)
+        for i in range(k):
+            self.centers[i,:]=self.data[choices[i],:]
+    def fit(self,counts=15):
+        count=0
+        while(count<counts):
+            self.labels=np.zeros((self.row))
+            for i in range(self.data.shape[0]):
+                dis=[]
+                for j in range(self.k):
+                    dis.append(np.linalg.norm(self.data[i,:]-self.centers[j,:],axis=0))
+                lab=np.argmin(dis,axis=0)
+                self.labels[i]=lab
+            self.result={}
+            for i in range(self.k):
+                type=np.where(self.labels==i)[0]
+                self.result[i]=type
+                if len(type)==0:
+                    self.centers[i, :] =0
+                else:
+                    self.centers[i,:]=np.mean(self.data[type,:],axis=0)
+            count+=1
+
+        return self.centers, self.result
+
+    def imshow(self):
+        tsne = TSNE(n_components=2, learning_rate=100).fit_transform(self.data)
+        pca = PCA().fit_transform(self.data)
+        plt.figure(figsize=(12, 6))
+        plt.subplot(121)
+        plt.scatter(tsne[:, 0], tsne[:, 1], c=self.labels)
+        plt.title('t-SNE')
+        plt.subplot(122)
+        plt.scatter(pca[:, 0], pca[:, 1], c=self.labels)
+        plt.title('PCA')
+        plt.colorbar()
+        plt.show()
+
+    def plot_img(self,row,col):
+        img=self.labels.reshape(row,col)
+        im = Image.new("RGB", (row, col))  # 创建图片
+        for i in range(row):
+            for j in range(col):
+                if img[i, j] == 0:
+                    im.putpixel((i, j), (255, 0, 0))
+                if img[i, j] == 1:
+                    im.putpixel((i, j), (0, 255, 0))
+                if img[i, j] == 2:
+                    im.putpixel((i, j), (0, 0, 255))
+        im.show()
+        im.save('result.jpg')
+
+
+path='./2.bmp'
+# path=f'H:/Python_code/Pattern Recognition/kmeans/kmeans图片/3.bmp'
+file=Image.open(path,'r')
+file=np.array(file)
+row,col,_=file.shape
+data=file.reshape(-1,3)
+kmeans=Kmeans(data,3)
+centers,results=kmeans.fit(10)
+kmeans.imshow()
+kmeans.plot_img(row,col)
+print(centers)
+print(results)
+```
+
+## B DBSCAN 程序代码
+
+DBSCAN 程序 - 密度聚类.py
+
+```python
+# -*- coding:utf-8 -*-
+# Author : JackZhu
+
+# Data : 2021/5/9 15:16
+# 调用科学计算包与绘图包
+import numpy as np
+import random
+import matplotlib.pyplot as plt
+import scipy.io as scio
+import matplotlib.colors as mcolors
+from sklearn import metrics
+import sklearn
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
+
+
+def calDist(X1, X2):
+    sum = 0
+    for x1, x2 in zip(X1, X2):
+        sum += (x1 - x2) ** 2
+    return sum ** 0.5
+
+
+def getNeibor(data, dataSet, e):
+    res = []
+    for i in range(dataSet.shape[0]):
+        if calDist(data, dataSet[i]) < e:
+            res.append(i)
+    return res
+
+
+def DBSCAN(dataSet, e, minPts):
+    coreObjs = {}  # 初始化核心对象集合
+    C = {}
+    n = dataSet.shape[0]
+    # 找出所有核心对象，key是核心对象的index，value是ε-邻域中对象的index
+    for i in range(n):
+        neibor = getNeibor(dataSet[i], dataSet, e)
+        if len(neibor) >= minPts:
+            coreObjs[i] = neibor
+    oldCoreObjs = coreObjs.copy()
+    k = 0  # 初始化聚类簇数
+    notAccess = list(range(n))  # 初始化未访问样本集合（索引）
+    while len(coreObjs) > 0:
+        OldNotAccess = []
+        OldNotAccess.extend(notAccess)
+        cores = coreObjs.keys()
+        # 随机选取一个核心对象
+        randNum = random.randint(0, len(cores) - 1)
+        cores = list(cores)
+        core = cores[randNum]
+        queue = []
+        queue.append(core)
+        notAccess.remove(core)
+        while len(queue) > 0:
+            q = queue[0]
+            del queue[0]
+            if q in oldCoreObjs.keys():
+                delte = [val for val in oldCoreObjs[q] if val in notAccess]  # Δ = N(q)∩Γ
+                queue.extend(delte)  # 将Δ中的样本加入队列Q
+                notAccess = [val for val in notAccess if val not in delte]  # Γ = Γ\Δ
+        k += 1
+        C[k] = [val for val in OldNotAccess if val not in notAccess]
+        for x in C[k]:
+            if x in coreObjs.keys():
+                del coreObjs[x]
+    return C
+
+
+def draw(C, D):
+    colors = list(mcolors.TABLEAU_COLORS.keys())
+    predict = np.zeros((D.shape[0], D.shape[1] + 1))
+    j = 0
+    keys = C.keys()
+    print(keys)
+    for k in keys:
+        for i in C[k]:
+            predict[j, 0:2] = D[i]
+            predict[j, 2] = k
+            j = j + 1
+            plt.scatter(D[i, 0], D[i, 1], color=colors[k + 1])
+    plt.show()
+    return predict
+
+
+def main():
+    path = './data-密度聚类/square1.mat'
+    data = scio.loadmat(path)['square1']
+    # plt.scatter(data[:,0],data[:,1])
+    # plt.show()
+    D = data[:, 0:2]
+    label = data[2]
+    C = DBSCAN(D, 0.9, 15)
+    predict = draw(C, D)
+    s1 = metrics.silhouette_score(predict[:, 0:2], predict[:, 2], metric='euclidean')
+    s2 = calinski_harabasz_score(predict[:, 0:2], predict[:, 2])  # 计算CH score
+    s3 = davies_bouldin_score(predict[:, 0:2], predict[:, 2])  # 计算 DBI
+
+    print(s1, s2, s3)
+
+
+if __name__ == '__main__':
+    main()
+```

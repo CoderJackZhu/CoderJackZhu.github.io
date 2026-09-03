@@ -1,0 +1,123 @@
+---
+import Search from "astro-pagefind/components/Search";
+---
+
+<aside data-pagefind-ignore>
+  <div
+    transition:persist
+    id="backdrop"
+    class="search-backdrop invisible"
+  >
+    <div
+      id="pagefind-container"
+      class="search-modal"
+    >
+      <Search
+        id="search"
+        className="pagefind-ui"
+        uiOptions={{
+          showImages: false,
+          excerptLength: 15,
+          resetStyles: false,
+        }}
+      />
+      <div class="search-close">
+        Press <kbd>Esc</kbd> or click anywhere to close
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script is:inline>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script>
+
+<style is:global>
+  :root {
+    --pagefind-ui-scale: 0.75;
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 3px;
+    --pagefind-ui-font: var(--sans);
+    --pagefind-ui-primary: var(--accent);
+    --pagefind-ui-text: var(--ink);
+    --pagefind-ui-background: var(--surface);
+    --pagefind-ui-border: var(--line);
+    --pagefind-ui-tag: var(--accent-soft);
+  }
+
+  #search input {
+    font-weight: normal;
+  }
+
+  #search p {
+    font-weight: normal;
+  }
+
+  #search .pagefind-ui__result-title {
+    font-weight: 600;
+  }
+
+  #search .pagefind-ui__message {
+    padding: 0;
+    padding-bottom: 0.75rem;
+  }
+</style>

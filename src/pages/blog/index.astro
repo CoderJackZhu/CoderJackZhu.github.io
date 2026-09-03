@@ -1,0 +1,56 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import Pagination from "@components/Pagination.astro";
+import { BLOG } from "@consts";
+import type { Page } from "astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const pageSize = 12;
+const lastPage = Math.max(1, Math.ceil(posts.length / pageSize));
+const page: Page<CollectionEntry<"blog">> = {
+  data: posts.slice(0, pageSize),
+  start: 0,
+  end: Math.min(pageSize, posts.length) - 1,
+  size: pageSize,
+  total: posts.length,
+  currentPage: 1,
+  lastPage,
+  url: {
+    current: "/blog/",
+    next: lastPage > 1 ? "/blog/2/" : undefined,
+    prev: undefined,
+    first: undefined,
+    last: lastPage > 1 ? `/blog/${lastPage}/` : undefined,
+  },
+};
+---
+
+<Layout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
+  <Container>
+    <aside data-pagefind-ignore>
+      <header class="archive-head">
+        <p class="eyebrow">All writing</p>
+        <h1>全部文章</h1>
+        <p>{BLOG.DESCRIPTION}</p>
+      </header>
+      <div class="section-head">
+        <h2>文章</h2>
+        <span>{page.total} posts</span>
+      </div>
+      <ol class="post-list">
+        {page.data.map((post) => (
+          <li>
+            <ArrowCard entry={post} />
+          </li>
+        ))}
+      </ol>
+      <Pagination page={page} />
+    </aside>
+  </Container>
+</Layout>

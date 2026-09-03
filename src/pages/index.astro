@@ -1,0 +1,40 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import { SITE, HOME } from "@consts";
+import ArrowCard from "@components/ArrowCard.astro";
+import { getCollection } from "astro:content";
+
+const blog = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
+---
+
+<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+  <Container>
+    <aside data-pagefind-ignore>
+      <header class="hero">
+        <p class="eyebrow">Writing · since 2020</p>
+        <h1>{SITE.DESCRIPTION}</h1>
+      </header>
+
+      <section class="animate">
+        <div class="section-head">
+          <h2>最近写作</h2>
+          <span>Latest writing</span>
+        </div>
+        <ol class="post-list">
+          {
+            blog.map((post) => (
+              <li>
+                <ArrowCard entry={post} />
+              </li>
+            ))
+          }
+        </ol>
+        <a class="more" href="/blog/">查看全部 54 篇文章 →</a>
+      </section>
+    </aside>
+  </Container>
+</Layout>

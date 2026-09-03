@@ -1,0 +1,45 @@
+---
+import TableOfContentsHeading from "./TableOfContentsHeading.astro";
+
+// https://kld.dev/building-table-of-contents/
+const { headings } = Astro.props;
+const toc = buildToc(headings);
+
+export interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+function buildToc(headings: Heading[]) {
+  const toc: Heading[] = [];
+  const parentHeadings = new Map();
+  headings.forEach((h) => {
+    if (h.depth <= 1) return;
+    const heading = { ...h, subheadings: [] };
+    parentHeadings.set(heading.depth, heading);
+    if (heading.depth === 2) {
+      toc.push(heading);
+    } else {
+      const parent = parentHeadings.get(heading.depth - 1);
+      if (parent) {
+        parent.subheadings.push(heading);
+      } else {
+        toc.push(heading);
+      }
+    }
+  });
+  return toc;
+}
+---
+
+<aside class="toc" aria-label="本文目录">
+  <strong>本文目录</strong>
+  <nav>
+    <ul class="toc-list">
+      {toc.map((heading) => (
+        <TableOfContentsHeading heading={heading} />
+      ))}
+    </ul>
+  </nav>
+</aside>

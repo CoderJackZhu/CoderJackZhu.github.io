@@ -1,0 +1,51 @@
+# ============================================================
+#  Jack's Blog 站点配置
+#  想改站点信息 / 文案 / 友链 / 页脚，直接改这个文件即可。
+#  改完 push 到 main，GitHub Actions 会自动部署，几分钟后生效。
+# ============================================================
+
+site:
+  title: "Jack's Blog"
+  description: "记录技术实践、学习过程，以及对一些长期问题的思考。"
+  numPostsOnHomepage: 6        # 首页显示文章数
+  numPostsPerPage: 24          # 「全部文章」每页条数
+
+# 社交链接（关于页 + 页脚）
+socials:
+  - { name: GitHub, href: "https://github.com/CoderJackZhu" }
+  - { name: 知乎, href: "https://www.zhihu.com/people/zhu-yijie-51" }
+  - { name: 哔哩哔哩, href: "https://space.bilibili.com/355295657" }
+  - { name: RSS, href: "/atom.xml" }
+
+# 友链（朋友）
+friendLinks:
+  - { name: 六个骨头, link: "https://sixbones.dev/", descr: "飞桨开发者专家" }
+  - { name: 散步, link: "https://www.aispacewalk.cn/", descr: "开源社区算法工程师" }
+  - { name: Evan CHEN, link: "https://lhchen.top/", descr: "直博清深的图表示学习、语音驱动、动作生成大牛" }
+  - { name: BB酱, link: "https://www.bbbbchan.com/", descr: "南开大学分割领域强者" }
+  - { name: sund, link: "http://www.sund-xys.cn/", descr: "西交网络&无线&侧信道大爹" }
+  - { name: 冉崇治, link: "http://resetran.top/", descr: "王者打野贼溜的NeRF研究者" }
+  - { name: 冯玉龙, link: "http://bestxinyu.com/", descr: "又一个大佬" }
+  - { name: 西电浪潮俱乐部, link: "http://www.xdu-inspur.cn", descr: "在西电的技术性交流社团" }
+  - { name: 破碎羽翼, link: "https://miroier.github.io/", descr: "中科院软件所破碎羽翼" }
+
+# 页脚
+footer:
+  since: "2020-10-26"          # 建站日期（© 年份和运行天数都用它）
+  icp: "陕ICP备2023003055号-1"
+  icpUrl: "https://beian.miit.gov.cn/"
+  showRuntime: true            # 是否显示「本站已运行 X 天」
+  showVisitor: true            # 是否显示访问统计（不蒜子）
+
+# 关于页文案（每段一行）
+about:
+  paragraphs:
+    - "Jack，一名 LLM Agent 工程师（算法工程师），西安电子科技大学人工智能方向硕士。"
+    - "此前的研究与工程经历覆盖计算机视觉、AIGC 与大模型。"
+    - "当 AI 正在接管大部分具体实现，真正稀缺的不再是掌握哪门技术，而是判断力、品味，以及提出正确问题的能力。"
+    - "我关心的是想法与系统之间的设计——让智能可靠地服务于真实问题，而不是追逐工具与概念的新旧。"
+    - "这里记录我的技术实践、学习过程，以及对一些长期问题的思考。"
+    - "早期文章（尤其技术教程类）随技术演进可能已过时，阅读时请注意发布时间；文章尽量区分亲身经验、资料结论和个人推测，更具体的工作经历和非公开项目信息不会放在这里。"
+
+# 友链页副标题
+linkSubtitle: "朋友们的网站。"

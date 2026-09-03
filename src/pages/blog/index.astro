@@ -5,13 +5,14 @@ import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import Pagination from "@components/Pagination.astro";
 import { BLOG } from "@consts";
+import siteConfig from "@lib/site-config";
 import type { Page } from "astro";
 
 const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const pageSize = 24;
+const pageSize = siteConfig.site.numPostsPerPage;
 const lastPage = Math.max(1, Math.ceil(posts.length / pageSize));
 const page: Page<CollectionEntry<"blog">> = {
   data: posts.slice(0, pageSize),

@@ -6,13 +6,14 @@ import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import Pagination from "@components/Pagination.astro";
 import { BLOG } from "@consts";
+import siteConfig from "@lib/site-config";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const posts = (await getCollection("blog"))
     .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-  return paginate(posts, { pageSize: 24 }).filter(
+  return paginate(posts, { pageSize: siteConfig.site.numPostsPerPage }).filter(
     ({ props }) => props.page.currentPage > 1,
   );
 }

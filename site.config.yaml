@@ -45,7 +45,6 @@ footer:
   cdnNote: "本网站由又拍云提供加速服务"
   cdnUrl: "https://www.upyun.com/"
   showRuntime: true            # 是否显示「本站已运行 X 天」
-  showVisitor: true            # 是否显示访问统计（不蒜子）
 
 # 页脚链接
 footerLinks:

@@ -83,7 +83,6 @@ export interface SiteConfig {
     cdnNote: string;
     cdnUrl: string;
     showRuntime: boolean;
-    showVisitor: boolean;
   };
   footerLinks: FooterLinkConfig[];
   about: {

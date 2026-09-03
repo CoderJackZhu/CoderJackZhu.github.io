@@ -60,15 +60,15 @@ footerLinks:
 # 关于页文案（每段一行）
 about:
   paragraphs:
-    - "Jack，一名 LLM Agent 工程师（算法工程师），西安电子科技大学人工智能方向本硕。"
+    - "Jack，一名 LLM Agent 工程师（算法工程师），西安电子科技大学人工智能本硕。"
     - "此前的研究与工程经历覆盖计算机视觉、AIGC 与大模型。"
     - "当 AI 正在接管大部分具体实现，真正稀缺的不再是掌握哪门技术，而是判断力、品味，以及提出正确问题的能力。"
     - "我关心的是想法与系统之间的设计——让智能可靠地服务于真实问题，而不是追逐工具与概念的新旧。"
     - "这里记录我的技术实践、学习过程，以及对一些长期问题的思考。"
-    - "早期文章（尤其技术教程类）随技术演进可能已过时，阅读时请注意发布时间；文章尽量区分亲身经验、资料结论和个人推测，更具体的工作经历和非公开项目信息不会放在这里。"
+    - "早期文章（尤其技术教程类）随技术演进可能已过时，阅读时请注意发布时间。"
 
 # 友链页副标题
-linkSubtitle: "朋友们的网站。"
+linkSubtitle: "朋友们的网站，虽然部分可能已经过时失效。"
 
 # 各页面标题 / eyebrow / 标题 / 副标题文案
 # home 的页面标题直接复用 site.title，不在此重复定义。
@@ -113,7 +113,6 @@ photos:
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/moon.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/82DA5A8E1D99BD7DC83A051FA8EA75E2.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg"
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/civilization-acceleration-cover.svg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102148023.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg"

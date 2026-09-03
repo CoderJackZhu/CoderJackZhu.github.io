@@ -303,9 +303,9 @@ test("360px 下代码块与表格不撑破文档且自身可滚动", async ({ pa
   }
 });
 
-test("favicon href 唯一且为 SVG", async ({ page }) => {
+test("favicon href 唯一且为 PNG", async ({ page }) => {
   await page.goto("/");
   const icons = page.locator('link[rel="icon"]');
   await expect(icons).toHaveCount(1);
-  await expect(icons).toHaveAttribute("href", "/favicon.svg");
+  await expect(icons).toHaveAttribute("href", "/favicon.png");
 });

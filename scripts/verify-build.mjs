@@ -184,20 +184,20 @@ check("模板身份与非公开署名已清除", () => {
 });
 
 check("favicon 与失效 CDN 引用正确", () => {
-  ensure(existsSync(join(distDir, "favicon.svg")), "dist/favicon.svg 不存在");
-  assertWellFormedXml(readFileSync(join(distDir, "favicon.svg"), "utf8"), "favicon.svg");
+  ensure(existsSync(join(distDir, "favicon.png")), "dist/favicon.png 不存在");
+  ensure(existsSync(join(distDir, "apple-touch-icon.png")), "dist/apple-touch-icon.png 不存在");
   const hits = [];
   for (const htmlPath of siteHtmlFiles) {
     const html = readFileSync(htmlPath, "utf8");
     if (/cdn\.noedgeai\.com/i.test(html)) hits.push(`${relative(root, htmlPath)}: cdn.noedgeai.com`);
     if (/\/favicon\.ico/i.test(html)) hits.push(`${relative(root, htmlPath)}: /favicon.ico`);
     const favicons = [...html.matchAll(/<link\b[^>]*\brel=["']icon["'][^>]*>/gi)].map((match) => match[0]);
-    if (favicons.length !== 1 || !/\bhref=["']\/favicon\.svg["']/i.test(favicons[0] ?? "")) {
-      hits.push(`${relative(root, htmlPath)}: favicon link 应唯一且指向 /favicon.svg`);
+    if (favicons.length !== 1 || !/\bhref=["']\/favicon\.png["']/i.test(favicons[0] ?? "")) {
+      hits.push(`${relative(root, htmlPath)}: favicon link 应唯一且指向 /favicon.png`);
     }
   }
   ensure(hits.length === 0, hits.join("\n"));
-  return `SVG 可解析，${siteHtmlFiles.length} 个站点页面引用唯一`;
+  return `favicon.png 存在，${siteHtmlFiles.length} 个站点页面引用唯一`;
 });
 
 check("部署与站点验证文件齐全", () => {

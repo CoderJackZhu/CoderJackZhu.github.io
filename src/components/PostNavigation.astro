@@ -1,0 +1,23 @@
+---
+const { prevPost, nextPost } = Astro.props;
+---
+
+<div class="post-nav">
+  {prevPost?.id ? (
+    <a href={prevPost?.data.legacyPath} class="post-nav-link">
+      <span class="post-nav-label">上一篇</span>
+      <span class="post-nav-title">{prevPost?.data.title}</span>
+    </a>
+  ) : (
+    <span></span>
+  )}
+
+  {nextPost?.id ? (
+    <a href={nextPost?.data.legacyPath} class="post-nav-link next">
+      <span class="post-nav-label">下一篇</span>
+      <span class="post-nav-title">{nextPost?.data.title}</span>
+    </a>
+  ) : (
+    <span></span>
+  )}
+</div>

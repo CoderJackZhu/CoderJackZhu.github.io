@@ -1,0 +1,45 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import type { GetStaticPathsOptions, Page } from "astro";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import Pagination from "@components/Pagination.astro";
+import { BLOG } from "@consts";
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const posts = (await getCollection("blog"))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return paginate(posts, { pageSize: 12 }).filter(
+    ({ props }) => props.page.currentPage > 1,
+  );
+}
+
+const { page } = Astro.props as { page: Page<CollectionEntry<"blog">> };
+---
+
+<Layout title={`${BLOG.TITLE} - 第 ${page.currentPage} 页`} description={BLOG.DESCRIPTION}>
+  <Container>
+    <aside data-pagefind-ignore>
+      <header class="archive-head">
+        <p class="eyebrow">All writing</p>
+        <h1>全部文章</h1>
+        <p>{BLOG.DESCRIPTION}</p>
+      </header>
+      <div class="section-head">
+        <h2>文章</h2>
+        <span>第 {page.currentPage} 页</span>
+      </div>
+      <ol class="post-list">
+        {page.data.map((post) => (
+          <li>
+            <ArrowCard entry={post} />
+          </li>
+        ))}
+      </ol>
+      <Pagination page={page} />
+    </aside>
+  </Container>
+</Layout>

@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { readingTime } from "@lib/utils";
+
+type Props = {
+  entry: CollectionEntry<"blog">;
+};
+
+const { entry } = Astro.props as {
+  entry: CollectionEntry<"blog">;
+};
+
+const date = entry.data.date;
+const month = String(date.getMonth() + 1).padStart(2, "0");
+const day = String(date.getDate()).padStart(2, "0");
+const year = String(date.getFullYear());
+const postReadingTime = entry.body ? readingTime(entry.body) : "";
+---
+
+<a href={entry.data.legacyPath} class="post">
+  <time class="post-date" datetime={date.toISOString()}>
+    {month}.{day}<br />{year}
+  </time>
+  <div>
+    <h3>{entry.data.title}</h3>
+    <p>{entry.data.description}</p>
+    <div class="post-meta">
+      <span>{entry.data.section}</span>
+      {postReadingTime && <span>{postReadingTime}</span>}
+    </div>
+  </div>
+  <span class="post-arrow">→</span>
+</a>

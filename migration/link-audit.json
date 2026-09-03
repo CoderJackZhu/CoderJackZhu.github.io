@@ -1,0 +1,618 @@
+{
+  "internalLinks": [
+    {
+      "url": "https://jackzhu.top",
+      "referencedBy": [
+        "Agent上下文工程：从Token管理到终身记忆.md"
+      ]
+    }
+  ],
+  "externalLinks": [
+    {
+      "url": "https://adsabs.harvard.edu/pdf/1964SvA.....8..217K",
+      "referencedBy": [
+        "当文明踩下加速踏板之后.md"
+      ]
+    },
+    {
+      "url": "https://blog.csdn.net/xiaoyuxin1/article/details/124526430",
+      "referencedBy": [
+        "服务器常见技术问题与技巧.md"
+      ]
+    },
+    {
+      "url": "https://developer.nvidia.com/cuda-downloads",
+      "referencedBy": [
+        "Ubuntu 20.04下深度学习环境搭建以及常用工具配置.md"
+      ]
+    },
+    {
+      "url": "https://developer.nvidia.com/cudnn",
+      "referencedBy": [
+        "Ubuntu 20.04下深度学习环境搭建以及常用工具配置.md"
+      ]
+    },
+    {
+      "url": "https://developer.nvidia.com/rdp/cudnn-archive#a-collapse742-10",
+      "referencedBy": [
+        "Ubuntu 20.04下深度学习环境搭建以及常用工具配置.md"
+      ]
+    },
+    {
+      "url": "https://doi.org/10.1016/j.cell.2022.11.001",
+      "referencedBy": [
+        "当文明踩下加速踏板之后.md"
+      ]
+    },
+    {
+      "url": "https://download.pytorch.org/whl/torch_stable.html",
+      "referencedBy": [
+        "Ubuntu 20.04下深度学习环境搭建以及常用工具配置.md"
+      ]
+    },
+    {
+      "url": "https://github.com/CoderJackZhu/XD-AI-graduate_entrance_exam",
+      "referencedBy": [
+        "今日随笔.md"
+      ]
+    },
+    {
+      "url": "https://github.com/settings/keys",
+      "referencedBy": [
+        "服务器常见技术问题与技巧.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483686&idx=1&sn=79b3d0eb8a034cf7fe8746cd5e362899&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483697&idx=1&sn=82e8cbb46aa2a0a656ae6f76ed225b03&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483713&idx=1&sn=c90af03630f92999eed214d5dc9f06a3&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483723&idx=1&sn=baa9b82a7ac4f12e936ff8b58dcf8977&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483731&idx=1&sn=08cb4b390e80f3ca4a1e0fa2dd5a3020&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483745&idx=1&sn=ee37c895b25bf2a1f8387edf1d687e30&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483750&idx=1&sn=18d9c270e8d58a32dc4792fbc5f8f6e8&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483757&idx=1&sn=79394fd14e39948d1fc98aa09e031561&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483773&idx=1&sn=003c347fc05e1a3fa4328ac09dddb797&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483790&idx=1&sn=308fb18b66cc66b78f7e15822cdd6eff&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483839&idx=1&sn=b66447f92f4dbfa8be7922f53aa8ba4b&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483853&idx=2&sn=f717767538329ce17325de72aa58ba1b&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483862&idx=1&sn=0dc0ee080532d397b2b00bdd20c86260&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483884&idx=1&sn=e1f4d13589606786f2d2467e11b4e2dc&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483896&idx=1&sn=6b79f7eb585cc1d91a1f61010941477c&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483919&idx=1&sn=c9a530ecce9e60af4fad4c06062ec9ce&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483942&idx=1&sn=a5ba1da8459df0b76e1ea70bfa4dc068&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s?__biz=MzkyNTY0Mjg0OQ==&mid=2247483957&idx=1&sn=abec4b75b9865b754f8a303c340c13a3&scene=21#wechat_redirect",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://mp.weixin.qq.com/s/TAFvUlqdyqP-W6C10F1Hzw",
+      "referencedBy": [
+        "淘天暑期实习面试分享.md",
+        "秋招面试总结分享.md"
+      ]
+    },
+    {
+      "url": "https://pytorch.org/",
+      "referencedBy": [
+        "Ubuntu 20.04下深度学习环境搭建以及常用工具配置.md"
+      ]
+    },
+    {
+      "url": "https://www.anaconda.com/products/individual",
+      "referencedBy": [
+        "Ubuntu 20.04下深度学习环境搭建以及常用工具配置.md"
+      ]
+    },
+    {
+      "url": "https://www.cnblogs.com/2012blog/p/9431432.html",
+      "referencedBy": [
+        "服务器常见技术问题与技巧.md"
+      ]
+    },
+    {
+      "url": "https://www.cnblogs.com/phoenixzq/p/3539619.html",
+      "referencedBy": [
+        "机器学习报告——数据分类的实现.md"
+      ]
+    },
+    {
+      "url": "https://www.engineering.org.cn/engi/CN/PDF/10.1016/j.eng.2023.11.007",
+      "referencedBy": [
+        "当文明踩下加速踏板之后.md"
+      ]
+    },
+    {
+      "url": "https://www.nature.com/articles/s41586-021-03819-2",
+      "referencedBy": [
+        "当文明踩下加速踏板之后.md"
+      ]
+    },
+    {
+      "url": "https://www.spacex.com/vehicles/falcon-9",
+      "referencedBy": [
+        "当文明踩下加速踏板之后.md"
+      ]
+    },
+    {
+      "url": "https://zhuanlan.zhihu.com/p/38269530",
+      "referencedBy": [
+        "机器学习报告——数据分类的实现.md"
+      ]
+    },
+    {
+      "url": "https://zhuanlan.zhihu.com/p/570747928?utm_id=0",
+      "referencedBy": [
+        "服务器常见技术问题与技巧.md"
+      ]
+    }
+  ],
+  "specialLinks": [
+    {
+      "url": "mailto:git@github.com",
+      "referencedBy": [
+        "服务器常见技术问题与技巧.md"
+      ]
+    }
+  ],
+  "friendLinks": [
+    {
+      "name": "六个骨头",
+      "link": "https://sixbones.dev/",
+      "avatar": "https://raw.githubusercontent.com/zrr1999/hosting/main/images/avatar.png",
+      "descr": "飞桨开发者专家",
+      "group": "友情链接"
+    },
+    {
+      "name": "散步",
+      "link": "https://www.aispacewalk.cn/",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240311234109.png",
+      "descr": "开源社区算法工程师",
+      "group": "友情链接"
+    },
+    {
+      "name": "Evan CHEN",
+      "link": "https://lhchen.top/",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/_8RG~~1E221F8I(K2FUV4KJ.bmp",
+      "descr": "直博清深的图表示学习、语音驱动、动作生成大牛",
+      "group": "友情链接"
+    },
+    {
+      "name": "BB酱",
+      "link": "https://www.bbbbchan.com/",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/bb.jpg",
+      "descr": "南开大学分割领域强者",
+      "group": "友情链接"
+    },
+    {
+      "name": "sund",
+      "link": "http://www.sund-xys.cn/",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/sund.jpg",
+      "descr": "西交网络&无线&侧信道大爹",
+      "group": "友情链接"
+    },
+    {
+      "name": "冉崇治",
+      "link": "http://resetran.top/",
+      "avatar": "https://gcore.jsdelivr.net/gh/ranchongzhi/ranchongzhi.github.io@master/medias/logo.png",
+      "descr": "王者打野贼溜的NeRF研究者",
+      "group": "友情链接"
+    },
+    {
+      "name": "冯玉龙",
+      "link": "http://bestxinyu.com/",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/feng.jpg",
+      "descr": "又一个大佬",
+      "group": "友情链接"
+    },
+    {
+      "name": "西电浪潮俱乐部",
+      "link": "http://www.xdu-inspur.cn",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/inspur.jpg",
+      "descr": "在西电的技术性交流社团",
+      "group": "友情链接"
+    },
+    {
+      "name": "破碎羽翼",
+      "link": "https://miroier.github.io/",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/4349b3624507ab566092929d1f0cb9d3_1.jpg",
+      "descr": "中科院软件所破碎羽翼",
+      "group": "友情链接"
+    },
+    {
+      "name": "跟李沐学AI的入门课",
+      "link": "https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20221004001647.png",
+      "descr": "视频网站",
+      "group": "网站"
+    },
+    {
+      "name": "OpenMMLab",
+      "link": "https://openmmlab.com/",
+      "avatar": "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/httpsi.loli.net202005145VyHPQqR6LWF39a.png.png",
+      "descr": "比较综合性的AI框架",
+      "group": "网站"
+    }
+  ],
+  "legacyAggregatePaths": [
+    {
+      "path": "/Gallery/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2020/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2020/10/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2021/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2021/04/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2021/05/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2021/06/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2021/12/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2022/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2022/04/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2022/05/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2022/09/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2022/11/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2023/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2023/02/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2023/09/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/03/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/04/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/05/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/08/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/09/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/10/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/11/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/page/2/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/page/3/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2024/page/4/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2025/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2025/04/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2026/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2026/05/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2026/06/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/2026/08/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/page/2/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/page/3/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/page/4/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/page/5/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/archives/page/6/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/movies/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/music/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/page/2/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/page/3/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/page/4/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/page/5/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/page/6/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/photos/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/ActionFormer/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/Agent-Hermes-PassiveAgent-AI工具-工程实践/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/Agent-SkillEvolver-自进化-Agent评测-Prompt工程-负结果-工程实践/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/Agent/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/Hermes-Agent-自动化-博客-Skill-自进化-OpenClaw-Claude-Code/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/Ubuntu/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/人类文明-科技-人工智能-费米悖论-航天-长寿/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/博客配置/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/技术知识/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/技术问题/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/数据挖掘/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/机器学习/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/深度学习/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/生活/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/计算智能/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/记录生活/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/随笔/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/面试总结/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/面试记录/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/面试记录/page/2/",
+      "disposition": "移除/404"
+    },
+    {
+      "path": "/tags/面试记录/page/3/",
+      "disposition": "移除/404"
+    }
+  ]
+}

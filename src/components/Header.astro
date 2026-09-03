@@ -1,0 +1,36 @@
+---
+import { SITE } from "@consts";
+---
+
+<header class="site-header" transition:persist>
+  <a class="brand" href="/">{SITE.TITLE}</a>
+  <nav class="site-nav" aria-label="主导航">
+    <a href="/blog/">文章</a>
+    <a href="/about/">关于</a>
+    <button id="magnifying-glass" class="search" aria-label="Search">⌕</button>
+    <button id="theme-toggle" class="theme-toggle" aria-label="切换深浅色">◐</button>
+  </nav>
+</header>
+
+<script is:inline>
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    const syncThemeToggle = () => {
+      themeToggle.textContent = document.documentElement.classList.contains("dark")
+        ? "◑"
+        : "◐";
+    };
+
+    if (!themeToggle.dataset.themeBound) {
+      themeToggle.dataset.themeBound = "true";
+      themeToggle.addEventListener("click", () => {
+        const dark = !document.documentElement.classList.contains("dark");
+        document.documentElement.classList.toggle("dark", dark);
+        localStorage.setItem("theme", dark ? "dark" : "light");
+        syncThemeToggle();
+      });
+    }
+
+    syncThemeToggle();
+  }
+</script>

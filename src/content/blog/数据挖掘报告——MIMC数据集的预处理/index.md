@@ -2,8 +2,6 @@
 title: 数据挖掘报告——MIMC数据集的预处理
 date: 2021-04-08
 section: 学习与研究
-tags:
-  - 数据挖掘
 description: 利用 MySQL 与 Python 对 MIMC 数据集进行提取、缺失值与离群点处理、去噪与插值的数据预处理实验记录。
 legacyPath: /2021/04/08/数据挖掘报告——MIMC数据集的预处理/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

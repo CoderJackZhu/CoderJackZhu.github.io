@@ -2,8 +2,6 @@
 title: 考研后的思考
 date: 2021-12-29
 section: 思考与随笔
-tags:
-  - 生活
 description: 反内卷而不躺平
 legacyPath: /2021/12/29/我的生活/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102148023.jpg

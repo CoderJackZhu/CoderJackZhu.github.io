@@ -2,14 +2,6 @@
 title: SkillEvolver 复盘：自进化没有成功，但评测框架留下来了
 date: 2026-06-20
 section: 技术与工程
-tags:
-  - Agent
-  - SkillEvolver
-  - 自进化
-  - Agent评测
-  - Prompt工程
-  - 负结果
-  - 工程实践
 description: 复盘我做 SkillEvolver 自进化项目的全过程：从“让 Prompt Skill 自动变强”的期待，到发现正结果被消融收窄、跨模型迁移为零，最后把项目重新定位为 Agent / Prompt Skill 回归评测框架。
 legacyPath: /2026/06/20/SkillEvolver自进化实验复盘/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/skillevolver-eval-cover.svg

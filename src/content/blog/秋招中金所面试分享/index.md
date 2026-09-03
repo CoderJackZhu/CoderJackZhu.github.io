@@ -2,8 +2,6 @@
 title: 秋招中金所面试分享
 date: 2024-11-01
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批中金所面试分享。
 legacyPath: /2024/11/01/秋招中金所面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/cda763e55b037970dd17031cffcd4e97.png

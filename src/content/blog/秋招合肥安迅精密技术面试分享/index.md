@@ -2,8 +2,6 @@
 title: 秋招合肥安迅精密技术面试分享
 date: 2024-09-23
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批合肥安迅精密技术面试分享。
 legacyPath: /2024/09/23/秋招合肥安迅精密技术面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/ed0b2439c6e30589320d7561ef5af581.jpeg

@@ -2,8 +2,6 @@
 title: 秋招百信银行面试分享
 date: 2024-10-22
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批百信银行面试分享。
 legacyPath: /2024/10/22/秋招百信银行面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/effa96253b0b302d9ae7cfa94c7f5ae3.jpeg

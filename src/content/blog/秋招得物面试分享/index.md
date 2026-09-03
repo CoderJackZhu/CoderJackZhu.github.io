@@ -2,8 +2,6 @@
 title: 秋招得物面试分享
 date: 2024-09-22
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批得物面试分享。
 legacyPath: /2024/09/22/秋招得物面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/3e5e22a30f48d04a78793025395c668b.jpeg

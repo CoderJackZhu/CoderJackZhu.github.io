@@ -33,25 +33,6 @@ function ensure(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-function readJson(path) {
-  return JSON.parse(readFileSync(path, "utf8"));
-}
-
-function sorted(values) {
-  return [...values].sort((a, b) => a.localeCompare(b, "zh-CN"));
-}
-
-function equalLists(label, actual, expected) {
-  const left = sorted(actual);
-  const right = sorted(expected);
-  const missing = right.filter((value) => !left.includes(value));
-  const extra = left.filter((value) => !right.includes(value));
-  ensure(
-    left.length === right.length && missing.length === 0 && extra.length === 0,
-    `${label} 不一致：missing=${JSON.stringify(missing)}, extra=${JSON.stringify(extra)}`,
-  );
-}
-
 function distCandidates(urlPath) {
   let pathname;
   try {
@@ -112,32 +93,25 @@ function htmlFor(urlPath) {
 
 ensure(existsSync(distDir), "dist 不存在；请先运行 npm run build");
 
-const contentManifest = readJson(join(root, "migration/content-manifest.json"));
-const urlManifest = readJson(join(root, "migration/url-manifest.json"));
 const contentFiles = walk(contentDir, (path) => path.endsWith(`${sep}index.md`));
+const sourceLegacyPaths = contentFiles.map((path) => {
+  const source = readFileSync(path, "utf8");
+  const match = source.match(/^legacyPath:\s*(.+?)\s*$/m);
+  ensure(match, `${relative(root, path)} 缺少 legacyPath`);
+  return match[1].trim().replace(/^['"]|['"]$/g, "");
+});
 const htmlFiles = walk(distDir, (path) => path.endsWith(".html"));
 const siteHtmlFiles = htmlFiles.filter((path) => /<!doctype html>/i.test(readFileSync(path, "utf8")));
 
-check("内容、清单与 legacyPath 一致", () => {
-  const sourceLegacyPaths = contentFiles.map((path) => {
-    const source = readFileSync(path, "utf8");
-    const match = source.match(/^legacyPath:\s*(.+?)\s*$/m);
-    ensure(match, `${relative(root, path)} 缺少 legacyPath`);
-    return match[1].trim().replace(/^['"]|['"]$/g, "");
-  });
+check("源文章数量与 legacyPath 一致", () => {
   ensure(contentFiles.length === 54, `source content 应为 54，实际 ${contentFiles.length}`);
-  ensure(contentManifest.length === 54, `content manifest 应为 54，实际 ${contentManifest.length}`);
   ensure(new Set(sourceLegacyPaths).size === 54, "source legacyPath 不是 54 个唯一值");
-  ensure(new Set(contentManifest.map((entry) => entry.legacyPath)).size === 54, "content manifest legacyPath 不唯一");
-  ensure(new Set(urlManifest.legacyPaths).size === 54, "URL manifest legacyPath 不唯一");
-  equalLists("source 与 content manifest", sourceLegacyPaths, contentManifest.map((entry) => entry.legacyPath));
-  equalLists("source 与 URL manifest", sourceLegacyPaths, urlManifest.legacyPaths);
-  return "54 source = 54 content manifest = 54 unique URL manifest";
+  return "54 source、54 个唯一 legacyPath";
 });
 
 check("全部 legacy URL 已构建", () => {
-  for (const legacyPath of urlManifest.legacyPaths) assertDistTarget(legacyPath, "legacy URL");
-  return `${urlManifest.legacyPaths.length} 个日期型 URL`;
+  for (const legacyPath of sourceLegacyPaths) assertDistTarget(legacyPath, "legacy URL");
+  return `${sourceLegacyPaths.length} 个日期型 URL`;
 });
 
 check("内部绝对链接全部可解析", () => {

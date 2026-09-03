@@ -2,8 +2,6 @@
 title: 计算智能导论作业——FCM 聚类的实现
 date: 2021-05-30
 section: 学习与研究
-tags:
-  - 计算智能
 description: 实现模糊 C 均值（FCM）聚类算法，并在 Iris 数据集上完成聚类实验。
 legacyPath: /2021/05/30/计算智能导论作业——FCM 聚类的实现/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

@@ -2,8 +2,6 @@
 title: 浅谈《原神》游戏的理解
 date: 2023-02-07
 section: 思考与随笔
-tags:
-  - 随笔
 description: 一点点的理解
 legacyPath: /2023/02/07/浅谈《原神》游戏的理解/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg

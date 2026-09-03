@@ -595,6 +595,8 @@ main {
   border: 1px solid var(--line);
   background: var(--card);
   display: block;
+  padding: 0;
+  cursor: zoom-in;
 }
 
 .photo-card img {
@@ -607,6 +609,49 @@ main {
 
 .photo-card:hover img {
   transform: scale(1.04);
+}
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.photo-lightbox.is-open {
+  display: flex;
+}
+
+.photo-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.photo-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.photo-lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.55);
 }
 
 .pagination {

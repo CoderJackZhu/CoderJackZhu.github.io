@@ -2,8 +2,6 @@
 title: 秋招淘天凉经
 date: 2024-09-19
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批淘天面试分享。
 legacyPath: /2024/09/19/秋招淘天面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/5a4d35a32963632fb3d07910503c13b3.jpeg

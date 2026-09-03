@@ -2,8 +2,6 @@
 title: 服务器常见技术问题与技巧
 date: 2023-09-03
 section: 技术与工程
-tags:
-  - 技术问题
 description: 本文记录了一些常见的技术问题与技巧
 legacyPath: /2023/09/03/服务器常见技术问题与技巧/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

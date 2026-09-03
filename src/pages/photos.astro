@@ -16,12 +16,71 @@ const copy = siteConfig.pages.photos;
         <p>{copy.subtitle}</p>
       </header>
       <div class="photo-grid">
-        {photos.map((photo) => (
-          <a href={photo.href} class="photo-card" title={photo.title}>
-            <img src={photo.src} alt={photo.title} loading="lazy" />
-          </a>
+        {photos.map((src, index) => (
+          <button
+            type="button"
+            class="photo-card"
+            data-src={src}
+            aria-label={`查看照片 ${index + 1}`}
+          >
+            <img src={src} alt={`照片 ${index + 1}`} loading="lazy" />
+          </button>
         ))}
       </div>
     </div>
   </Container>
+
+  <div
+    id="photo-lightbox"
+    class="photo-lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="照片预览"
+  >
+    <button type="button" class="photo-lightbox-close" aria-label="关闭">×</button>
+    <img class="photo-lightbox-img" src="" alt="" />
+  </div>
+
+  <script>
+    const lightbox = document.getElementById("photo-lightbox") as HTMLDivElement | null;
+    const lightboxImage = lightbox?.querySelector<HTMLImageElement>(".photo-lightbox-img");
+    const closeButton = lightbox?.querySelector<HTMLButtonElement>(".photo-lightbox-close");
+    let lastFocused: HTMLElement | null = null;
+
+    function openLightbox(trigger: HTMLElement) {
+      const src = trigger?.dataset.src;
+      const alt = trigger?.querySelector("img")?.getAttribute("alt") ?? "";
+      if (!lightbox || !lightboxImage || !src) return;
+
+      lastFocused = trigger;
+      lightboxImage.src = src;
+      lightboxImage.alt = alt;
+      lightbox.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      closeButton?.focus();
+    }
+
+    function closeLightbox() {
+      if (!lightbox) return;
+      lightbox.classList.remove("is-open");
+      document.body.style.overflow = "";
+      lastFocused?.focus();
+    }
+
+    document.querySelectorAll(".photo-card").forEach((trigger) => {
+      trigger.addEventListener("click", () => openLightbox(trigger as HTMLElement));
+    });
+
+    closeButton?.addEventListener("click", closeLightbox);
+
+    lightbox?.addEventListener("click", (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && lightbox?.classList.contains("is-open")) {
+        closeLightbox();
+      }
+    });
+  </script>
 </Layout>

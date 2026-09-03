@@ -23,12 +23,6 @@ export interface FooterLinkConfig {
   href: string;
 }
 
-export interface PhotoConfig {
-  src: string;
-  title: string;
-  href: string;
-}
-
 export interface HomePageConfig {
   eyebrow: string;
   heading: string;
@@ -81,7 +75,6 @@ export interface SiteConfig {
   nav: NavItemConfig[];
   socials: SocialLinkConfig[];
   friendLinks: FriendLinkConfig[];
-  categories: string[];
   footer: {
     author: string;
     since: string;
@@ -105,7 +98,7 @@ export interface SiteConfig {
     photos: PhotosPageConfig;
     notFound: NotFoundPageConfig;
   };
-  photos: PhotoConfig[];
+  photos: string[];
 }
 
 const configPath = path.resolve(process.cwd(), "site.config.yaml");

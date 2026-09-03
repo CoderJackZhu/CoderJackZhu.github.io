@@ -2,8 +2,6 @@
 title: 秋招蚂蚁面试分享
 date: 2024-09-25
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批蚂蚁技术面试分享。
 legacyPath: /2024/09/25/秋招蚂蚁面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/6dd5501e98b9dfdfdb8ed3f0d19a4a19.jpeg

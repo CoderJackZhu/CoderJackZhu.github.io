@@ -2,8 +2,6 @@
 title: 计算智能导论作业——感知器实现二分类
 date: 2021-05-30
 section: 学习与研究
-tags:
-  - 计算智能
 description: 实现感知器算法，并在多组二维数据与 Sonar 高维数据集上完成二分类实验。
 legacyPath: /2021/05/30/计算智能导论作业——感知器实现二分类/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

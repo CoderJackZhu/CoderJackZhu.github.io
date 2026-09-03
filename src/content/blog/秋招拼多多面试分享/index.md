@@ -2,8 +2,6 @@
 title: 秋招拼多多面试分享
 date: 2024-10-10
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批拼多多技术面试分享。
 legacyPath: /2024/10/10/秋招拼多多面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg

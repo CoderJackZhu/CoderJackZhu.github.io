@@ -2,8 +2,6 @@
 title: 机器学习报告——数据分类的实现
 date: 2021-04-11
 section: 学习与研究
-tags:
-  - 机器学习
 description: 使用 logistic 回归、神经网络、高斯判别分析与贝叶斯方法对 Sonar 数据集进行分类的实现与比较。
 legacyPath: /2021/04/11/机器学习报告——数据分类的实现/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

@@ -2,8 +2,6 @@
 title: 记录我的第一次搭建博客
 date: 2020-10-31
 section: 经历与记录
-tags:
-  - 记录生活
 description: 我太难了
 legacyPath: /2020/10/31/记录第一次搭博客/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/xidian1.jpg

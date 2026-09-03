@@ -2,8 +2,6 @@
 title: 秋招快手面试分享
 date: 2024-09-24
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批快手技术面试分享。
 legacyPath: /2024/09/24/秋招快手面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/617da713d7b9fda5210171a556bd7f37.jpeg

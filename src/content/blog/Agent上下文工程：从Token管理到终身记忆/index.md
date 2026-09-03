@@ -2,8 +2,6 @@
 title: Agent 上下文工程：从 Token 管理到终身记忆
 date: 2026-05-10
 section: 技术与工程
-tags:
-  - Agent
 description: 深入探讨 AI Agent 的上下文工程，从 Token 预算管理到三层记忆架构，构建能让 Agent 越用越聪明的记忆系统。
 legacyPath: /2026/05/10/Agent上下文工程：从Token管理到终身记忆/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-context-engineering-cover.jpg

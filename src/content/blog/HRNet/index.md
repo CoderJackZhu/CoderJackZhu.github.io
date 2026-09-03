@@ -2,8 +2,6 @@
 title: 【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition
 date: 2022-09-21
 section: 学习与研究
-tags:
-  - 深度学习
 description: 读论文的记录
 legacyPath: /2022/09/21/HRNet/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/mouse.jpg

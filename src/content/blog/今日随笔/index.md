@@ -2,8 +2,6 @@
 title: 今日随笔
 date: 2022-05-10
 section: 思考与随笔
-tags:
-  - 记录生活
 description: 进步了
 legacyPath: /2022/05/10/今日随笔/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/moon.jpg

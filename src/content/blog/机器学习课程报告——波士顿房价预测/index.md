@@ -2,8 +2,6 @@
 title: 机器学习课程报告——波士顿房价预测
 date: 2021-06-18
 section: 学习与研究
-tags:
-  - 机器学习
 description: 实现波士顿房价预测，比较神经网络模型与线性回归模型的效果。
 legacyPath: /2021/06/18/机器学习课程报告——波士顿房价预测/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

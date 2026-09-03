@@ -2,8 +2,6 @@
 title: 淘天暑期实习计算机视觉面试凉经
 date: 2024-04-30
 section: 经历与记录
-tags:
-  - 面试记录
 description: 淘天技术的面试记录分享。
 legacyPath: /2024/04/30/淘天暑期实习面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/f786f54959c72a37297a42973764cd39_720.jpg

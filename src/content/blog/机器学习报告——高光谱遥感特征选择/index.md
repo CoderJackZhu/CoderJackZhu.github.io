@@ -2,8 +2,6 @@
 title: 机器学习作业——高光谱遥感特征选择
 date: 2021-04-28
 section: 学习与研究
-tags:
-  - 机器学习
 description: 基于 KSC 高光谱遥感数据集，用 Filter 与 Wrapper 方法进行波段特征选择并比较优缺点。
 legacyPath: /2021/04/28/机器学习报告——高光谱遥感特征选择/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

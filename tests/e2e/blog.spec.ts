@@ -180,22 +180,22 @@ test("首页展示定位语、最近六篇与完整入口", async ({ page }) => 
 test("文章列表分页、顺序与总数正确", async ({ page }) => {
   await page.goto("/blog/");
   await expect(page.locator(".section-head")).toContainText("54 posts");
-  await expect(page.locator(".post-list > li")).toHaveCount(12);
-  await expect(page.locator(".pagination")).toContainText("第 1 / 5 页");
+  await expect(page.locator(".post-list > li")).toHaveCount(24);
+  await expect(page.locator(".pagination")).toContainText("第 1 / 3 页");
   const firstPageHrefs = await page.locator(".post-list .post").evaluateAll((links) =>
     links.map((link) => link.getAttribute("href") ?? ""),
   );
 
   await page.goto("/blog/2/");
-  await expect(page.locator(".post-list > li")).toHaveCount(12);
-  await expect(page.locator(".pagination")).toContainText("第 2 / 5 页");
+  await expect(page.locator(".post-list > li")).toHaveCount(24);
+  await expect(page.locator(".pagination")).toContainText("第 2 / 3 页");
   await expect(page.getByRole("link", { name: "上一页" })).toHaveAttribute("href", "/blog/");
   const secondPageHrefs = await page.locator(".post-list .post").evaluateAll((links) =>
     links.map((link) => link.getAttribute("href") ?? ""),
   );
   const listed = [...firstPageHrefs, ...secondPageHrefs];
   const byPath = new Map(manifest.map((post) => [post.legacyPath, post]));
-  expect(new Set(listed).size).toBe(24);
+  expect(new Set(listed).size).toBe(48);
   expect(listed.every((href) => byPath.has(href))).toBe(true);
   const listedDates = listed.map((href) => byPath.get(href)!.date);
   expect(listedDates).toEqual([...listedDates].sort((left, right) => right.localeCompare(left)));
@@ -204,11 +204,11 @@ test("文章列表分页、顺序与总数正确", async ({ page }) => {
 test("关于、友链与 404 页面可访问", async ({ page }) => {
   await page.goto("/about/");
   await expect(page.getByRole("heading", { level: 1, name: "关于" })).toBeVisible();
-  await expect(page.locator(".about-copy")).toContainText("Jack，一名算法工程师。");
+  await expect(page.locator(".about-copy")).toContainText("Jack，一名 LLM Agent 工程师");
 
   await page.goto("/link/");
   await expect(page.getByRole("heading", { level: 1, name: "友链" })).toBeVisible();
-  await expect(page.locator(".link-list li")).toHaveCount(11);
+  await expect(page.locator(".link-list li")).toHaveCount(9);
 
   const response = await page.goto("/this-route-does-not-exist/");
   expect(response?.status()).toBe(404);
@@ -268,7 +268,7 @@ test("主题默认浅色并可持久切换", async ({ page }) => {
 
 test("键盘可依序聚焦主导航控件且具可访问名称", async ({ page }) => {
   await page.goto("/");
-  const expectedNames = ["Jack's Blog", "文章", "关于", "友链", "搜索", "切换为深色模式"];
+  const expectedNames = ["Jack's Blog", "文章", "关于", "友链", "照片", "搜索", "切换为深色模式"];
   const names = [];
   for (let index = 0; index < expectedNames.length; index += 1) {
     await page.keyboard.press("Tab");

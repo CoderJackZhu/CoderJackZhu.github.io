@@ -1,13 +1,30 @@
 ---
 import BackToTop from "@components/BackToTop.astro";
+import siteConfig from "@lib/site-config";
+
+const { footer } = siteConfig;
+const sinceYear = new Date(footer.since).getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="footer-row">
-    <span>© 2020–{new Date().getFullYear()} Jack</span>
-    <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a>
+    <span>© {sinceYear}–{new Date().getFullYear()} Jack</span>
+    <a href={footer.icpUrl}>{footer.icp}</a>
     <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a>
   </div>
+
+  {footer.showRuntime && (
+    <div class="footer-row footer-stats">
+      <span id="site-runtime">本站已运行 …</span>
+      {footer.showVisitor && (
+        <>
+          <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span>
+          <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>
+        </>
+      )}
+    </div>
+  )}
+
   <div class="footer-row">
     <a href="/atom.xml">RSS</a>
     <a href="/sitemap-index.xml">Sitemap</a>
@@ -15,6 +32,29 @@ import BackToTop from "@components/BackToTop.astro";
     <a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a>
     <a href="https://space.bilibili.com/355295657">B站</a>
     <a href="/link/">友链</a>
+    <a href="/photos/">照片</a>
   </div>
+
   <BackToTop />
 </footer>
+
+{footer.showRuntime && (
+  <script define:vars={{ since: footer.since }}>
+    (() => {
+      const el = document.getElementById("site-runtime");
+      if (!el) return;
+      const start = new Date(since);
+      const fmt = () => {
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      fmt();
+    })();
+  </script>
+)}
+
+{footer.showVisitor && (
+  <script is:inline async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+)}

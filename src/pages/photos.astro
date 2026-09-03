@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// 收集文章封面图并去重，每张图关联到它的文章
+const seen = new Set<string>();
+const photos: { src: string; title: string; href: string }[] = [];
+for (const post of posts) {
+  const src = post.data.cover;
+  if (!src || seen.has(src)) continue;
+  seen.add(src);
+  photos.push({ src, title: post.data.title, href: post.data.legacyPath });
+}
+---
+
+<Layout title="照片" description="文章封面图集。">
+  <Container>
+    <div class="animate">
+      <header class="archive-head">
+        <p class="eyebrow">Photos</p>
+        <h1>照片</h1>
+        <p>文章封面图集。</p>
+      </header>
+      <div class="photo-grid">
+        {photos.map((photo) => (
+          <a href={photo.href} class="photo-card" title={photo.title}>
+            <img src={photo.src} alt={photo.title} loading="lazy" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </Container>
+</Layout>

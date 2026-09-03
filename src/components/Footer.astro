@@ -37,20 +37,31 @@ const sinceYear = new Date(footer.since).getFullYear();
 {footer.showRuntime && (
   <script define:vars={{ since: footer.since }}>
     (() => {
-      const el = document.getElementById("site-runtime");
-      if (!el) return;
-      const start = new Date(since);
-      const fmt = () => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
         const days = Math.floor((Date.now() - start.getTime()) / 86400000);
         const y = Math.floor(days / 365);
         const d = days % 365;
         el.textContent = `本站已运行 ${y} 年 ${d} 天`;
       };
-      fmt();
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
     })();
   </script>
 )}
 
 {footer.showVisitor && (
-  <script is:inline async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script is:inline>
+    const refreshBusuanzi = () => {
+      document.querySelectorAll('script[src*="busuanzi"]').forEach((el) => el.remove());
+      const s = document.createElement("script");
+      s.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+      s.async = true;
+      document.body.appendChild(s);
+    };
+    refreshBusuanzi();
+    document.addEventListener("astro:after-swap", refreshBusuanzi);
+  </script>
 )}

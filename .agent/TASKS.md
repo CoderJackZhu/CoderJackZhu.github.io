@@ -11,8 +11,8 @@
 
 ## Next
 
-- [ ] 图片与静态资源（Phase E 剩余）：`cdn.nlark.com` 5 条 unknown 复核；gcore 图片保留确认；封面图处置（延后）
-- [ ] 旧 URL/SEO/订阅兼容（Phase F）：atom.xml、sitemap、robots、验证文件、`.nojekyll`、旧聚合页 404 清单
+- [x] 图片与静态资源（Phase E 剩余）：`cdn.nlark.com` 5 条实测 200 有效；gcore 56 张保留确认
+- [x] 旧 URL/SEO/订阅兼容（Phase F）：百度统计入 head、robots→sitemap-index、canonical/sitemap/CNAME/.nojekyll/验证文件/atom.xml 全部验证通过
 - [ ] 本地完整验证（Phase H）：`npm ci` + `npm run build` + Playwright 矩阵（360/390/768/1440px）
 
 ## Later
@@ -20,7 +20,7 @@
 - [ ] GitHub 审阅与上线（Phase I，需用户二次批准）
 - [ ] 稳定期清理（Phase J）
 - [ ] 评估从 `html` 分支发布迁移到官方 Pages artifact 模式
-- [ ] 封面图处置（用户已定，延后）：① cover→`og:image` 社交分享图接线 ② 新建 `/photos/` 极简摄影页（范围变更，需单独设计）。Phase D 只保留 cover 字段 URL，不做展示
+- [ ] 新建 `/photos/` 极简摄影页（仅放用户自拍照片，不放文章插图；范围变更，需单独设计）。cover→og:image 已接线完成
 
 ## Backlog
 

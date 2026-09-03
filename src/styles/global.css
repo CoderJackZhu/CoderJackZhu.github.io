@@ -105,46 +105,44 @@ button {
   letter-spacing: -0.025em;
   font-size: 18px;
   cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .site-nav {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 22px;
   color: var(--muted);
   font-size: 14px;
+  white-space: nowrap;
 }
 
-.site-nav a,
-.site-nav button {
-  border: 0;
-  background: none;
-  padding: 3px 0;
-  cursor: pointer;
+.site-nav a {
   border-bottom: 1px solid transparent;
+  padding: 3px 0;
 }
 
-.site-nav a:hover,
-.site-nav button:hover {
+.site-nav a:hover {
   color: var(--ink);
   border-bottom-color: var(--ink);
 }
 
-.search {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--faint);
-}
-
-.theme-toggle {
+.site-nav button {
   border: 0;
   background: none;
+  padding: 3px 2px;
   cursor: pointer;
   color: var(--faint);
   font-family: var(--mono);
-  font-size: 16px;
-  padding: 3px 0;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.site-nav button:hover {
+  color: var(--ink);
 }
 
 main {

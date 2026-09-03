@@ -1,6 +1,6 @@
 # ============================================================
 #  Jack's Blog 站点配置
-#  想改站点信息 / 文案 / 友链 / 页脚，直接改这个文件即可。
+#  想改站点信息 / 文案 / 友链 / 页脚 / 导航 / 照片墙，直接改这个文件即可。
 #  改完 push 到 main，GitHub Actions 会自动部署，几分钟后生效。
 # ============================================================
 
@@ -9,6 +9,13 @@ site:
   description: "记录技术实践、学习过程，以及对一些长期问题的思考。"
   numPostsOnHomepage: 6        # 首页显示文章数
   numPostsPerPage: 24          # 「全部文章」每页条数
+
+# 顶部导航栏
+nav:
+  - { label: "文章", href: "/blog/" }
+  - { label: "关于", href: "/about/" }
+  - { label: "友链", href: "/link/" }
+  - { label: "照片", href: "/photos/" }
 
 # 社交链接（关于页 + 页脚）
 socials:
@@ -29,18 +36,38 @@ friendLinks:
   - { name: 西电浪潮俱乐部, link: "http://www.xdu-inspur.cn", descr: "在西电的技术性交流社团" }
   - { name: 破碎羽翼, link: "https://miroier.github.io/", descr: "中科院软件所破碎羽翼" }
 
+# 文章分类（content schema 的分类枚举也由这里驱动）
+categories:
+  - "技术与工程"
+  - "学习与研究"
+  - "思考与随笔"
+  - "经历与记录"
+
 # 页脚
 footer:
+  author: "Jack"              # © 行署名
   since: "2020-10-26"          # 建站日期（© 年份和运行天数都用它）
   icp: "陕ICP备2023003055号-1"
   icpUrl: "https://beian.miit.gov.cn/"
+  cdnNote: "本网站由又拍云提供加速服务"
+  cdnUrl: "https://www.upyun.com/"
   showRuntime: true            # 是否显示「本站已运行 X 天」
   showVisitor: true            # 是否显示访问统计（不蒜子）
+
+# 页脚链接
+footerLinks:
+  - { label: "RSS", href: "/atom.xml" }
+  - { label: "Sitemap", href: "/sitemap-index.xml" }
+  - { label: "GitHub", href: "https://github.com/CoderJackZhu" }
+  - { label: "知乎", href: "https://www.zhihu.com/people/zhu-yijie-51" }
+  - { label: "B站", href: "https://space.bilibili.com/355295657" }
+  - { label: "友链", href: "/link/" }
+  - { label: "照片", href: "/photos/" }
 
 # 关于页文案（每段一行）
 about:
   paragraphs:
-    - "Jack，一名 LLM Agent 工程师（算法工程师），西安电子科技大学人工智能方向硕士。"
+    - "Jack，一名 LLM Agent 工程师（算法工程师），西安电子科技大学人工智能方向本硕。"
     - "此前的研究与工程经历覆盖计算机视觉、AIGC 与大模型。"
     - "当 AI 正在接管大部分具体实现，真正稀缺的不再是掌握哪门技术，而是判断力、品味，以及提出正确问题的能力。"
     - "我关心的是想法与系统之间的设计——让智能可靠地服务于真实问题，而不是追逐工具与概念的新旧。"
@@ -49,3 +76,80 @@ about:
 
 # 友链页副标题
 linkSubtitle: "朋友们的网站。"
+
+# 各页面标题 / eyebrow / 标题 / 副标题文案
+# home 的页面标题直接复用 site.title，不在此重复定义。
+pages:
+  home:
+    eyebrow: "Writing · since 2020"
+    heading: "最近写作"
+    subtitle: "Latest writing"
+    more: "查看全部 {count} 篇文章 →"
+  blog:
+    title: "文章"
+    description: "全部文章，按发布日期倒序排列。"
+    eyebrow: "All writing"
+    heading: "全部文章"
+    sectionHeading: "文章"
+    postsLabel: "posts"
+  about:
+    title: "关于"
+    eyebrow: "About this site"
+    heading: "关于"
+    subtitle: "这是我的个人介绍。"
+  link:
+    title: "友链"
+    eyebrow: "Friends"
+    heading: "友链"
+  photos:
+    title: "照片"
+    eyebrow: "Photos"
+    heading: "照片"
+    subtitle: "文章封面图集。"
+  notFound:
+    title: "404"
+    eyebrow: "Not found"
+    heading: "404：页面未找到"
+
+# 照片墙（从文章 frontmatter 提取，按目录顺序，封面去重保留首次出现）
+photos:
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/mouse.jpg", title: "【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition", href: "/2022/09/21/HRNet/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png", title: "Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署", href: "/2024/03/03/Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102119630.jpg", title: "Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置", href: "/2022/04/10/Ubuntu 20.04下深度学习环境搭建以及常用工具配置/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg", title: "Ubuntu的基本使用", href: "/2022/11/02/ubuntu的使用/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/moon.jpg", title: "今日随笔", href: "/2022/05/10/今日随笔/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/82DA5A8E1D99BD7DC83A051FA8EA75E2.jpg", title: "华为暑期实习面试分享", href: "/2024/04/28/华为暑期实习面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg", title: "ActionFormer论文分享", href: "/2022/11/10/学术交流分享ActionFormer/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/civilization-acceleration-cover.svg", title: "当文明踩下加速踏板之后", href: "/2026/08/29/当文明踩下加速踏板之后/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102148023.jpg", title: "考研后的思考", href: "/2021/12/29/我的生活/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png", title: "数据挖掘报告——MIMC数据集的预处理", href: "/2021/04/08/数据挖掘报告——MIMC数据集的预处理/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg", title: "浅谈《原神》游戏的理解", href: "/2023/02/07/浅谈《原神》游戏的理解/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/f786f54959c72a37297a42973764cd39_720.jpg", title: "淘天暑期实习计算机视觉面试凉经", href: "/2024/04/30/淘天暑期实习面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg", title: "现代化的包管理工具：uv", href: "/2025/04/30/现代的包管理工具uv/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/addc1330ad0be5e99fdcfcb83dbbef6a.jpeg", title: "秋招上海银行面试分享", href: "/2024/10/25/秋招上海银行面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/1c6fc333392b998f32dffef731788ea7.jpeg", title: "秋招中兴面试分享", href: "/2024/09/19/秋招中兴面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/cda763e55b037970dd17031cffcd4e97.png", title: "秋招中金所面试分享", href: "/2024/11/01/秋招中金所面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/4dd98d0dc7fdb586f07c96d9d9dbe5eb.jpeg", title: "秋招华为面试分享", href: "/2024/10/15/秋招华为面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/ed0b2439c6e30589320d7561ef5af581.jpeg", title: "秋招合肥安迅精密技术面试分享", href: "/2024/09/23/秋招合肥安迅精密技术面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/e236385b88c57c4a60ef5aaf72189cff.jpeg", title: "秋招广联达", href: "/2024/10/31/秋招广联达面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/3e5e22a30f48d04a78793025395c668b.jpeg", title: "秋招得物面试分享", href: "/2024/09/22/秋招得物面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/617da713d7b9fda5210171a556bd7f37.jpeg", title: "秋招快手面试分享", href: "/2024/09/24/秋招快手面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9e2a0c81735df6e2537970db4d444c69.jpeg", title: "秋招招联面试分享", href: "/2024/10/19/秋招招联面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/744bb81c16f19a7793ade4c7a0ddd655.jpeg", title: "秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享", href: "/2024/08/06/秋招提前批百度面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/8b7a826c00d8ada33d1dfa9ac7ce64dd.jpeg", title: "秋招携程面试分享", href: "/2024/10/15/秋招携程面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/01cb6bf5523d02fb95edf8da1c02b62b.jpeg", title: "秋招比亚迪面试分享", href: "/2024/09/23/秋招比亚迪面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/5a4d35a32963632fb3d07910503c13b3.jpeg", title: "秋招淘天凉经", href: "/2024/09/19/秋招淘天面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/ec650a59372c0b622e7065b01ab37920.jpeg", title: "秋招滴滴面试分享", href: "/2024/09/28/秋招滴滴面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/53a57a8ff31e36a01cc76723d34c6235.jpeg", title: "秋招理想面试分享", href: "/2024/09/26/秋招理想面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/effa96253b0b302d9ae7cfa94c7f5ae3.jpeg", title: "秋招百信银行面试分享", href: "/2024/10/22/秋招百信银行面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/dc196f33f2ea5313a41518c2016b80cf.jpeg", title: "秋招科大讯飞面试分享", href: "/2024/10/12/秋招科大讯飞面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/65f920634dd84d2fd4d66db85d113e3f.jpeg", title: "秋招荣耀面试分享", href: "/2024/10/14/秋招荣耀面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/da31bfb39d7d0fb356ac618060ece6b7.png", title: "秋招蔚来面试分享", href: "/2024/11/01/秋招蔚来面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/b3b1b24841d210d0cbe1bf5a64b04d44.jpeg", title: "秋招虾皮面试分享", href: "/2024/10/20/秋招虾皮面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/6dd5501e98b9dfdfdb8ed3f0d19a4a19.jpeg", title: "秋招蚂蚁面试分享", href: "/2024/09/25/秋招蚂蚁面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/2349135dde1b4a4828b209c87569c4a8.jpeg", title: "秋招金山面试分享", href: "/2024/11/06/秋招金山面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/790dbf2659a8aff75e42f73ecf06fab9.png", title: "秋招面试总结分享", href: "/2024/11/30/秋招面试总结分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/e00a8894b3eeeffa688d3fe1b80dc395.jpeg", title: "腾讯AI Lab暑实面试分享", href: "/2024/05/28/腾讯AI Lab暑实面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/xidian1.jpg", title: "记录我的第一次搭建博客", href: "/2020/10/31/记录第一次搭博客/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/a22477f98ae4f50717035574c2f85a32.jpeg", title: "钉钉和淘天机器学习捞暑期实习面试分享", href: "/2024/05/22/钉钉和淘天机器学习捞暑期实习面试分享/" }
+  - { src: "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/1cfcf9e2b6691718b5bc070c3b7f222b.jpeg", title: "阿里国际暑实面试分享", href: "/2024/05/23/阿里国际暑实面试分享/" }

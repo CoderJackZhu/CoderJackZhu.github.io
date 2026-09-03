@@ -3,15 +3,17 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import { SITE, SOCIALS } from "@consts";
 import siteConfig from "@lib/site-config";
+
+const aboutCopy = siteConfig.pages.about;
 ---
 
-<Layout title="关于" description={SITE.DESCRIPTION}>
+<Layout title={aboutCopy.title} description={SITE.DESCRIPTION}>
   <Container>
     <div class="animate">
       <header class="about-head">
-        <p class="eyebrow">About this site</p>
-        <h1>关于</h1>
-        <p>这是我的个人介绍。</p>
+        <p class="eyebrow">{aboutCopy.eyebrow}</p>
+        <h1>{aboutCopy.heading}</h1>
+        <p>{aboutCopy.subtitle}</p>
       </header>
       <div class="about-grid">
         <div class="about-copy">

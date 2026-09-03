@@ -11,7 +11,7 @@ const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const pageSize = 12;
+const pageSize = 24;
 const lastPage = Math.max(1, Math.ceil(posts.length / pageSize));
 const page: Page<CollectionEntry<"blog">> = {
   data: posts.slice(0, pageSize),

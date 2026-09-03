@@ -12,7 +12,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-  return paginate(posts, { pageSize: 12 }).filter(
+  return paginate(posts, { pageSize: 24 }).filter(
     ({ props }) => props.page.currentPage > 1,
   );
 }

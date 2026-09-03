@@ -4,14 +4,16 @@ import Container from "@components/Container.astro";
 import { FRIEND_LINKS } from "@data/links";
 import siteConfig from "@lib/site-config";
 import { SITE } from "@consts";
+
+const linkCopy = siteConfig.pages.link;
 ---
 
-<Layout title="友链" description={SITE.DESCRIPTION}>
+<Layout title={linkCopy.title} description={SITE.DESCRIPTION}>
   <Container>
     <div class="animate">
       <header class="archive-head">
-        <p class="eyebrow">Friends</p>
-        <h1>友链</h1>
+        <p class="eyebrow">{linkCopy.eyebrow}</p>
+        <h1>{linkCopy.heading}</h1>
         <p>{siteConfig.linkSubtitle}</p>
       </header>
       <ul class="link-list">

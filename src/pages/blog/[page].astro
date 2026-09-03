@@ -5,8 +5,9 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import Pagination from "@components/Pagination.astro";
-import { BLOG } from "@consts";
 import siteConfig from "@lib/site-config";
+
+const blogCopy = siteConfig.pages.blog;
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const posts = (await getCollection("blog"))
@@ -21,16 +22,16 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 const { page } = Astro.props as { page: Page<CollectionEntry<"blog">> };
 ---
 
-<Layout title={`${BLOG.TITLE} - 第 ${page.currentPage} 页`} description={BLOG.DESCRIPTION}>
+<Layout title={`${blogCopy.title} - 第 ${page.currentPage} 页`} description={blogCopy.description}>
   <Container>
     <aside data-pagefind-ignore>
       <header class="archive-head">
-        <p class="eyebrow">All writing</p>
-        <h1>全部文章</h1>
-        <p>{BLOG.DESCRIPTION}</p>
+        <p class="eyebrow">{blogCopy.eyebrow}</p>
+        <h1>{blogCopy.heading}</h1>
+        <p>{blogCopy.description}</p>
       </header>
       <div class="section-head">
-        <h2>文章</h2>
+        <h2>{blogCopy.sectionHeading}</h2>
         <span>第 {page.currentPage} 页</span>
       </div>
       <ol class="post-list">

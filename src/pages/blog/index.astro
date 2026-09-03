@@ -4,9 +4,10 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import Pagination from "@components/Pagination.astro";
-import { BLOG } from "@consts";
 import siteConfig from "@lib/site-config";
 import type { Page } from "astro";
+
+const blogCopy = siteConfig.pages.blog;
 
 const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
@@ -32,17 +33,17 @@ const page: Page<CollectionEntry<"blog">> = {
 };
 ---
 
-<Layout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
+<Layout title={blogCopy.title} description={blogCopy.description}>
   <Container>
     <aside data-pagefind-ignore>
       <header class="archive-head">
-        <p class="eyebrow">All writing</p>
-        <h1>全部文章</h1>
-        <p>{BLOG.DESCRIPTION}</p>
+        <p class="eyebrow">{blogCopy.eyebrow}</p>
+        <h1>{blogCopy.heading}</h1>
+        <p>{blogCopy.description}</p>
       </header>
       <div class="section-head">
-        <h2>文章</h2>
-        <span>{page.total} posts</span>
+        <h2>{blogCopy.sectionHeading}</h2>
+        <span>{page.total} {blogCopy.postsLabel}</span>
       </div>
       <ol class="post-list">
         {page.data.map((post) => (

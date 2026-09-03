@@ -2,15 +2,15 @@
 import BackToTop from "@components/BackToTop.astro";
 import siteConfig from "@lib/site-config";
 
-const { footer } = siteConfig;
+const { footer, footerLinks } = siteConfig;
 const sinceYear = new Date(footer.since).getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="footer-row">
-    <span>© {sinceYear}–{new Date().getFullYear()} Jack</span>
+    <span>© {sinceYear}–{new Date().getFullYear()} {footer.author}</span>
     <a href={footer.icpUrl}>{footer.icp}</a>
-    <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a>
+    <a href={footer.cdnUrl}>{footer.cdnNote}</a>
   </div>
 
   {footer.showRuntime && (
@@ -26,13 +26,9 @@ const sinceYear = new Date(footer.since).getFullYear();
   )}
 
   <div class="footer-row">
-    <a href="/atom.xml">RSS</a>
-    <a href="/sitemap-index.xml">Sitemap</a>
-    <a href="https://github.com/CoderJackZhu">GitHub</a>
-    <a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a>
-    <a href="https://space.bilibili.com/355295657">B站</a>
-    <a href="/link/">友链</a>
-    <a href="/photos/">照片</a>
+    {footerLinks.map((link) => (
+      <a href={link.href}>{link.label}</a>
+    ))}
   </div>
 
   <BackToTop />

@@ -1,28 +1,32 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import { SITE, HOME } from "@consts";
+import { SITE } from "@consts";
+import siteConfig from "@lib/site-config";
 import ArrowCard from "@components/ArrowCard.astro";
 import { getCollection } from "astro:content";
 
-const blog = (await getCollection("blog"))
+const allPosts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const blog = allPosts.slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
+const home = siteConfig.pages.home;
+const moreText = home.more.replace("{count}", String(allPosts.length));
 ---
 
-<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+<Layout title={siteConfig.site.title} description={SITE.DESCRIPTION}>
   <Container>
     <aside data-pagefind-ignore>
       <header class="hero">
-        <p class="eyebrow">Writing · since 2020</p>
+        <p class="eyebrow">{home.eyebrow}</p>
         <h1>{SITE.DESCRIPTION}</h1>
       </header>
 
       <section class="animate">
         <div class="section-head">
-          <h2>最近写作</h2>
-          <span>Latest writing</span>
+          <h2>{home.heading}</h2>
+          <span>{home.subtitle}</span>
         </div>
         <ol class="post-list">
           {
@@ -33,7 +37,7 @@ const blog = (await getCollection("blog"))
             ))
           }
         </ol>
-        <a class="more" href="/blog/">查看全部 54 篇文章 →</a>
+        <a class="more" href="/blog/">{moreText}</a>
       </section>
     </aside>
   </Container>

@@ -3,13 +3,16 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import BackToPrevious from "@components/BackToPrevious.astro";
 import { SITE } from "@consts";
+import siteConfig from "@lib/site-config";
+
+const notFoundCopy = siteConfig.pages.notFound;
 ---
 
-<Layout title="404" description={SITE.DESCRIPTION}>
+<Layout title={notFoundCopy.title} description={SITE.DESCRIPTION}>
   <Container>
     <div class="archive-head">
-      <p class="eyebrow">Not found</p>
-      <h1>404：页面未找到</h1>
+      <p class="eyebrow">{notFoundCopy.eyebrow}</p>
+      <h1>{notFoundCopy.heading}</h1>
       <p><BackToPrevious href="/">返回首页</BackToPrevious></p>
     </div>
   </Container>

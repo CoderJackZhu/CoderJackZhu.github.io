@@ -16,6 +16,12 @@ const sinceYear = new Date(footer.since).getFullYear();
   {footer.showRuntime && (
     <div class="footer-row footer-stats">
       <span id="site-runtime">本站已运行 …</span>
+      {footer.showVisitor && (
+        <>
+          <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span>
+          <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>
+        </>
+      )}
     </div>
   )}
 
@@ -42,6 +48,31 @@ const sinceYear = new Date(footer.since).getFullYear();
       };
       updateRuntime();
       document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  </script>
+)}
+
+{footer.showVisitor && (
+  <script is:inline>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
     })();
   </script>
 )}

@@ -4,7 +4,7 @@ date: 2025-04-30
 section: 技术与工程
 tags:
   - 技术知识
-description: 秋招正式批拼多多技术面试分享。
+description: 现代化的包管理工具：uv
 legacyPath: /2025/04/30/现代的包管理工具uv/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg
 ---

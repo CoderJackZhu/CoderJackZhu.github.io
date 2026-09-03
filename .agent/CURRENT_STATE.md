@@ -2,8 +2,9 @@
 
 ## Current Focus
 
-本地验证（Phase H）全部通过。站点标识已换为 bloggallery 的 J 矢量图（art_favicon.webp → 本地 PNG）。
-分支 `migration/astro` 已 push 到 origin，PR #26 已开且 CI build 通过。**等待用户明确「可以上线」后 merge（merge 触发部署，不可逆）。**
+迁移已完成并上线（2026-09-04）。PR #26 已 merge，Astro 站点部署到 `html` 分支，
+线上 https://www.jackzhu.top/ 已切换为新站并回归验证通过（首页/路由/旧 URL/静态资源/署名清除/Pagefind 全绿）。
+剩余：Phase J 稳定期清理 + `/photos/` 摄影页（范围变更）。
 
 ## Last Updated
 
@@ -35,12 +36,12 @@
 
 ## In Progress
 
-- 无（等待用户 merge 批准）
+- 无（迁移已完成上线）
 
 ## Next Recommended Task
 
-用户审阅 PR #26（https://github.com/CoderJackZhu/CoderJackZhu.github.io/pull/26）。
-用户明确「可以上线」后：`gh pr merge 26 --merge` → 触发 `astro_build_deploy.yml` 部署到 `html` 分支 → 验证 https://www.jackzhu.top/ 上线并回归旧 URL。
+- Phase J 稳定期清理（可选）：`migration/*.json`、`scripts/*.mjs` 是否保留/归档；npm audit 剩余 5 项是否升 Astro 7。
+- `/photos/` 极简摄影页（范围变更，需单独设计）。
 
 ## Known Issues
 

@@ -18,29 +18,29 @@ cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754
 
 ## 目 录
 
-1 数据处理 1
-1.1 数据提取 1
-1.2 数据具体处理 1
-1.3 数据合并 1
-1.4 缺失值处理 2
-1.5 离群点处理 2
-1.6 去噪 4
-1.7 插值 5
-2 第二组数据 5
-2.1 离群点处理 5
-2.2 去噪 6
-2.3 插值 7
-3 第三组数据 8
-3.1 离群点处理 8
-3.2 去噪 9
-3.3 插值 9
-4 总结 10
-A SQL 程序代码 1 11
-B SQL 程序代码 2 11
-\(\mathrm{C}\) 主程序代码 11
-D 作业要求 14
-D. 1 数据集说明 14
-D. 2 任务说明 14
+- 1 数据处理 1
+- 1.1 数据提取 1
+- 1.2 数据具体处理 1
+- 1.3 数据合并 1
+- 1.4 缺失值处理 2
+- 1.5 离群点处理 2
+- 1.6 去噪 4
+- 1.7 插值 5
+- 2 第二组数据 5
+- 2.1 离群点处理 5
+- 2.2 去噪 6
+- 2.3 插值 7
+- 3 第三组数据 8
+- 3.1 离群点处理 8
+- 3.2 去噪 9
+- 3.3 插值 9
+- 4 总结 10
+- A SQL 程序代码 1 11
+- B SQL 程序代码 2 11
+- $\mathrm{C}$ 主程序代码 11
+- D 作业要求 14
+- D. 1 数据集说明 14
+- D. 2 任务说明 14
 ## 1 数据处理
 
 ## 1.1 数据提取
@@ -88,7 +88,7 @@ D. 2 任务说明 14
 
 由于 MySQL 时间戳利用的 Unix 时间只能表示到 2038 年, 不便于后续处理, 因此这
 段用 Python 语言进行处理。
-将上部分的数据导出为 \(\mathrm{csv}\) 格式,并利用 python 读取。这里首先选择 SUBJECT_ID
+将上部分的数据导出为 $\mathrm{csv}$ 格式,并利用 python 读取。这里首先选择 SUBJECT_ID
 为 3 的数据作为示例。
 
 ## 1.3 数据合并
@@ -142,24 +142,22 @@ D. 2 任务说明 14
 
 ## 1.6 去噪
 
-这里使用了 \(3\sigma\) 原则进行去噪 \(\lbrack 1\rbrack\) ,由于样本处于 \((\mu {-} 3\sigma,\mu + 3\sigma)\) 的概率为 0.9973 。因
+这里使用了 $3\sigma$ 原则进行去噪 $\lbrack 1\rbrack$ ,由于样本处于 $(\mu {-} 3\sigma,\mu + 3\sigma)$ 的概率为 0.9973 。因
 此用此原则进行去噪有很大的作用。具体代码如下:
 
----
-
+```python
 def drop_noisy(df):
-\(\mathrm{df}\) _copy \( = \mathrm{df} {\cdot} \operatorname{copy}()\)
-df_describe = df_copy.describe()
-for column in ['CO2','O2']:
-mean \( = \) df_describe.loc ['mean',column]
-std \( = \) df_describe.loc ['std',column]
-minvalue \( = \) mean \( {-} 3 * \) std
-maxvalue \( = \) mean \( + 3 * \) std
-df_copy = df_copy[df_copy[column] >= minvalue]
-df_copy = df_copy[df_copy[column] <= maxvalue]
-return df_copy
-
----
+    df_copy = df.copy()
+    df_describe = df_copy.describe()
+    for column in ['CO2', 'O2']:
+        mean = df_describe.loc['mean', column]
+        std = df_describe.loc['std', column]
+        minvalue = mean - 3 * std
+        maxvalue = mean + 3 * std
+        df_copy = df_copy[df_copy[column] >= minvalue]
+        df_copy = df_copy[df_copy[column] <= maxvalue]
+    return df_copy
+```
 
 去噪后的结果如下图所示:
 
@@ -167,7 +165,7 @@ return df_copy
 图 7: 二部分去噪后（原图已失效）
 ## 1.7 插值
 
-在插值地方, 首先将时间一列转为时间戳的形式, 然后分别对每一天的数据进行插值, 这里对于时间使用了线性插值,对 \(\mathrm{CO}2\) 和 \(\mathrm{O}2\) 使用了阶梯插值,最后将数据整合到一起, 并将时间戳转化为时间的形式, 从而完成插值。
+在插值地方, 首先将时间一列转为时间戳的形式, 然后分别对每一天的数据进行插值, 这里对于时间使用了线性插值,对 $\mathrm{CO}2$ 和 $\mathrm{O}2$ 使用了阶梯插值,最后将数据整合到一起, 并将时间戳转化为时间的形式, 从而完成插值。
 插值前, 结果如下图所示:
 
 
@@ -397,6 +395,6 @@ https://mimic.physionet.org/mimictables/patients/ https://mimic.physionet.org/mi
 
 ## D. 2 任务说明
 
-本次任务的目的是处理 \(\mathrm{pO}2,\mathrm{pCO}2\) 两个指标。这两个指标均为病人的血气指标,以一定的时间间隔采集。一个病人一次住院期间可能收集一次或者多次。要求, 按照采集时间的前后顺序,汇总每个病人每次住院期间的所有的 \(\mathrm{pO}2,\mathrm{pCO}2\) 指标值。涉及到的预处理方法包括插值, 去噪, 缺失值填充, 离群点数据处理, 可视化等。
-pO2 和 PCO2 数据存储在 CHARTEVENTS 和 LABEVENTS 两个表格中 (不是分别存储, 而是每个表格都包括这两个指标)。两个表格中以 ITEMID 字段进行标注, 其中 PO2 的 ITEMID 为 \(\lbrack 490,3785,3837,50821\rbrack\) 之一,PCO2 的 ITEMID 为 \(\lbrack 3784,3835,50818\rbrack\) 之一。SUBJECT_ID 字段指示不同的病人 (如张三和李四的 SUBJECT_ID 分别为 00001
+本次任务的目的是处理 $\mathrm{pO}2,\mathrm{pCO}2$ 两个指标。这两个指标均为病人的血气指标,以一定的时间间隔采集。一个病人一次住院期间可能收集一次或者多次。要求, 按照采集时间的前后顺序,汇总每个病人每次住院期间的所有的 $\mathrm{pO}2,\mathrm{pCO}2$ 指标值。涉及到的预处理方法包括插值, 去噪, 缺失值填充, 离群点数据处理, 可视化等。
+pO2 和 PCO2 数据存储在 CHARTEVENTS 和 LABEVENTS 两个表格中 (不是分别存储, 而是每个表格都包括这两个指标)。两个表格中以 ITEMID 字段进行标注, 其中 PO2 的 ITEMID 为 $\lbrack 490,3785,3837,50821\rbrack$ 之一,PCO2 的 ITEMID 为 $\lbrack 3784,3835,50818\rbrack$ 之一。SUBJECT_ID 字段指示不同的病人 (如张三和李四的 SUBJECT_ID 分别为 00001
 和 00002), HADM_ID 指示一次住院时期 (一个病人可能多次入院, 同一 SUBJECT_ID, HADM_ID 不同则认为是同一病人不同的住院经历, 在收集数据时需要区分)。

@@ -11,19 +11,19 @@ cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754
 
 ## 目 录
 
-1 背景知识 1
-1.1 基本定义 1
-1.2 感知器的损失函数 1
-1.3 感知器的训练 1
-2 数据集 2
-3 代码实现 2
-4 结果展示与分析 4
-4.1 数据集一 4
-4.2 数据集二 5
-4.3 数据集三 5
-5 探究 6
-6 总结 7
-A 程序代码 8
+- 1 背景知识 1
+- 1.1 基本定义 1
+- 1.2 感知器的损失函数 1
+- 1.3 感知器的训练 1
+- 2 数据集 2
+- 3 代码实现 2
+- 4 结果展示与分析 4
+- 4.1 数据集一 4
+- 4.2 数据集二 5
+- 4.3 数据集三 5
+- 5 探究 6
+- 6 总结 7
+- A 程序代码 8
 ## 1 背景知识
 
 ## 1.1 基本定义
@@ -93,7 +93,7 @@ $w_{i}$ 是与输入对应的权重项, $b$ 是偏置项。事实上, 可以把 
 
 ## 2 数据集
 
-在本次实验中, 选择了三组数据, 第一组是自己生成的 200 个二维的数据, 一共两组, 每组 100 个数据,一组是以 \(({-}2, {-} 2)\) 为均值,标准差为 1.5 的数据,另一组是以 \((2,2)\) 为均值, 标准差为 1.5 的数据, 这两类数据中有一点交叉, 使得数据不能完全线性可分。
+在本次实验中, 选择了三组数据, 第一组是自己生成的 200 个二维的数据, 一共两组, 每组 100 个数据,一组是以 $({-}2, {-} 2)$ 为均值,标准差为 1.5 的数据,另一组是以 $(2,2)$ 为均值, 标准差为 1.5 的数据, 这两类数据中有一点交叉, 使得数据不能完全线性可分。
 第二组数据是读取的自定义的数据, 一共两类, 这两类数据之间有一定的间隔, 是完全
 线性可分的。
 第三组数据是著名的数据集 Sonar, Sonar 数据集是一个声纳信号分类数据集, 声纳信号从一个金属圆柱体上反弹, 或者从一个大致呈圆柱形的岩石上反弹。每个样本是一个 60 维向量。每个数字表示特定频带内的能量, 范围从 0 到 1 。如果是从一块岩石上反弹, 则样本标签为 “R”, 如果是从一个金属圆柱体上反弹则为 “M”。
@@ -106,20 +106,23 @@ $w_{i}$ 是与输入对应的权重项, $b$ 是偏置项。事实上, 可以把 
 ---
 ```python
 class Perceptron():
-def init__(self,input_num,f):
-self.input_num=input_num
-self.weights=np.ones(input_num)
-self.bias=2.0
-self.activation=f
-def_str__(self):
-return f'weight={self.weights},bias={self.bias}'
-def predict(self,inputs):
-return self.activation(np.dot(inputs, self.weights)+self.bias)
-def train(self,inputs,labels,rate=0.1):
-for \(j\) in range (inputs. shape [0]):
-output=self.predict(inputs[j])
-self.weights=self.weights+rate*(labels[j]-output)*inputs[j]
-self.bias=self.bias+rate*(labels[j]-output)
+    def __init__(self, input_num, f):
+        self.input_num = input_num
+        self.weights = np.ones(input_num)
+        self.bias = 2.0
+        self.activation = f
+
+    def __str__(self):
+        return f'weight={self.weights},bias={self.bias}'
+
+    def predict(self, inputs):
+        return self.activation(np.dot(inputs, self.weights) + self.bias)
+
+    def train(self, inputs, labels, rate=0.1):
+        for j in range(inputs.shape[0]):
+            output = self.predict(inputs[j])
+            self.weights = self.weights + rate * (labels[j] - output) * inputs[j]
+            self.bias = self.bias + rate * (labels[j] - output)
 ```
 
 前两个数据集的作图函数:
@@ -250,7 +253,7 @@ if __name__ == '__main__':
 图 9: 损失准确率结果图（原图已失效）
 
 从上图可以看出, 随着迭代次数的增加, 损失不断减小, 因为是负数, 所以图中是不断
-上升,一定次数后达到稳定,准确率不断上升,并达到约 \(80\%\) 。
+上升,一定次数后达到稳定,准确率不断上升,并达到约 $80\%$ 。
 与前两个数据集不同, 第三个数据集维度较高, 无法用之前的方法进行可视化, 因此这里使用了两种方法 t-SNE 降维以及 PCA 降维, 从而对结果进行可视化, 结果如下图所示:
 
 
@@ -271,7 +274,7 @@ if __name__ == '__main__':
 
 在本次实验中遇到了一些问题, 在此感谢尚荣华老师以及博士生的指导, 在感知器分
 类的时候遇到了两个问题。
-第一,对于数据高维度的 Sonar 数据集,为了可视化效果,这里使用了 \(\mathrm{t} {-} \mathrm{SNE}\) 以及 PCA 降维可视化, 但分类准确率高的同时, 降维效果并不好, 这里又对 Sonar 数据使用了聚类方法, 随后降维可视化, 其效果较好, 也对问题原因进行了推测。
+第一,对于数据高维度的 Sonar 数据集,为了可视化效果,这里使用了 $\mathrm{t} {-} \mathrm{SNE}$ 以及 PCA 降维可视化, 但分类准确率高的同时, 降维效果并不好, 这里又对 Sonar 数据使用了聚类方法, 随后降维可视化, 其效果较好, 也对问题原因进行了推测。
 第二, 对于高维数据的损失记录, 开始的记录为损失先迅速降低, 随后慢慢升高, 经过发现后发现记录损失的方式不对, 开始使用了每个样本标签与输出的插值的绝对值作为损失, 并求和, 这样是一中类似于均方误差的计算方式, 在高维超平面移动的过程, 这样的方式计算的并不是实际的损失, 因此查阅资料后使用了正确的损失函数计算, 结果较好。
 本次实验中对感知器进行了实现, 并利用多种数据集进行展示, 得到了很好的效果, 在这次实验中, 开始在理解题意方面遇到了很多问题, 后来经过多方询问才明白。这次实验中我通过广泛查询资料了解到了相关的知识, 也认真写代码来完成任务, 这份作业的完成确实比较艰巨, 一份顶多份, 但是我还是有很大的收获, 能力也得到了提升。
 ## A 程序代码

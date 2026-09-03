@@ -2,9 +2,9 @@
 
 ## Current Focus
 
-实施阶段第六步（Phase E 第二步：失效图处置）已完成。8 篇课程报告共 66 条失效
-`cdn.noedgeai.com` 图引用已全部删除，并按 `note` 给图题追加「（原图已失效）」；
-`npm run build` 通过（67 pages）。下一步处理 Phase E 剩余静态资源与 Phase F。
+已完成 8 篇「学习与研究」课程报告的历史格式错误修复（TOC 列表化、公式改
+`$...$`/`$$...$$`、未围栏代码补围栏），`npm run build` 通过（67 pages）。
+下一步继续 Phase H 本地完整验证。
 
 ## Last Updated
 
@@ -47,6 +47,11 @@
   - 按 `migration/manual-review.md` 处置 8 篇课程报告共 66 条失效 `cdn.noedgeai.com` 图引用（全部 `note`）
   - 删除失效图引用，图题统一追加「（原图已失效）」；`src/content/blog` 已无 `cdn.noedgeai.com` 引用
   - `npm run build` 通过：67 pages、Pagefind 索引 69 pages
+- **8 篇课程报告历史格式错误修复**：
+  - 7 篇有目录的课程报告 TOC 改为 markdown 列表，逐行显示
+  - 正文中 `\(...\)`/`\[...\]` 公式分隔符改为 `$...$`/`$$...$$`（不碰 frontmatter）
+  - FCM、MIMC 两篇未围栏 Python 代码补上 ```python 围栏
+  - `npm run build` 通过：67 pages、Pagefind 索引 69 pages
 
 ## In Progress
 
@@ -82,4 +87,4 @@ Phase E 剩余：`cdn.nlark.com` 5 条 unknown 复核；随后 Phase F 旧 URL/S
 
 Last verified at: 2026-09-04
 Command: `npm run build`
-Result: pass — 8 篇课程报告 66 条失效 `cdn.noedgeai.com` 图引用已删除并加注「（原图已失效）」；`src/content/blog` 无 `cdn.noedgeai.com`；`rg -c 原图已失效` 合计 66；`npm run build` exit 0，67 page(s) built，Pagefind 索引 69 pages。
+Result: pass — 8 篇课程报告历史格式修复后 `npm run build` exit 0，67 page(s) built，Pagefind 索引 69 pages。

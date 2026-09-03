@@ -2,8 +2,8 @@
 
 ## Current Focus
 
-本地验证阶段（Phase H）已完成并通过：`npm ci`、`npm run build`、`npm run test`
-（10/10）、`npm run test:e2e`（13/13）全部真实跑通。工作树已提交，未 push、未部署。
+本地验证（Phase H）全部通过。站点标识已换为 bloggallery 的 J 矢量图（art_favicon.webp → 本地 PNG）。
+分支 `migration/astro` 已 push 到 origin，PR #26 已开且 CI build 通过。**等待用户明确「可以上线」后 merge（merge 触发部署，不可逆）。**
 
 ## Last Updated
 
@@ -30,15 +30,17 @@
   `npm ci` / `npm run build` / `npm run test` / `npm run test:e2e` 全绿
 - 清理未引用依赖 `@fontsource/geist-mono`、`@fontsource/geist-sans`
 - `npm audit fix`：兼容范围内降 17 → 5 项
+- 站点图标替换为 bloggallery `art_favicon.webp`（1024×1024 webp）→ 本地 `favicon.png`(32)+`apple-touch-icon.png`(180)+`og-image.png`(1024)，移除自造 `favicon.svg`
+- push `migration/astro` 到 origin，开 PR #26（CI build 通过）
 
 ## In Progress
 
-- 无
+- 无（等待用户 merge 批准）
 
 ## Next Recommended Task
 
-用户本地验收门：Hermes 提供 preview 地址、变更摘要、迁移清单、未恢复图片清单、
-测试报告；用户明确「可以上线」前不 push。随后 Phase I（GitHub 审阅与上线）需二次批准。
+用户审阅 PR #26（https://github.com/CoderJackZhu/CoderJackZhu.github.io/pull/26）。
+用户明确「可以上线」后：`gh pr merge 26 --merge` → 触发 `astro_build_deploy.yml` 部署到 `html` 分支 → 验证 https://www.jackzhu.top/ 上线并回归旧 URL。
 
 ## Known Issues
 

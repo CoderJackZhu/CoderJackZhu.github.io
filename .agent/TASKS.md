@@ -9,7 +9,7 @@
 - [x] 批量迁移 54 篇（Phase D）：frontmatter 转换 + 清除 `Jack Zhu` 署名 + 特殊语法人工处理（含 remark-math/rehype-katex/katex 数学渲染）
 - [x] 图片处置实现（Phase E 第二步）：8 篇课程报告 66 条失效 `cdn.noedgeai.com` 图引用全部按 `note` 删除并加注「（原图已失效）」，`npm run build` 通过
 - [x] 修复 8 篇课程报告历史格式错误：7 篇 TOC 列表化、正文公式改 `$...$`/`$$...$$`、FCM/MIMC 未围栏代码补 ```python 围栏，`npm run build` 通过
-- [x] 修复桌面 Header 导航重叠并恢复 `J` 矢量 favicon：稳定双组导航、SVG 图标按钮、主题死代码清理、设计事实源更新
+- [x] 修复桌面 Header 导航重叠并恢复站点标识：稳定双组导航、SVG 图标按钮、主题死代码清理、设计事实源更新；站点图标最终用 bloggallery 的 `art_favicon.webp`（转 PNG 本地托管 favicon/apple-touch-icon/og-image）
 
 ## Next
 
@@ -19,7 +19,7 @@
 
 ## Later
 
-- [ ] GitHub 审阅与上线（Phase I，需用户二次批准）
+- [~] GitHub 审阅与上线（Phase I）：分支 `migration/astro` 已 push，PR #26 已开且 CI build 通过；**待用户明确「可以上线」后 merge（merge 触发部署替换线上站，不可逆）**
 - [ ] 稳定期清理（Phase J）
 - [ ] 评估从 `html` 分支发布迁移到官方 Pages artifact 模式
 - [ ] 新建 `/photos/` 极简摄影页（仅放用户自拍照片，不放文章插图；范围变更，需单独设计）。cover→og:image 已接线完成

@@ -92,11 +92,13 @@ button {
 }
 
 .site-header {
+  width: 100%;
   max-width: var(--max);
   margin: 0 auto;
   padding: 26px 28px;
   display: flex;
   align-items: center;
+  gap: 48px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -114,10 +116,24 @@ button {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 28px;
   color: var(--muted);
   font-size: 14px;
   white-space: nowrap;
+}
+
+.nav-links,
+.nav-actions {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  gap: 22px;
+}
+
+.nav-actions {
+  gap: 4px;
 }
 
 .site-nav a {
@@ -131,18 +147,44 @@ button {
 }
 
 .site-nav button {
+  width: 32px;
+  height: 32px;
   border: 0;
+  border-radius: 2px;
   background: none;
-  padding: 3px 2px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   color: var(--faint);
-  font-family: var(--mono);
-  font-size: 15px;
-  line-height: 1;
 }
 
 .site-nav button:hover {
   color: var(--ink);
+  background: var(--accent-soft);
+}
+
+.site-nav button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+html.dark .theme-icon-moon {
+  display: none;
+}
+
+html.dark .theme-icon-sun {
+  display: block;
 }
 
 main {
@@ -793,9 +835,14 @@ html.dark {
   }
 
   .site-nav {
+    width: 100%;
     margin: 13px 0 0;
-    gap: 22px;
-    justify-content: flex-start;
+    gap: 16px;
+    justify-content: space-between;
+  }
+
+  .nav-links {
+    gap: 20px;
   }
 
   main {

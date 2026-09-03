@@ -5,33 +5,75 @@ import { SITE } from "@consts";
 <header class="site-header" transition:persist>
   <a class="brand" href="/">{SITE.TITLE}</a>
   <nav class="site-nav" aria-label="主导航">
-    <a href="/blog/">文章</a>
-    <a href="/about/">关于</a>
-    <a href="/link/">友链</a>
-    <button id="magnifying-glass" class="search" aria-label="搜索">⌕</button>
-    <button id="theme-toggle" class="theme-toggle" aria-label="切换深浅色">◐</button>
+    <div class="nav-links">
+      <a href="/blog/">文章</a>
+      <a href="/about/">关于</a>
+      <a href="/link/">友链</a>
+    </div>
+    <div class="nav-actions">
+      <button
+        id="magnifying-glass"
+        class="search"
+        aria-label="搜索"
+        title="搜索"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5"></circle>
+          <path d="m16 16 4 4"></path>
+        </svg>
+      </button>
+      <button
+        id="theme-toggle"
+        class="theme-toggle"
+        aria-label="切换为深色模式"
+        title="切换为深色模式"
+      >
+        <svg
+          class="theme-icon theme-icon-moon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"
+          ></path>
+        </svg>
+        <svg
+          class="theme-icon theme-icon-sun"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="3.5"></circle>
+          <path
+            d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+          ></path>
+        </svg>
+      </button>
+    </div>
   </nav>
 </header>
 
 <script is:inline>
-  const themeToggle = document.getElementById("theme-toggle");
-  if (themeToggle) {
-    const syncThemeToggle = () => {
-      themeToggle.textContent = document.documentElement.classList.contains("dark")
-        ? "◑"
-        : "◐";
-    };
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
 
-    if (!themeToggle.dataset.themeBound) {
-      themeToggle.dataset.themeBound = "true";
-      themeToggle.addEventListener("click", () => {
-        const dark = !document.documentElement.classList.contains("dark");
-        document.documentElement.classList.toggle("dark", dark);
-        localStorage.setItem("theme", dark ? "dark" : "light");
-        syncThemeToggle();
-      });
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
     }
-
-    syncThemeToggle();
-  }
+  })();
 </script>

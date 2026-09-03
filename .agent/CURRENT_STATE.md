@@ -2,9 +2,9 @@
 
 ## Current Focus
 
-已完成 8 篇「学习与研究」课程报告的历史格式错误修复（TOC 列表化、公式改
-`$...$`/`$$...$$`、未围栏代码补围栏），`npm run build` 通过（67 pages）。
-下一步继续 Phase H 本地完整验证。
+已修复桌面 Header 收缩导致的导航重叠，导航改为文字链接与 SVG 图标两组，
+并用真实 `J` 矢量 favicon 替换模板显微镜。`npm run build` 与 favicon/Header
+静态验收通过（67 pages）。下一步继续 Phase H 本地完整验证。
 
 ## Last Updated
 
@@ -52,6 +52,12 @@
   - 正文中 `\(...\)`/`\[...\]` 公式分隔符改为 `$...$`/`$$...$$`（不碰 frontmatter）
   - FCM、MIMC 两篇未围栏 Python 代码补上 ```python 围栏
   - `npm run build` 通过：67 pages、Pagefind 索引 69 pages
+- **Header 与 favicon 修复**：
+  - `.site-header` 在 1080px 上限内明确占满可用宽度，导航拆为三个文字链接与两个 SVG 图标按钮
+  - 820px 以下品牌与导航分两行；图标按钮点击区统一为 32×32px
+  - 新增透明底深色 `J` 的 `public/favicon.svg`，删除模板 `favicon.ico` 与全部旧引用
+  - 清理 Head 中 light/dark/system 三按钮死代码，保留浅色默认与单按钮 localStorage 切换
+  - `npm run build` 与静态验收通过；沙箱禁止本地端口且无法联网获取 Playwright CLI，浏览器矩阵留 Phase H 在可运行环境复验
 
 ## In Progress
 
@@ -86,5 +92,5 @@ Phase E 剩余：`cdn.nlark.com` 5 条 unknown 复核；随后 Phase F 旧 URL/S
 ## Verification
 
 Last verified at: 2026-09-04
-Command: `npm run build`
-Result: pass — 8 篇课程报告历史格式修复后 `npm run build` exit 0，67 page(s) built，Pagefind 索引 69 pages。
+Command: `npm run build` + favicon/Header 静态检查
+Result: pass — Astro check 0 errors，67 page(s) built，Pagefind 索引 69 pages；无 `favicon.ico` 引用，SVG 合法，Header 三链接与两按钮/id 齐全。

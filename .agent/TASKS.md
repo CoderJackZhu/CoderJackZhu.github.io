@@ -9,6 +9,7 @@
 - [x] 批量迁移 54 篇（Phase D）：frontmatter 转换 + 清除 `Jack Zhu` 署名 + 特殊语法人工处理（含 remark-math/rehype-katex/katex 数学渲染）
 - [x] 图片处置实现（Phase E 第二步）：8 篇课程报告 66 条失效 `cdn.noedgeai.com` 图引用全部按 `note` 删除并加注「（原图已失效）」，`npm run build` 通过
 - [x] 修复 8 篇课程报告历史格式错误：7 篇 TOC 列表化、正文公式改 `$...$`/`$$...$$`、FCM/MIMC 未围栏代码补 ```python 围栏，`npm run build` 通过
+- [x] 修复桌面 Header 导航重叠并恢复 `J` 矢量 favicon：稳定双组导航、SVG 图标按钮、主题死代码清理、设计事实源更新
 
 ## Next
 

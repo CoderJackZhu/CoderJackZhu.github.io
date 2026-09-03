@@ -2,8 +2,6 @@
 title: Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置
 date: 2022-04-10
 section: 技术与工程
-tags:
-  - 深度学习
 description: 一点小记录
 legacyPath: /2022/04/10/Ubuntu 20.04下深度学习环境搭建以及常用工具配置/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102119630.jpg

@@ -2,8 +2,6 @@
 title: Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署
 date: 2024-03-03
 section: 技术与工程
-tags:
-  - 博客配置
 description: 本文介绍如何使用Github Actions自动部署博客，并且使用仓库分支存储图片等资源。
 legacyPath: /2024/03/03/Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png

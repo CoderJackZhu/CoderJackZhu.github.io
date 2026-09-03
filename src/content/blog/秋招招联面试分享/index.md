@@ -2,8 +2,6 @@
 title: 秋招招联面试分享
 date: 2024-10-19
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批招联面试分享。
 legacyPath: /2024/10/19/秋招招联面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9e2a0c81735df6e2537970db4d444c69.jpeg

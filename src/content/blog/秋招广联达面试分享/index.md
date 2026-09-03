@@ -2,8 +2,6 @@
 title: 秋招广联达
 date: 2024-10-31
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批广联达技术面试分享。
 legacyPath: /2024/10/31/秋招广联达面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/e236385b88c57c4a60ef5aaf72189cff.jpeg

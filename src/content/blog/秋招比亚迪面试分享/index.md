@@ -2,8 +2,6 @@
 title: 秋招比亚迪面试分享
 date: 2024-09-23
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批比亚迪面试分享。
 legacyPath: /2024/09/23/秋招比亚迪面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/01cb6bf5523d02fb95edf8da1c02b62b.jpeg

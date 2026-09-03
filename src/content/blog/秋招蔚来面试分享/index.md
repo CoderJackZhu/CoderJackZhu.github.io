@@ -2,8 +2,6 @@
 title: 秋招蔚来面试分享
 date: 2024-11-01
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批蔚来面试分享。
 legacyPath: /2024/11/01/秋招蔚来面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/da31bfb39d7d0fb356ac618060ece6b7.png

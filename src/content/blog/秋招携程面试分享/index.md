@@ -2,8 +2,6 @@
 title: 秋招携程面试分享
 date: 2024-10-15
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批携程面试分享
 legacyPath: /2024/10/15/秋招携程面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/8b7a826c00d8ada33d1dfa9ac7ce64dd.jpeg

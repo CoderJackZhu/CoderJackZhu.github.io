@@ -7,10 +7,6 @@ export const SITE: Site = {
   NUM_POSTS_ON_HOMEPAGE: siteConfig.site.numPostsOnHomepage,
 };
 
-export const CATEGORIES: string[] = siteConfig.categories;
-
-export type Category = string;
-
 export const SOCIALS: Socials = siteConfig.socials.map((s) => ({
   NAME: s.name,
   HREF: s.href,

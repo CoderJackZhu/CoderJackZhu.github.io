@@ -2,8 +2,6 @@
 title: 秋招虾皮面试分享
 date: 2024-10-20
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批虾皮面试分享。
 legacyPath: /2024/10/20/秋招虾皮面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/b3b1b24841d210d0cbe1bf5a64b04d44.jpeg

@@ -2,8 +2,6 @@
 title: 秋招面试总结分享
 date: 2024-11-30
 section: 经历与记录
-tags:
-  - 面试总结
 description: 秋招结束后的面试总结分享。
 legacyPath: /2024/11/30/秋招面试总结分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/790dbf2659a8aff75e42f73ecf06fab9.png

@@ -2,13 +2,6 @@
 title: 当文明踩下加速踏板之后
 date: 2026-08-29
 section: 思考与随笔
-tags:
-  - 人类文明
-  - 科技
-  - 人工智能
-  - 费米悖论
-  - 航天
-  - 长寿
 description: 从童年对动能回收的疑问出发，思考费米悖论、衰老与长寿、人工智能、商业航天和文明的自我约束：当人类不断突破自然边界，我们是否具备承担这些突破的能力？
 legacyPath: /2026/08/29/当文明踩下加速踏板之后/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/civilization-acceleration-cover.svg

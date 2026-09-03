@@ -2,8 +2,6 @@
 title: ActionFormer论文分享
 date: 2022-11-10
 section: 学习与研究
-tags:
-  - ActionFormer
 description: 之前读的论文
 legacyPath: /2022/11/10/学术交流分享ActionFormer/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg

@@ -2,8 +2,6 @@
 title: 阿里国际暑实面试分享
 date: 2024-05-23
 section: 经历与记录
-tags:
-  - 面试记录
 description: 阿里国际技术的面试记录分享。
 legacyPath: /2024/05/23/阿里国际暑实面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/1cfcf9e2b6691718b5bc070c3b7f222b.jpeg

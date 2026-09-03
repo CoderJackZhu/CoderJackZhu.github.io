@@ -2,8 +2,6 @@
 title: 秋招中兴面试分享
 date: 2024-09-19
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批中兴面试分享。
 legacyPath: /2024/09/19/秋招中兴面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/1c6fc333392b998f32dffef731788ea7.jpeg

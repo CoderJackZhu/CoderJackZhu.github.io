@@ -2,8 +2,6 @@
 title: 计算智能导论作业——遗传算法的实现
 date: 2021-04-16
 section: 学习与研究
-tags:
-  - 计算智能
 description: 实现遗传算法求解最优化问题，并分析编码、适应度函数与遗传算子的实验报告。
 legacyPath: /2021/04/16/计算智能导论作业——遗传算法的实现/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

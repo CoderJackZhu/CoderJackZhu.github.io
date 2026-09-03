@@ -4,8 +4,9 @@ import {
   type Locator,
   type Page,
 } from "@playwright/test";
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 type ManifestEntry = {
   title: string;
@@ -13,11 +14,24 @@ type ManifestEntry = {
   legacyPath: string;
 };
 
-const manifest = JSON.parse(
-  readFileSync(new URL("../../migration/content-manifest.json", import.meta.url), "utf8"),
-) as ManifestEntry[];
 const distDir = new URL("../../dist/", import.meta.url).pathname;
+const contentDir = fileURLToPath(new URL("../../src/content/blog/", import.meta.url));
 const staticFallback = process.env.CODEX_SANDBOX === "seatbelt";
+
+function readSourcePosts() {
+  return readdirSync(contentDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => {
+      const source = readFileSync(join(contentDir, entry.name, "index.md"), "utf8");
+      const title = source.match(/^title:\s*(.+?)\s*$/m)?.[1]?.trim().replace(/^['"]|['"]$/g, "") ?? "";
+      const date = source.match(/^date:\s*(.+?)\s*$/m)?.[1]?.trim() ?? "";
+      const legacyPath =
+        source.match(/^legacyPath:\s*(.+?)\s*$/m)?.[1]?.trim().replace(/^['"]|['"]$/g, "") ?? "";
+      return { title, date, legacyPath };
+    });
+}
+
+const manifest = readSourcePosts() as ManifestEntry[];
 
 const mimeTypes: Record<string, string> = {
   ".css": "text/css; charset=utf-8",

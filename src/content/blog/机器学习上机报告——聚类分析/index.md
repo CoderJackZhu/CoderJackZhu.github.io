@@ -2,8 +2,6 @@
 title: 机器学习上机报告——聚类分析
 date: 2021-05-23
 section: 学习与研究
-tags:
-  - 机器学习
 description: 本文使用了 K-means 和 DBSCAN 两种聚类方法, 较好的完成了聚类任务, 并将得到的结果使用了 t-SNE 和 PCA 两种方法进行降维可视化,从而更好的得到聚类的效果,并计算了轮廓系数、 CH score、 DBI 这些聚类指标, 对于 K-means 方法还使用了图片进行聚类, 使得效果更加直观, 实验效果非常好。
 legacyPath: /2021/05/23/机器学习上机报告——聚类分析/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png

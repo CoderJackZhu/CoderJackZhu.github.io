@@ -2,15 +2,6 @@
 title: Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环
 date: 2026-05-13
 section: 技术与工程
-tags:
-  - Hermes
-  - Agent
-  - 自动化
-  - 博客
-  - Skill
-  - 自进化
-  - OpenClaw
-  - Claude Code
 description: 作为 Agent 算法工程师，我用 Hermes 搭建了一套从选题到部署全自动的博客流水线——几十分钟完成一篇带 SVG 配图的技术文章，而且每次执行后自动沉淀 Skill，让下次更稳更快。
 legacyPath: /2026/05/13/hermes-self-evolving-blog-engine/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hermes-blog-engine-cover.svg

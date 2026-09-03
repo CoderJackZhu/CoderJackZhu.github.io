@@ -2,8 +2,6 @@
 title: 钉钉和淘天机器学习捞暑期实习面试分享
 date: 2024-05-22
 section: 经历与记录
-tags:
-  - 面试记录
 description: 淘天技术的面试记录分享。
 legacyPath: /2024/05/22/钉钉和淘天机器学习捞暑期实习面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/a22477f98ae4f50717035574c2f85a32.jpeg

@@ -2,8 +2,6 @@
 title: 腾讯AI Lab暑实面试分享
 date: 2024-05-28
 section: 经历与记录
-tags:
-  - 面试记录
 description: 腾讯AI Lab暑实面试记录分享。
 legacyPath: /2024/05/28/腾讯AI Lab暑实面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/e00a8894b3eeeffa688d3fe1b80dc395.jpeg

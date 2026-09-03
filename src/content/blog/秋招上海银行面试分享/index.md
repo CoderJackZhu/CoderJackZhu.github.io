@@ -2,8 +2,6 @@
 title: 秋招上海银行面试分享
 date: 2024-10-25
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批上海银行面试分享。
 legacyPath: /2024/10/25/秋招上海银行面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/addc1330ad0be5e99fdcfcb83dbbef6a.jpeg

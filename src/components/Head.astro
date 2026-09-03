@@ -136,7 +136,7 @@ const { title, description, image = "/og-image.png" } = Astro.props;
     if (userTheme === "light" || userTheme === "dark") {
       toggleTheme(userTheme === "dark");
     } else {
-      // 浅色为默认（design-spec §5），不跟随系统深色偏好
+      // 浅色为默认，不跟随系统深色偏好
       toggleTheme(false);
     }
   }

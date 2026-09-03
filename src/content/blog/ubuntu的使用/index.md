@@ -2,8 +2,6 @@
 title: Ubuntu的基本使用
 date: 2022-11-02
 section: 技术与工程
-tags:
-  - Ubuntu
 description: 一点小记录
 legacyPath: /2022/11/02/ubuntu的使用/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg

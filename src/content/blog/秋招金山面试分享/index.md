@@ -2,8 +2,6 @@
 title: 秋招金山面试分享
 date: 2024-11-06
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批金山技术面试分享。
 legacyPath: /2024/11/06/秋招金山面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/2349135dde1b4a4828b209c87569c4a8.jpeg

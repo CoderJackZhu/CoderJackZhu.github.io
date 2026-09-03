@@ -2,8 +2,6 @@
 title: 华为暑期实习面试分享
 date: 2024-04-28
 section: 经历与记录
-tags:
-  - 面试记录
 description: 华为一面二面的面试记录分享。
 legacyPath: /2024/04/28/华为暑期实习面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/82DA5A8E1D99BD7DC83A051FA8EA75E2.jpg

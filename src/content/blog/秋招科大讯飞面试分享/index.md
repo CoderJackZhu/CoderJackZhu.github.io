@@ -2,8 +2,6 @@
 title: 秋招科大讯飞面试分享
 date: 2024-10-12
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批科大讯飞技术面试分享。
 legacyPath: /2024/10/12/秋招科大讯飞面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/dc196f33f2ea5313a41518c2016b80cf.jpeg

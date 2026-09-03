@@ -2,8 +2,6 @@
 title: 秋招理想面试分享
 date: 2024-09-26
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批理想技术面试分享。
 legacyPath: /2024/09/26/秋招理想面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/53a57a8ff31e36a01cc76723d34c6235.jpeg

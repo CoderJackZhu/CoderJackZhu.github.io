@@ -2,8 +2,6 @@
 title: 秋招滴滴面试分享
 date: 2024-09-28
 section: 经历与记录
-tags:
-  - 面试记录
 description: 秋招正式批滴滴技术面试分享。
 legacyPath: /2024/09/28/秋招滴滴面试分享/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/ec650a59372c0b622e7065b01ab37920.jpeg

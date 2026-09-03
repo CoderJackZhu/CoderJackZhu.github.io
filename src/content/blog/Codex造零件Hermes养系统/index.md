@@ -2,12 +2,6 @@
 title: Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程
 date: 2026-06-10
 section: 技术与工程
-tags:
-  - Agent
-  - Hermes
-  - PassiveAgent
-  - AI工具
-  - 工程实践
 description: 以 PassiveAgent 为案例，记录我如何用 Hermes 作为长期项目工作台，配合 Codex/Claude Code 开发一个个人注意力调度系统，以及对 Agent 自进化和工程化实践的思考。
 legacyPath: /2026/06/10/Codex造零件Hermes养系统/
 cover: https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-cover.svg

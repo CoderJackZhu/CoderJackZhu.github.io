@@ -106,6 +106,7 @@ pages:
 
 # 照片墙（手动维护）
 photos:
+  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20260415002257322.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/82DA5A8E1D99BD7DC83A051FA8EA75E2.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/f786f54959c72a37297a42973764cd39_720.jpg"

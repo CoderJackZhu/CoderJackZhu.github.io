@@ -106,16 +106,8 @@ pages:
 
 # 照片墙（手动维护）
 photos:
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/mouse.jpg"
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/除夕贺图.png"
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102119630.jpg"
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg"
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/moon.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/82DA5A8E1D99BD7DC83A051FA8EA75E2.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg"
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/202205102148023.jpg"
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png"
-  - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/genshin2.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/f786f54959c72a37297a42973764cd39_720.jpg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg"
   - "https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/addc1330ad0be5e99fdcfcb83dbbef6a.jpeg"

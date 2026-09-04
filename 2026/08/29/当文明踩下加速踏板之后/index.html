@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2026/08/29/%E5%BD%93%E6%96%87%E6%98%8E%E8%B8%A9%E4%B8%8B%E5%8A%A0%E9%80%9F%E8%B8%8F%E6%9D%BF%E4%B9%8B%E5%90%8E/"><!-- Primary Meta Tags --><title>当文明踩下加速踏板之后 | Jack&#39;s Blog</title><meta name="title" content="当文明踩下加速踏板之后 | Jack's Blog"><meta name="description" content="从童年对动能回收的疑问出发，思考费米悖论、衰老与长寿、人工智能、商业航天和文明的自我约束：当人类不断突破自然边界，我们是否具备承担这些突破的能力？"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2026/08/29/%E5%BD%93%E6%96%87%E6%98%8E%E8%B8%A9%E4%B8%8B%E5%8A%A0%E9%80%9F%E8%B8%8F%E6%9D%BF%E4%B9%8B%E5%90%8E/"><meta property="og:title" content="当文明踩下加速踏板之后 | Jack's Blog"><meta property="og:description" content="从童年对动能回收的疑问出发，思考费米悖论、衰老与长寿、人工智能、商业航天和文明的自我约束：当人类不断突破自然边界，我们是否具备承担这些突破的能力？"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/civilization-acceleration-cover.svg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2026/08/29/%E5%BD%93%E6%96%87%E6%98%8E%E8%B8%A9%E4%B8%8B%E5%8A%A0%E9%80%9F%E8%B8%8F%E6%9D%BF%E4%B9%8B%E5%90%8E/"><meta property="twitter:title" content="当文明踩下加速踏板之后 | Jack's Blog"><meta property="twitter:description" content="从童年对动能回收的疑问出发，思考费米悖论、衰老与长寿、人工智能、商业航天和文明的自我约束：当人类不断突破自然边界，我们是否具备承担这些突破的能力？"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/civilization-acceleration-cover.svg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">思考与随笔</p> <h1>当文明踩下加速踏板之后</h1> <div class="article-meta"> <time datetime="2026-08-29T00:00:00.000Z">2026年8月29日</time>  <span>约 19 分钟</span> </div> <p class="article-lead">从童年对动能回收的疑问出发，思考费米悖论、衰老与长寿、人工智能、商业航天和文明的自我约束：当人类不断突破自然边界，我们是否具备承担这些突破的能力？</p> </header> <div class="prose"> <p>小时候坐在车上，我常常会想一些现在看来有些天真的问题。</p>
+<p>车在加速时，发动机费了那么大的力气才把它推起来；可一踩刹车，速度就没有了，那些好不容易获得的能量去了哪里？如果在车轮旁边装一个电机，让它在刹车时反过来发电，再把电存进电池里，下一次起步时重新使用，不就可以少浪费一些了吗？那时我当然不知道什么叫再生制动，也不知道电机既可以把电能变成运动，也可以在一定条件下把运动重新变回电能。我只是模糊地觉得，一辆车停下来时，似乎有某种看不见的东西从手里漏走了。</p>
+<p>我也想过雷电。既然避雷针可以把雷引向地面，是否也能把它收集起来，像储存水一样等到需要时再使用？后来才知道，雷电虽然功率惊人，却短暂、随机而又难以控制。但一个孩子不懂这些限制。那时的我只是相信：自然中既然存在一种力量，人类迟早可以找到使用它的方法。</p>
+<p>多年后，动能回收已经出现在电动自行车、混合动力汽车和电动汽车上。它当然不是由我发明的，我儿时的想法也谈不上多么独特。真正让我在意的是另一件事：一个曾经只存在于想象中的朴素念头，后来真的可以变成日常生活的一部分。人类文明似乎一直在做这样的事——把不可控制的变成可以控制的，把只能承受的变成可以利用的，把原本散失在空气里的能量、时间和信息重新收拢起来。</p>
+<p>或许，文明的历史就是一部不断收回“被浪费的可能”的历史。</p>
+<p>只是到了后来，我开始意识到，我们越来越擅长收回能量，却未必同样擅长收回技术带来的后果。我们知道怎样让一辆车跑得更快，却不一定知道道路将通向哪里；我们不断为文明制造更强大的发动机，却很少有机会认真追问：当它真正踩下加速踏板之后，我们是否也拥有与之相称的方向盘和刹车？</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/civilization-acceleration-cover.svg" alt="文明从地球边缘驶向星空，探索、能量与风险交织"></p>
+<h2 id="一从一辆车到整片星空">一、从一辆车到整片星空</h2>
+<p>小时候的问题大多是“这件东西能不能造出来”。再大一些之后，问题渐渐变成了“人类究竟能够走多远”。</p>
+<p>我第一次接触费米悖论时，就被它包含的巨大反差吸引了。宇宙有数不清的恒星，许多恒星比太阳古老得多；如果生命和文明并非地球独有，那么在如此漫长的时间里，总该有一些文明留下能够被我们察觉的痕迹。可是直到今天，我们仍没有发现得到确认的地外文明信号。宇宙在人的想象中拥挤无比，在观测中却又异常安静。</p>
+<p>当然，“尚未发现”并不等于“不存在”。人类真正搜索过的范围，相对于宇宙仍小得可怜。也许文明之间被光速和距离隔开，也许彼此存在的时间并不重合，也许我们寻找信号的方式从一开始就错了。我们不能因为没有看见窗外的鸟，就断言世界上没有鸟。费米悖论不是外星文明不存在的证明，更像是一道尚未解开的张力：如果生命常见，沉默从何而来；如果生命罕见，这种罕见究竟发生在哪一道门？</p>
+<p>真正使我不安的，并不是“外星人到底在哪里”，而是这个问题背后隐藏着的另一种可能：也许生命可以反复出现，技术文明却很难长久存在。宇宙中未必缺少点燃的火种，缺少的可能是没有在某个阶段自行熄灭的火焰。</p>
+<p>于是，关于文明的想象第一次有了阴影。此前我看到的是技术不断突破限制：更高效地利用能量，更快地交换信息，更远地离开地面。费米悖论却像是从遥远未来投回来的一面镜子，逼迫我们追问：一个文明从学会制造工具，到能够被银河中的其他观察者看见，中间究竟要穿过多少道狭窄的门？</p>
+<p>我们现在究竟还在门外，已经进入门中，还是正在靠近一扇绝大多数文明都没有穿过去的门？</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/civilization-boundaries-v2.svg" alt="生命、智能、行星与文明自身构成的四层边界"></p>
+<h2 id="二天空中是否悬着一枚钉子">二、天空中是否悬着一枚钉子</h2>
+<p>科幻作品和游戏给过我许多理解这些问题的隐喻。</p>
+<blockquote>
+<p><strong>轻微剧透提示：</strong> 以下涉及《原神》和《崩坏：星穹铁道》翁法罗斯篇的部分剧情设定。</p>
+</blockquote>
+<p>在《原神》的世界里，现有剧情与玩家解读常把“天钉”同世界创伤、深渊污染以及古文明的覆灭联系起来。至于它是否专门惩罚触及禁忌知识的文明，故事仍留下了大量空白。也正因如此，寒天之钉才格外适合作为一种隐喻：它从天空落下，像是在告诉地上的人，有些边界不是为他们准备去跨越的。</p>
+<p>我曾经把这种设定与费米悖论联系起来。会不会每个文明发展到某个阶段，都会遭遇某种看不见的限制？它可能使关键技术中断，使知识无法继续积累，使参与突破的人消失，甚至让文明失去关于那次突破的记忆。这样一来，宇宙的沉默就不再只是偶然，而像是某种反复发生的结果。</p>
+<p>但我也知道，这只能是一种文学想象，不能被当作宇宙运行的证据。我们没有证据证明存在一个高高在上的“天理”，更没有理由把科学尚未解释的空白都交给造物主。这个世界的许多参数确实允许恒星、元素、行星和生命出现，看起来精巧得令人惊叹；可“适合生命的宇宙为何恰好被生命看见”，既可以引出设计者的猜想，也可以引出人择原理、多重宇宙等完全不同的解释。惊叹可以是思考的起点，却不能自动成为结论。</p>
+<p>不过，“寒天之钉”仍然是一个有价值的隐喻。因为即使没有任何外部力量在监视文明，文明也可能遭遇自己的钉子。</p>
+<p>它可能来自物理世界。光速、能量密度、材料强度和行星环境，都不会因为人的愿望而改变。它也可能来自生命本身。人的寿命、认知能力、情绪结构和群体本能，是漫长演化留下的结果，并不一定适合驾驭核能、人工智能和行星级工程。它还可能来自文明内部：战争、资源耗竭、生态崩溃、技术垄断、权力失控，以及全人类明明知道某种危险，却无法协调行动的困境。</p>
+<p>从这个角度看，所谓“神罚”未必需要一位神亲手降下。一个文明只要拥有了足够强的力量，却没有形成与之匹配的自我约束，就可能亲手为自己铸造一枚钉子。</p>
+<p>这比天空中真的存在某种审判者更加令人不安。因为外部的敌人至少可以被观察、被抵抗；文明自身的缺陷却常常伪装成进步、欲望和理所当然，伴随着每一次成功一同长大。</p>
+<h2 id="三身体里的第一道边界">三、身体里的第一道边界</h2>
+<p>如果把目光从宇宙收回来，人类最熟悉的限制其实一直在自己的身体里。</p>
+<p>人会衰老，也会死亡。古代帝王寻找仙药，宗教想象灵魂不朽，今天的实验室研究细胞修复、表观遗传变化、端粒、蛋白质稳态和代谢调控。表达方式发生了变化，愿望却没有改变：人类一直不愿意接受，意识如此复杂，记忆如此漫长，最后却只能被一具逐渐衰老的身体带向终点。</p>
+<p>过去我曾把衰老理解成身体中某种预先写好的“年龄记录”：年轻时，修复机制运转良好；年龄增加后，修复能力逐渐下降，于是旧的一代退出，给新的一代腾出空间。后来我才明白，真实的衰老机制远比一个倒计时复杂。基因组不稳定、端粒耗损、表观遗传改变、蛋白质稳态丧失、细胞衰老、慢性炎症以及细胞间通讯改变，都可能参与其中。演化也不是一个有意识的设计者，不会为了社会秩序而主动安排谁在何时退场。自然选择留下的是能够延续下去的生命机制，而不是为个体幸福量身定做的程序。</p>
+<p>但这并没有消除我最初的疑问，反而让问题变得更加现实：如果人类有一天能够显著延缓衰老，甚至让大多数人拥有远超今天的健康寿命，会发生什么？</p>
+<p>对个体而言，长寿几乎天然是一件好事。我们可以有更多时间学习、相爱、创造，弥补年轻时的遗憾，也可以等待过去无缘亲见的未来。从秦始皇到今天的普通人，真正面对死亡时，恐怕很少有人会因为“代际更替的需要”而心甘情愿地放弃生命。以宏观秩序为名要求个体衰亡，既冷酷，也忽略了文明存在的意义本来就应当包括改善具体人的处境。</p>
+<p>可一项技术对个体是礼物，并不意味着它进入社会后不会带来剧烈震荡。</p>
+<p>如果大多数人的健康寿命有一天能够延伸到一百二十岁，教育是否仍然集中在人生最初二十年，一个人是否会拥有几次完全不同的职业？如果财富和权力可以多积累几十年，已经占据优势位置的人会不会更加难以被替代？如果延寿技术价格昂贵，它带来的会是所有人的健康改善，还是一种前所未有的寿命不平等？</p>
+<p>我们习惯把衰老看作一个生物学问题，真正的长寿却会同时改写经济、政治、家庭和伦理。它甚至会改变“人生”这个词本身。三十岁不再意味着成熟，六十岁也不再接近晚年；婚姻、亲子关系、继承和承诺都要面对更长的时间。过去依靠自然死亡完成的权力交接与财富再分配，也必须由制度主动承担。</p>
+<p>有人会用生态学中的增长曲线想象未来：寿命延长，人口上升，资源触及承载上限，最终从快速增长转入停滞，甚至在失衡后骤然下降。但人类社会并不是培养皿中的单一物种。生育率会变化，技术会改变资源效率，制度也会重新分配成本。灾难不是一个可以从曲线上直接读出的命运。</p>
+<p>真正值得警惕的，或许不是“人活得太久”，而是人的寿命已经改变，社会仍然按照旧有的时间尺度运行。文明突破身体边界的那一刻，也必须重新设计容纳这些生命的世界。否则，突破本身不会自动带来自由，只会把原有的不平等和冲突延长得更久。</p>
+<h2 id="四当智能开始加速智能">四、当智能开始加速智能</h2>
+<p>近几年，人工智能让许多原本遥远的问题突然有了现实感。</p>
+<p>2022年以后，大语言模型展现出的能力一次次越过公众的预期。关于这些能力是否应被称为“涌现”，研究者仍有争论；今天的模型是不是通往通用智能的最终路线，也没有人能够确定。我并不认为只要继续堆叠参数和算力，所有关于智能的问题就会自然得到解决。语言模型可能只是漫长道路上的一种形态，就像早期蒸汽机并不是人类利用能源的最终方式。</p>
+<p>可即使它不是终点，它也已经改变了文明前进的速度。过去，技术主要扩展人的肌肉、感官和交通能力；人工智能开始直接参与信息整理、代码编写、方案搜索和科学发现。AlphaFold对蛋白质结构预测的推动，就是一个清晰的例子：AI不只是替人完成重复劳动，也可能缩短从提出问题到获得线索的距离。</p>
+<p>这正是它与衰老、能源和航天发生联系的地方。人工智能可以帮助分析复杂的生物系统，搜索新材料，优化能源网络，辅助设计飞行器。它像一个加速器，连接起许多原本各自缓慢推进的领域。过去需要一代人完成的知识积累，也许会被压缩到更短的时间里。</p>
+<p>然而，速度本身从来不是方向。</p>
+<p>当技术变化以十年为单位时，社会还有时间修订法律、培养人才、形成新的伦理；当变化以一年甚至几个月为单位时，制度只能追在后面。企业会首先追求效率，国家会首先考虑竞争，个人则在便利、焦虑和失去位置的恐惧之间摇摆。每个参与者都有加速的理由，却没有任何一个参与者能够单独决定文明应该驶向哪里。</p>
+<p>这可能是AI真正特殊的地方：它不仅是一项更强的技术，还可能成为制造其他技术的技术。文明第一次大规模创造一种能够参与自身认知循环的工具——人提出问题，机器给出候选答案，人再利用答案制造更强的机器。智能开始加速智能，发明开始帮助发明。</p>
+<p>这让我想到《崩坏：星穹铁道》翁法罗斯篇中的漫长轮回。在那个故事里，白厄与昔涟让一个模拟世界陷入三千多万次循环；白厄一次次承受失败，等待来自系统之外的变量打破原本注定的结局。它当然只是一段虚构叙事，却触碰了一个很现代的问题：当一个系统能够不断模拟、试错并重新开始，它是否有可能找到现实中从未出现过的路径？而当模拟给出的路径开始反过来影响现实，谁来判断哪一种未来值得被实现？</p>
+<p>人工智能也许不会像科幻作品里那样突然获得全知全能。更可能发生的，是它悄无声息地嵌入每一次科研、管理和选择之中。那时，真正难以回答的未必是“机器有没有意识”，而是“人类是否仍理解自己借助机器做出的决定”。</p>
+<p>文明过去的危险，常常来自力量不足；未来的危险，也许会越来越多地来自能力增长得太快，而理解增长得太慢。</p>
+<h2 id="五离开摇篮">五、离开摇篮</h2>
+<p>如果说长寿是在突破身体的边界，人工智能是在突破认知的边界，那么航天所面对的，就是地球本身的边界。</p>
+<p>截至2026年8月，在近几十年影响人类航天进程的力量中，SpaceX无疑是一个重要角色。猎鹰9号让轨道级运载火箭一级助推器的回收与复飞进入持续运营，星舰则以完全、快速重复使用为目标，尝试进一步降低大规模运送人员和货物进入太空的成本。这个目标仍在实现过程中，离“像民航一样进入太空”也非常遥远；但它已经改变了人们对火箭应该如何使用的想象。</p>
+<p>传统的一次性运载火箭更像一件昂贵的消耗品：完成发射后，大量精密设备会留在海里或烧毁在大气层中。这与我小时候看见刹车时散失的能量，有一种遥远而奇妙的相似。可重复使用火箭所试图收回的，正是这种曾被视作理所当然的浪费。</p>
+<p>今天，星链最直接的价值仍然体现在通信、商业和战略层面。它并不等于人类已经成为星际文明，星舰也不意味着火星城市即将出现。但基础设施的意义常常不在于它第一次被用于什么，而在于当成本持续下降后，会允许什么新的事情发生。铁路最初运送的是当时已有的货物，后来却重新组织了城市、产业和时间；廉价而稳定的太空运输如果真的出现，也可能带来今天还难以完整想象的活动。</p>
+<p>空间太阳能是另一个让我着迷的方向。西安电子科技大学的“逐日工程”研究空间太阳能电站和微波无线传能，已经建立地面全链路验证系统，在地面模拟和验证未来从太阳能获取、光电转换到微波传输与接收整流的关键环节。距离真正大规模部署仍有成本、效率、安全和工程可靠性等漫长障碍，但它代表的思路十分清楚：进入太空获取太阳能，有望显著减轻发电端所受的昼夜和天气限制。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/from-earth-to-stars.svg" alt="从地面验证、轨道基础设施到空间太阳能和恒星尺度的连续路径"></p>
+<p>苏联天文学家卡尔达肖夫曾按照文明能够支配的能量规模，将想象中的文明分为不同等级。在今天通行的概括中，行星级文明可以利用行星尺度的能量，恒星级文明可以利用一颗恒星输出的能量，更高等级则扩展到整个星系。这只是一个假想尺度，也会因为过分强调能源消耗而受到批评。文明的成熟未必等于消耗得更多，节制、效率和可持续性同样可能是进步。但这个尺度仍提醒我们，人类今天能够调用的能量，与太阳每时每刻释放的能量相比，只是极其微小的一部分。</p>
+<p>从这个角度看，可重复使用火箭、轨道基础设施和空间太阳能都不是孤立的工程。它们像是一个仍在蹒跚学步的物种，第一次尝试把活动范围从出生的摇篮向外延伸。</p>
+<p>走出地球的意义，也不仅仅是获得更多资源。如果所有人类文明、历史、艺术和记忆都只存在于一颗行星上，那么一次足够大的自然灾变或人为灾难就可能让一切归零。成为多行星物种并不会让人类获得不朽，却可能让文明不再把全部未来押在同一个地点。</p>
+<p>然而，离开地球并不会自动消除地球上的问题。一个无法处理战争、分配和权力的文明，即使把城市建到火星，也只会把旧矛盾带到新的天空。航天能够扩大文明的生存空间，却不能替文明完成道德上的成年。</p>
+<p>当人类真正开始离开摇篮，我们会遇见什么？是其他文明，是早已沉寂的遗迹，还是比今天更加辽阔的沉默？这个问题令人激动，也令人恐惧。当我们开始更认真地倾听宇宙，也向宇宙留下更明显的技术痕迹时，我们发现别人的机会或许会增加，被别人发现的可能也可能随之上升。</p>
+<h2 id="六所谓大过滤器也许就在文明自身">六、所谓“大过滤器”，也许就在文明自身</h2>
+<p>费米悖论的一种猜想是“大过滤器”：从无生命的物质到能够跨越星际的文明，中间存在某个极难通过的阶段。我们不知道它位于过去还是未来。如果生命的诞生本身极其罕见，那么人类也许已经穿过了最困难的门；如果生命和智能并不罕见，而宇宙仍保持沉默，那么真正危险的关卡可能还在前方。</p>
+<p>我无法判断哪一种更接近事实。但把衰老、人工智能、能源和航天放在一起时，我逐渐感觉到，过滤器未必是一场单独的灾难。它可能是一种长期存在的错位：能力增长得比智慧快，技术扩散得比治理快，个人和组织的短期利益总能压过文明的长期安全。技术本身很少替我们决定用途，只会让人的意图获得更大的杠杆。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/capability-wisdom-gap.svg" alt="技术能力增长快于智慧与治理时形成的文明风险"></p>
+<p>如果一个文明总能发明更强的工具，却不能形成更大范围的信任与合作，那么每一次突破也在提高它自我毁灭的上限。它不需要遭遇造物主或外星舰队，只需要在拥有足够力量时仍然携带漫长演化留下的恐惧、占有欲和群体偏见。</p>
+<p>这也许才是文明最深的矛盾：我们用承载着漫长演化遗产的大脑，运行覆盖全球的社会；由寿命通常不足百年的个体，决定影响数百年的技术；再用彼此竞争的国家和企业，管理可能波及全人类的风险。我们的工具已经开始触碰星辰，协调能力却常常停留在边界、利益和身份之中。</p>
+<p>因此，文明真正需要突破的，未必只是能量、寿命、智能或空间的边界。它还必须突破自身合作能力的边界，学会为尚未出生的人考虑，学会在能够做一件事时追问是否应该做，学会让刹车与发动机一同进化。</p>
+<p>这并不意味着反对技术。恰恰相反，我仍然相信技术是人类最珍贵的创造之一。没有医学、农业、能源和工业，无数今天被视为普通的生命都无法存在。把一切未知都视作禁区，只会让恐惧成为另一枚钉子。真正的问题不是要不要突破，而是突破之后由谁承担代价，收益如何分配，失败能否被限制，以及我们是否给自己保留了后退和修正的可能。</p>
+<p>一个成熟的文明，不应以从不犯错来证明成熟，而应以不会让一次错误终结所有未来来证明成熟。</p>
+<h2 id="七文明也需要学会刹车">七、文明也需要学会刹车</h2>
+<p>多年以后，我再想起小时候关于刹车的那个问题，看到的已经不只是能量。</p>
+<p>一辆车当然需要发动机。没有发动机，它永远不会离开原地。文明也是如此。对未知的好奇、对疾病和死亡的不甘、对更远世界的渴望，推动人类一次次走出原本的边界。假如祖先满足于洞穴里的安全，我们不会拥有今天的一切。探索不是文明偶然产生的冲动，它几乎就是文明本身。</p>
+<p>但一辆真正能够远行的车，不能只有发动机。它还需要方向，需要仪表，需要在危险到来之前减速的能力。刹车并不意味着拒绝前进，而是为了不让一次失控结束整段旅程。</p>
+<p>小时候，我只觉得刹车时的能量白白消失很可惜。今天再看，动能回收最有意味的地方也许不仅是节省了多少电，而是它展示了另一种进步：减速不必只是损失，约束也不必只是阻碍。一个系统可以在停下来时保存力量，可以在修正方向时为下一次出发积累能量。</p>
+<p>对人类文明而言，伦理、制度、安全研究和公共讨论也应当如此。它们不该只是技术问世后才被迫补上的限制，而应该成为技术本身的一部分。最好的刹车系统不是在撞上悬崖前突然抱死，而是在整个行驶过程中持续感知速度、路况和方向。</p>
+<p>宇宙中是否存在其他文明，是否真的有一道大多数文明无法跨越的关卡，是否有某种我们尚不理解的规律限制着技术生命，我都不知道。也许未来的观测会告诉我们，生命比想象中普遍；也许人类会在漫长搜索后继续面对沉默。我们甚至无法确定，自己正在经历的是文明的童年、青春期，还是某个决定命运的狭窄时刻。</p>
+<p>可是，“寒天之钉”并不一定已经由某种高高在上的力量悬在天空。它也可能藏在我们的每一次选择中：当我们只追求更快而不问方向，只追求更强而不问代价，只把技术的收益留给少数人、把风险交给所有人时，它就在被一点点铸造。反过来，当我们扩大知识的同时扩大责任，在竞争之外建立合作，为高风险技术保留边界，为遥远未来保留可能，那枚钉子也可能被一点点拆除。</p>
+<p>我仍然愿意对未来保持希望，不是因为技术会自动解决所有问题，而是因为人类至少拥有反思、修正并为遥远未来工作的能力。这样的能力并不稳定，常常迟到，也从不完美，却可能是文明能够继续存在的理由。</p>
+<p>文明将走向何方，没有谁预先写好了答案。我们距离星辰还很遥远，距离真正理解自己或许同样遥远。</p>
+<p>这当然令人不安。但换一个角度看，它也意味着我们并非只能等待一枚钉子从天而降。至少在答案真正到来之前，我们仍然可以学习如何驾驶这辆不断加速的车：既不因为远方危险就停在原地，也不因为发动机轰鸣就忘记前方的道路。</p>
+<p>而这或许正是所有关于人类文明的宏大问题，最后都会落回的地方——我们能否在获得越来越多力量的同时，也成为配得上这些力量的人。</p>
+<hr>
+<h2 id="延伸阅读">延伸阅读</h2>
+<ul>
+<li><a href="https://doi.org/10.1016/j.cell.2022.11.001">Hallmarks of Aging: An Expanding Universe（Cell，2023）</a></li>
+<li><a href="https://www.nature.com/articles/s41586-021-03819-2">Highly accurate protein structure prediction with AlphaFold（Nature，2021）</a></li>
+<li><a href="https://www.spacex.com/vehicles/falcon-9">SpaceX Falcon 9 官方说明</a></li>
+<li><a href="https://www.engineering.org.cn/engi/CN/PDF/10.1016/j.eng.2023.11.007">“逐日工程”空间太阳能电站地面验证研究</a></li>
+<li><a href="https://adsabs.harvard.edu/pdf/1964SvA.....8..217K">Transmission of Information by Extraterrestrial Civilizations（Kardashev，1964）</a></li>
+</ul> </div> <div class="post-nav"> <a href="/2026/09/04/几个小时迁移一个六年博客之后我怎样理解AI Coding/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">几个小时迁移一个六年博客之后，我怎样理解 AI Coding</span> </a> <a href="/2026/06/20/SkillEvolver自进化实验复盘/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">SkillEvolver 复盘：自进化没有成功，但评测框架留下来了</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#一从一辆车到整片星空">一、从一辆车到整片星空</a>  </li><li> <a href="#二天空中是否悬着一枚钉子">二、天空中是否悬着一枚钉子</a>  </li><li> <a href="#三身体里的第一道边界">三、身体里的第一道边界</a>  </li><li> <a href="#四当智能开始加速智能">四、当智能开始加速智能</a>  </li><li> <a href="#五离开摇篮">五、离开摇篮</a>  </li><li> <a href="#六所谓大过滤器也许就在文明自身">六、所谓“大过滤器”，也许就在文明自身</a>  </li><li> <a href="#七文明也需要学会刹车">七、文明也需要学会刹车</a>  </li><li> <a href="#延伸阅读">延伸阅读</a>  </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

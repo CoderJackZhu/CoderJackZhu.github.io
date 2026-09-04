@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2024/08/06/%E7%A7%8B%E6%8B%9B%E6%8F%90%E5%89%8D%E6%89%B9%E7%99%BE%E5%BA%A6%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><!-- Primary Meta Tags --><title>秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享 | Jack&#39;s Blog</title><meta name="title" content="秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享 | Jack's Blog"><meta name="description" content="秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2024/08/06/%E7%A7%8B%E6%8B%9B%E6%8F%90%E5%89%8D%E6%89%B9%E7%99%BE%E5%BA%A6%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><meta property="og:title" content="秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享 | Jack's Blog"><meta property="og:description" content="秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享。"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/744bb81c16f19a7793ade4c7a0ddd655.jpeg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2024/08/06/%E7%A7%8B%E6%8B%9B%E6%8F%90%E5%89%8D%E6%89%B9%E7%99%BE%E5%BA%A6%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><meta property="twitter:title" content="秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享 | Jack's Blog"><meta property="twitter:description" content="秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享。"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/744bb81c16f19a7793ade4c7a0ddd655.jpeg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">经历与记录</p> <h1>秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享</h1> <div class="article-meta"> <time datetime="2024-08-06T00:00:00.000Z">2024年8月6日</time>  <span>约 4 分钟</span> </div> <p class="article-lead">秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享。</p> </header> <div class="prose"> <h1 id="一面">一面</h1>
+<p>今天周一我六点多下班就回来面试，面试官首先让我自我介绍，然后我自我介绍完，然后是简单问一下我项目情况以及简历上各种内容的情况，然后展开论文讲解，然后我就把论文的背景和内容，然后创新点什么的讲解了一下，然后突出自己的优势，做的比较多学习新东西比较快。</p>
+<p>然后问了问自己在华为实习，这段时间都做了什么？然后我也是简单讲了讲背景，然后讲自己在做的东西这块儿内容有些单薄，后面要丰富一下，这块儿我都没有怎么准备，所以说着坑坑巴巴的。</p>
+<p>然后面试官问自己，在之前遇到什么困难，然后怎么解决的，然后我就换方向这个内容展开讲了讲，说之前遇到这些困难，当然现在解决了，现在做新东西学东西新东西都挺快。</p>
+<p>然后面试官说让手撕代码，然后我说这块儿还没怎么开始准备秋招，然后给了一个题，对于一个长度为六的链表，然后如何反转456项，然后我就按照最简单粗暴的方法，然后他说长度不定，用通用的方法来做，然后我就用一般的方法做基本思路，还是说出来了，先找到一半的节点的头节点，然后面试官说，既然有思路，那就让本地IDE写了。我简单写了写，然后卡住了，翻转这块。想了一会儿，想出来了，这块儿也花了一会儿，还是不是很熟练。</p>
+<p>然后面试官问还有什么想问的，我看面试官都有点不耐烦了，然后简单问了问他们部门儿是做什么的，然后因为我投的是语音部门，所以感觉还是不太match，最后说完面试官说感谢你的参与，全程面了一个小时，这样回答感觉大概率是G了，问题不大就第一场，后面还有机会慢慢准备先把实习做好。</p>
+<h1 id="2024819二面">2024.8.19二面</h1>
+<p>这次面试问的非常细，让自己选一个项目，然后深挖。首先讲了讲自己的项目大致背景、流程、以及主要用到的模型，然后提问这个数据是什么，要提特征，然后讲用了什么模型，模型输入输出是什么，架构是什么，我简单说了之后面试官让详细讲，我就讲了讲思路，但是整个模型的结构就忘了。之后问主体模型是啥，输入输出，架构是啥，为啥用这个模型，然后这个模型是单向还是双向的，为什么，然后单向双向网络有什么区别，感觉可以从模型设计的区别和代理任务的区别展开。然后问了问，这个项目你做了两年了，现在回过头来看，你会用什么来做，如何设计训练，输入输出是什么，预训练的话用什么做，对应的任务如何设置。这些还是挺难的，而且还不是那种能查出来的问题。</p>
+<p>然后问了问未来发展如何想，是只做算法还是什么，然后我说因为本硕都学的这个，所以选这个感觉适合，后面做其他的学习能力也很强可以快速学好。</p>
+<p>然后是简单的编程，写一个排序算法，然后我写了个插入排序。</p>
+<p>最后是提问，我问了我部门做啥，具体什么场景。</p>
+<h1 id="202492三面">2024.9.2三面</h1>
+<p>二面完本来约上周，但是上周都抽不出时间，只好这周，还是周一。这次面试主要还是聊聊天，首先做自我介绍，然后就问实习这段时间有什么收获，和学校有什么不同，我说一方面是技术上的，另一方面是从学生到职场转换这一过渡；在学校是一个人做项目，在企业分工合作做一个大的，然后问这两个哪个好，我说看根据具体的项目来定，大项目合作分工，小项目单人做。然后就是聊现在技术发展趋势和未来职业规划，我说跟着时代趋势走，同时积累自己的核心能力，然后面试官就在说时代趋势和语音这块发发展。
+后面到反问环节，我问部门主要做什么，然后主要就是语音交互，相关的技术。最后我问了问部门升职和培养机制。</p>
+<p>其他还问了有没有拿到其他offer， 投了哪些了，我就如实说，还没offer，也基本没开始投。</p>
+<p>总的来说，比较偏向于聊天，但是具体要不要我真看不出来，希望能过吧，然后就说联系HR了。后面如果过的话应该就进池子了，不知道啥时候能泡出来。</p>
+<h1 id="20241217hr面">2024.12.17HR面</h1>
+<p>本来以为开不出来了，没想到打电话过来，首先问我签了哪里，我说已经签了一家中厂了，并问了问方向，然后问了问毁约到什么时间可以。之后问了问我后续投递计划以及现在的年终奖月份了。</p>
+<p>然后问我是否还有其他offer，之后问我关于方向的问题，以及预期薪酬。</p>
+<p>第二天就给我确定了薪酬和工作内容，让我等着发offer就行，审批中，之后过了几天offer就发下来了。</p> </div> <div class="post-nav"> <a href="/2024/09/12/秋招美团面试分享/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">秋招美团机器学习面试分享</span> </a> <a href="/2024/05/28/腾讯AI Lab暑实面试分享/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">腾讯AI Lab暑实面试分享</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list">  </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

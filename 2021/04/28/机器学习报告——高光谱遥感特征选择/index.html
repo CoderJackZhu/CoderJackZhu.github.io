@@ -1,0 +1,650 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2021/04/28/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E9%AB%98%E5%85%89%E8%B0%B1%E9%81%A5%E6%84%9F%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/"><!-- Primary Meta Tags --><title>机器学习作业——高光谱遥感特征选择 | Jack&#39;s Blog</title><meta name="title" content="机器学习作业——高光谱遥感特征选择 | Jack's Blog"><meta name="description" content="基于 KSC 高光谱遥感数据集，用 Filter 与 Wrapper 方法进行波段特征选择并比较优缺点。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2021/04/28/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E9%AB%98%E5%85%89%E8%B0%B1%E9%81%A5%E6%84%9F%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/"><meta property="og:title" content="机器学习作业——高光谱遥感特征选择 | Jack's Blog"><meta property="og:description" content="基于 KSC 高光谱遥感数据集，用 Filter 与 Wrapper 方法进行波段特征选择并比较优缺点。"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2021/04/28/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94%E9%AB%98%E5%85%89%E8%B0%B1%E9%81%A5%E6%84%9F%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/"><meta property="twitter:title" content="机器学习作业——高光谱遥感特征选择 | Jack's Blog"><meta property="twitter:description" content="基于 KSC 高光谱遥感数据集，用 Filter 与 Wrapper 方法进行波段特征选择并比较优缺点。"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">学习与研究</p> <h1>机器学习作业——高光谱遥感特征选择</h1> <div class="article-meta"> <time datetime="2021-04-28T00:00:00.000Z">2021年4月28日</time>  <span>约 14 分钟</span> </div> <p class="article-lead">基于 KSC 高光谱遥感数据集，用 Filter 与 Wrapper 方法进行波段特征选择并比较优缺点。</p> </header> <div class="prose"> <h2 id="目-录">目 录</h2>
+<ul>
+<li>1 实验说明 1</li>
+<li>2 数据集 1</li>
+<li>3 特征选择 2</li>
+<li>3.1 基本方法 2</li>
+<li>3.2 单变量选择法 2</li>
+<li>3.3 递归特征消除法 2</li>
+<li>4 代码实现 2</li>
+<li>4.1 获取数据 2</li>
+<li>4.2 数据预处理 3</li>
+<li>4.3 定义单变量选择函数 3</li>
+<li>4.4 定义递归特征选择法函数 4</li>
+<li>4.5 定义获得数据函数 4</li>
+<li>4.6 定义评定函数 5</li>
+<li>4.7 主函数 5</li>
+<li>5 结果分析 6</li>
+<li>6 优缺点分析 6</li>
+<li>6.1 Filter 6</li>
+<li>6.2 Wrapper 7</li>
+<li>7 总结 7</li>
+<li>A 作业代码 8</li>
+</ul>
+<h2 id="1-实验说明">1 实验说明</h2>
+<p>本次实验的目标为利用提供的高光谱遥感数据集进行特征选择, 有以下实验要求:</p>
+<ul>
+<li>利用给定的数据集, 进行数据特征 (波段) 选择。</li>
+<li>具体选择方法和策略不限制。</li>
+<li>实验结果度量标准不少于 4 种, 结合课程学习中的指标。</li>
+<li>建议对比不同类型的选择方法, 给出各种方法的优缺点。
+数据集给出的数据维数较高, 其中存在了许多冗余的信息以及无关信息, 如果把这些实际的数据直接放到神经网络中则很难得出较好的结果, 而且计算量大大增加, 因此需要进行特征提取, 把影响实验效果的特征清除掉, 用较少的特征对实验结果进行分析。</li>
+</ul>
+<h2 id="2-数据集">2 数据集</h2>
+<p>在本次实验中, 提供了多种数据可以选择, 由于目标在于实现过程, 数据集选择无关,
+此处选择了肯尼迪航天中心数据 KSC。
+NASA AVIRIS (机载可见光/红外成像光谱仪) 仪器于 1996 年 3 月 23 日在佛罗里达州肯尼迪航天中心 (KSC) 上空获取数据。AVIRIS 采集 224 个波段的数据, 这些波段的宽度为 10 纳米, 中心波长为 400-2500 纳米。从大约 20 公里的高度获得的 KSC 数据具有 18 米的空间分辨率。去除吸水率和低信噪比波段后, 用 176 个波段进行分析。训练数据是利用肯尼迪航天中心提供的彩色红外摄影和陆地卫星专题制图仪 (TM) 图像绘制的土地覆盖图选择的。植被分类方案是由 KSC 人员制定的, 目的是确定在陆地卫星和这些 AVIRIS 数据的空间分辨率上可辨别的功能类型。由于某些植被类型的光谱特征具有相似性, 因此很难区分这种环境下的土地覆盖。为便于分类, 为现场定义了 13 个类别, 代表该环境中出现的各种土地覆盖类型。
+数据集预览如下图所示:</p>
+<p>图 1: KSC 数据预览图（原图已失效）</p>
+<p>数据集尺寸为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>×</mo><mn>614</mn><mo>×</mo><mn>176</mn></mrow><annotation encoding="application/x-tex">512 \times 614 \times 176</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">512</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">614</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">176</span></span></span></span>, 大小为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>56.8</mn><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">B</mi></mrow></mrow><annotation encoding="application/x-tex">56.8\mathrm{MB}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">56.8</span><span class="mord"><span class="mord mathrm">MB</span></span></span></span></span>, 相应的结果尺寸为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>×</mo><mn>614</mn></mrow><annotation encoding="application/x-tex">512 \times 614</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">512</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">614</span></span></span></span>, 大小为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.2</mn><mrow><mi mathvariant="normal">K</mi><mi mathvariant="normal">B</mi></mrow></mrow><annotation encoding="application/x-tex">3.2\mathrm{KB}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3.2</span><span class="mord"><span class="mord mathrm">KB</span></span></span></span></span>。</p>
+<h2 id="3-特征选择">3 特征选择</h2>
+<h2 id="31-基本方法">3.1 基本方法</h2>
+<p>一个典型机器学习问题是通过样本特征预测对应的值, 如果样本特征少, 可以增加特征, 而有时候特征较多, 则需要较少一些特征, 较少过拟合, 提高模型泛化能力, 加快模型训练速度并获得更好的性能,
+特征选择主要有三种选择方法:</p>
+<ol>
+<li>过滤法 (Filter) : 按照发散性或者相关性对各个特征进行评分, 设定阈值或者待选择阈值的个数, 选择特征。</li>
+<li>包裹法 (Wrapper): 根据目标函数, 每次选择若干特征或者排除若干特征, 直到选择出最佳的子集。</li>
+<li>嵌入法 (Embedding): 先使用某些机器学习的算法和模型进行训练, 得到各个特征的权值系数, 根据系数从大到小选择特征。类似于 Filter 方法, 但是是通过训练来确定特征的优劣。</li>
+</ol>
+<h2 id="32-单变量选择法">3.2 单变量选择法</h2>
+<p>单变量特征选择是通过选择那些基于单变量统计检验 (univariate statistical tests) 得出的最优特征来实现的, 这是 Filter 法的一种。它可以看作是估计器的一个预处理步骤。这里使用了 Sklearn 中的 Select KBest 对每个特征进行评分, 并选择出指定数目的特征, 从而达到选择的效果, 这种方法并未考虑到不同特征之间的相互关系, 本题中选择了 50 个特征。</p>
+<h2 id="33-递归特征消除法">3.3 递归特征消除法</h2>
+<p>递归特征消除 (Recursive feature elimination) 是 Wrapper 法中的一种, 其主要思想是反复构建模型, 然后选出最好的 (或者最差的) 特征 (根据系数来选), 把选出来的特征放到一边, 然后在剩余的特征上重复这个过程, 直到遍历了所有的特征。在这个过程中被消除的次序就是特征的排序, 本题中选择了 30 个特征的组合。
+RFE 的稳定性很大程度上取决于迭代时, 底层用的哪种模型。比如 RFE 采用的是普通的回归 (LR), 没有经过正则化的回归是不稳定的, 那么 RFE 就是不稳定的。假如采用的是 Lasso/Ridge, 正则化的回归是稳定的, 那么 RFE 就是稳定的。</p>
+<h2 id="4-代码实现">4 代码实现</h2>
+<h2 id="41-获取数据">4.1 获取数据</h2>
+<p>此处建立函数读取获取数据并将数据从三维降到二维, 将对应的标签从二维降到一维,
+降维后数据的尺寸为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>314368</mn><mo lspace="0em" rspace="0em">×</mo><mn>176</mn></mrow><annotation encoding="application/x-tex">314368 {\times} 176</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">314368</span><span class="mord"><span class="mord">×</span></span><span class="mord">176</span></span></span></span> 。
+其中一个重要的问题是提供的大部分数据是无用的, 即数据对应的标签为 0 , 因此这里
+仅提取出标签不为零的数据,提取后数据尺寸为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5211</mn><mo lspace="0em" rspace="0em">×</mo><mn>176</mn></mrow><annotation encoding="application/x-tex">5211 {\times} 176</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">5211</span><span class="mord"><span class="mord">×</span></span><span class="mord">176</span></span></span></span> ,相关代码如下:</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> numpy </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> np</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> scipy</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">io </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> loadmat</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># Function to load and preprocess the data</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> get_data</span><span style="color:var(--astro-code-foreground)">():</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Load the hyperspectral dataset</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    dat </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> loadmat</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'./高光谱数据集/KSC.mat'</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)">[</span><span style="color:var(--astro-code-token-string-expression)">'KSC'</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    lab </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> loadmat</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'./高光谱数据集/KSC_gt.mat'</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)">[</span><span style="color:var(--astro-code-token-string-expression)">'KSC_gt'</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Reshape the data and labels</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    dat </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> dat</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">reshape</span><span style="color:var(--astro-code-token-punctuation)">((</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">, </span><span style="color:var(--astro-code-token-constant)">176</span><span style="color:var(--astro-code-token-punctuation)">))</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    lab </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> lab</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">reshape</span><span style="color:var(--astro-code-token-punctuation)">((</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">))</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(dat.shape)</span><span style="color:var(--astro-code-token-comment)">  # Print the shape of the data</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> label </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> []</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> []</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Filter out data with non-zero labels</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(dat.shape[</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">]):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        if</span><span style="color:var(--astro-code-foreground)"> lab</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">i</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> !=</span><span style="color:var(--astro-code-token-constant)"> 0</span><span style="color:var(--astro-code-token-punctuation)">:</span><span style="color:var(--astro-code-token-comment)">  # Correct condition: check if the label is not 0</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            data</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">append</span><span style="color:var(--astro-code-token-punctuation)">(dat[i, :])</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            label</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">append</span><span style="color:var(--astro-code-token-punctuation)">(lab[i])</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Convert lists to numpy arrays</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    label </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(label)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> label</span></span></code></pre>
+<h2 id="42-数据预处理">4.2 数据预处理</h2>
+<p>这里首先利用 sklearn 中的 processing 对数据进行标准化处理, 然后消除方差为 0 的
+特征, 并利用中位数进行变量的选择。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">preprocessing </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> StandardScaler</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">feature_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> VarianceThreshold</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> numpy </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> np</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># Function to process the data</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> process</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">data</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Standardize the data</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> StandardScaler</span><span style="color:var(--astro-code-token-punctuation)">().</span><span style="color:var(--astro-code-token-function)">fit_transform</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'shape=</span><span style="color:var(--astro-code-token-constant)">{}</span><span style="color:var(--astro-code-token-string-expression)">'</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">format</span><span style="color:var(--astro-code-token-punctuation)">(data.shape))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Apply VarianceThreshold (default threshold is 0)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    selector </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> VarianceThreshold</span><span style="color:var(--astro-code-token-punctuation)">()</span><span style="color:var(--astro-code-token-comment)">  # Instantiate, default threshold 0</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> selector</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">fit_transform</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(data.shape)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Calculate the median variance and apply VarianceThreshold with it</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    median_num </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">median</span><span style="color:var(--astro-code-token-punctuation)">(np.</span><span style="color:var(--astro-code-token-function)">var</span><span style="color:var(--astro-code-token-punctuation)">(data, axis</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">))</span><span style="color:var(--astro-code-token-comment)">  # Calculate the median variance</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> VarianceThreshold</span><span style="color:var(--astro-code-token-punctuation)">(median_num).</span><span style="color:var(--astro-code-token-function)">fit_transform</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(data.shape)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> data</span></span></code></pre>
+<h2 id="43-定义单变量选择函数">4.3 定义单变量选择函数</h2>
+<p>此处定义了单变量选择函数, 利用 SelectKBest 进行评分, 得到不同特征的得分以及
+pvalue, 并得出是否选择, 并得到选出的 50 个特征的索引。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> pandas </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> pd</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">feature_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> SelectKBest</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> f_classif</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># Function to select k best features</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> select_k</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> k</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Apply SelectKBest with f_classif scoring</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    results </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> SelectKBest</span><span style="color:var(--astro-code-token-punctuation)">(f_classif, k</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">k).</span><span style="color:var(--astro-code-token-function)">fit</span><span style="color:var(--astro-code-token-punctuation)">(data, label)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(results)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Create a DataFrame to store feature scores, p-values, and selection status</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    features </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> pd</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">DataFrame</span><span style="color:var(--astro-code-token-punctuation)">({</span></span>
+<span class="line"><span style="color:var(--astro-code-token-string-expression)">        "score"</span><span style="color:var(--astro-code-token-punctuation)">: results.scores_,</span></span>
+<span class="line"><span style="color:var(--astro-code-token-string-expression)">        "pvalue"</span><span style="color:var(--astro-code-token-punctuation)">: results.pvalues_,</span></span>
+<span class="line"><span style="color:var(--astro-code-token-string-expression)">        "select"</span><span style="color:var(--astro-code-token-punctuation)">: results.</span><span style="color:var(--astro-code-token-function)">get_support</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">    })</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Sort the features by score in descending order</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    features </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> features</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">sort_values</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">"score"</span><span style="color:var(--astro-code-token-punctuation)">, ascending</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">False</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(features)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Get the indices of the selected features</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    index </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> results</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">get_support</span><span style="color:var(--astro-code-token-punctuation)">(indices</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(index)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> index</span></span></code></pre>
+<p>此处简要列出几种特征得分、pvalue 以及选择情况如下图所示。</p>
+<table><thead><tr><th>Index</th><th>score</th><th>pvalue</th><th>select</th></tr></thead><tbody><tr><td>128</td><td>2727.83</td><td>0</td><td>True</td></tr><tr><td>129</td><td>2721.86</td><td>0</td><td>True</td></tr><tr><td>130</td><td>2713.15</td><td>0</td><td>True</td></tr><tr><td>131</td><td>3.10662</td><td>0.000214373</td><td>False</td></tr><tr><td>132</td><td>8.8046</td><td>6.66051e-17</td><td>False</td></tr><tr><td>133</td><td>1.56247</td><td>0.0951564</td><td>False</td></tr><tr><td>134</td><td>2085.42</td><td>0</td><td>False</td></tr><tr><td>135</td><td>2101.52</td><td>0</td><td>False</td></tr><tr><td>136</td><td>2107.9</td><td>0</td><td>False</td></tr><tr><td>137</td><td>2116.73</td><td>0</td><td>False</td></tr><tr><td>138</td><td>1.36264</td><td>0.17608</td><td>False</td></tr><tr><td>139</td><td>2165.66</td><td>日</td><td>True</td></tr><tr><td>140</td><td>2219.98</td><td>®</td><td>True</td></tr><tr><td>141</td><td>1.06688</td><td>0.383812</td><td>False</td></tr></tbody></table>
+<p>图 2: 特征得分预览图</p>
+<p>4.4 定义递归特征选择法函数
+此处同样获取索引, 在本题中, 选择了 30 个特征的组合进行特征选择, 代码如下。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">feature_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> RFE</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">linear_model </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> LogisticRegression</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># Function to perform Recursive Feature Elimination (RFE)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> rfe</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> n</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Initialize RFE with LogisticRegression as the estimator and select 'n' features</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    results </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> RFE</span><span style="color:var(--astro-code-token-punctuation)">(estimator</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)">LogisticRegression</span><span style="color:var(--astro-code-token-punctuation)">(), n_features_to_select</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">n)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(results)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Fit RFE to the data and labels</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    results</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">fit</span><span style="color:var(--astro-code-token-punctuation)">(data, label)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Get the indices of the selected features</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    index </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> results</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">get_support</span><span style="color:var(--astro-code-token-punctuation)">(indices</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(index)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> index</span></span></code></pre>
+<h2 id="45-定义获得数据函数">4.5 定义获得数据函数</h2>
+<p>此函数目的为获取指定索引特征的数据并划分训练测试集, 即将上文中选出的指定特征索引数据选出来。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> numpy </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> np</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">model_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> train_test_split</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># Function to select specific features based on the provided indices and split the data</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> select_index_data</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">index</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> label</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Initialize an empty list to store selected features</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data_after </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> []</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Append selected features (columns) from the data based on the indices</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> index</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        data_after</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">append</span><span style="color:var(--astro-code-token-punctuation)">(data[:, i])</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Convert the list of selected features into a NumPy array and transpose it</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data_after </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(data_after).</span><span style="color:var(--astro-code-token-function)">transpose</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(data_after.shape)</span><span style="color:var(--astro-code-token-comment)">  # Print the shape of the selected data</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(label.shape)</span><span style="color:var(--astro-code-token-comment)">  # Print the shape of the labels</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Split the selected data and labels into training and test sets</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-token-function)"> train_test_split</span><span style="color:var(--astro-code-token-punctuation)">(data_after, label, test_size</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">0.3</span><span style="color:var(--astro-code-token-punctuation)">, random_state</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">)</span></span></code></pre>
+<h2 id="46-定义评定函数">4.6 定义评定函数</h2>
+<p>此处利用 SVM 来测定特征选择的效果, 并利用 sklearn 中的库函数来进行评定, 相关
+代码如下。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">svm </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> SVC</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> metrics</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># Function to measure the performance of the SVM classifier</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> measure_feature</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">train_data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> test_data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> train_label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> test_label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> gamma</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> c</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Initialize the SVM classifier with a polynomial kernel</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    clf </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> SVC</span><span style="color:var(--astro-code-token-punctuation)">(kernel</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'poly'</span><span style="color:var(--astro-code-token-punctuation)">, gamma</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">gamma, C</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">c)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Train the classifier</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    clf</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">fit</span><span style="color:var(--astro-code-token-punctuation)">(train_data, train_label)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Predict the labels for the test data</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    predict </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> clf</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">predict</span><span style="color:var(--astro-code-token-punctuation)">(test_data)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Get model parameters (if needed)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    clf</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">get_params</span><span style="color:var(--astro-code-token-punctuation)">(deep</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Calculate performance metrics</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    acc </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> metrics</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">accuracy_score</span><span style="color:var(--astro-code-token-punctuation)">(test_label, predict)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    f1 </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> metrics</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">f1_score</span><span style="color:var(--astro-code-token-punctuation)">(test_label, predict, average</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'micro'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    recall </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> metrics</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">recall_score</span><span style="color:var(--astro-code-token-punctuation)">(test_label, predict, average</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'micro'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    precision </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> metrics</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">precision_score</span><span style="color:var(--astro-code-token-punctuation)">(test_label, predict, average</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'micro'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> acc</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> f1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> recall</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> precision</span></span></code></pre>
+<h2 id="47-主函数">4.7 主函数</h2>
+<p>这部分使用了上文中定义的函数, 首先读取数据, 然后进行数据预处理, 之后分别利用这两种方法, 并提取出特征对应的索引, 之后划分出训练集和测试集来对特征提取的结果进行测试, 最后分别展示出分别用分类准确率, f1 分数, 召回率, 精确度等指标来测试训练集和测试集的效果, 代码如下。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">if</span><span style="color:var(--astro-code-token-constant)"> __name__</span><span style="color:var(--astro-code-token-keyword)"> ==</span><span style="color:var(--astro-code-token-string-expression)"> '__main__'</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Load and preprocess the data</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> label </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> get_data</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> process</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Select features using SelectKBest or RFE</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # index = rfe(data, label, n=30)  # Uncomment if using RFE</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    index </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> select_k</span><span style="color:var(--astro-code-token-punctuation)">(data, label, k</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">50</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-token-comment)">  # Using SelectKBest with k=50</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Select train and test data based on selected features</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    train_data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> train_label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_label </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> select_index_data</span><span style="color:var(--astro-code-token-punctuation)">(index, data, label)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Print shapes of train and test sets</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(train_data.shape, test_data.shape, train_label.shape, test_label.shape)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Define hyperparameters for the SVM classifier</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    gamma</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> c </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)"> 0.125</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 60</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Measure performance on the training data</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    train_acc</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> train_f1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> train_recall</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> train_precision </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> measure_feature</span><span style="color:var(--astro-code-token-punctuation)">(</span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">        train_data, train_data, train_label, train_label, gamma, c</span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">    )</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Measure performance on the test data</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    test_acc</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_f1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_recall</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_precision </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> measure_feature</span><span style="color:var(--astro-code-token-punctuation)">(</span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">        train_data, test_data, train_label, test_label, gamma, c</span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">    )</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Print training and test accuracy</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-keyword)">f</span><span style="color:var(--astro-code-token-string-expression)">"Training Accuracy: </span><span style="color:var(--astro-code-token-constant)">{</span><span style="color:var(--astro-code-token-punctuation)">train_acc</span><span style="color:var(--astro-code-token-constant)">}</span><span style="color:var(--astro-code-token-string-expression)">, Test Accuracy: </span><span style="color:var(--astro-code-token-constant)">{</span><span style="color:var(--astro-code-token-punctuation)">test_acc</span><span style="color:var(--astro-code-token-constant)">}</span><span style="color:var(--astro-code-token-string-expression)">"</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # Print other performance metrics</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-keyword)">f</span><span style="color:var(--astro-code-token-string-expression)">"Training F1 Score: </span><span style="color:var(--astro-code-token-constant)">{</span><span style="color:var(--astro-code-token-punctuation)">train_f1</span><span style="color:var(--astro-code-token-constant)">}</span><span style="color:var(--astro-code-token-string-expression)">, Test F1 Score: </span><span style="color:var(--astro-code-token-constant)">{</span><span style="color:var(--astro-code-token-punctuation)">test_f1</span><span style="color:var(--astro-code-token-constant)">}</span><span style="color:var(--astro-code-token-string-expression)">"</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-keyword)">f</span><span style="color:var(--astro-code-token-string-expression)">"Training Recall: </span><span style="color:var(--astro-code-token-constant)">{</span><span style="color:var(--astro-code-token-punctuation)">train_recall</span><span style="color:var(--astro-code-token-constant)">}</span><span style="color:var(--astro-code-token-string-expression)">, Test Recall: </span><span style="color:var(--astro-code-token-constant)">{</span><span style="color:var(--astro-code-token-punctuation)">test_recall</span><span style="color:var(--astro-code-token-constant)">}</span><span style="color:var(--astro-code-token-string-expression)">"</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-keyword)">f</span><span style="color:var(--astro-code-token-string-expression)">"Training Precision: </span><span style="color:var(--astro-code-token-constant)">{</span><span style="color:var(--astro-code-token-punctuation)">train_precision</span><span style="color:var(--astro-code-token-constant)">}</span><span style="color:var(--astro-code-token-string-expression)">, Test Precision: </span><span style="color:var(--astro-code-token-constant)">{</span><span style="color:var(--astro-code-token-punctuation)">test_precision</span><span style="color:var(--astro-code-token-constant)">}</span><span style="color:var(--astro-code-token-string-expression)">"</span><span style="color:var(--astro-code-token-punctuation)">)</span></span></code></pre>
+<h2 id="5-结果分析">5 结果分析</h2>
+<p>表 1: 训练测试结果</p>
+<table><thead><tr><th></th><th>accuracy</th><th>f1 score</th><th>recall</th><th>precision</th></tr></thead><tbody><tr><td>UFS 训练集</td><td>0.943</td><td>0.943</td><td>0.943</td><td>0.943</td></tr><tr><td>UFS 测试集</td><td>0.902</td><td>0.902</td><td>0.902</td><td>0.902</td></tr><tr><td>RFE 训练集</td><td>0.994</td><td>0.994</td><td>0.994</td><td>0.994</td></tr><tr><td>RFE 测试集</td><td>0.948</td><td>0.948</td><td>0.948</td><td>0.948</td></tr></tbody></table>
+<p>由上表可知, RFE 在选择的特征数少于 UFS 的情况下, 效果仍好于 UFS。在本数据集下, 四种指标结果相同。对于 UFS 法, 优点是直观, 可解释性更好, 但是最优的组合效果并不一定是最好的。对于 RFE 法, 计算量更大, 需要考虑不同组合的效果。递归式特征消除的主要思路是反复建立多种模型, 每一次根据系数的不挑出差的特征, 并去除挑出来的特征, 然后在剩余的特征上重复该过程, 直到遍历了所有的特征。</p>
+<h2 id="6-优缺点分析">6 优缺点分析</h2>
+<h2 id="61-filter">6.1 Filter</h2>
+<p>过滤式特征选择的评价标准从数据集本身的内在性质获得, 与特定的学习算法无关, 因此具有具有较好的通用性。通常选择和类别相关度大的特征或者特征子集。过滤式特征选择的研究者认为, 相关度较大的特征或者特征自己会在分类器上获得较高的准确率, dash 和 liu 把过滤式特征选择的评价标准分为四种, 即距离度量, 信息度量, 关联度量以及一致性度量
+优点: 算法的通用性强, 省去了分类器的训练步骤, 算法复杂性低, 因而适用于大规模
+数据集, 可以快速去除大量不相关的特征, 作为特征的预筛选器非常合适的
+缺点: 由于算法的评价标准独立于特定的学习算法, 所选的特征子集在分类准确率方
+面通常低于 wrapper 方法。</p>
+<h2 id="62-wrapper">6.2 Wrapper</h2>
+<p>封装式特征选择即 wrapper 方法利用学习算法的性能来评价特征自己的优劣, 因此, 对
+于一个待评价的特征子集, wrapper 方法需要
+训练一个分类器, 根据分类器的性能对该特征子集进行评价, wrapper 方法中用以评价特征的学习算法是多种多样的, 例如决策树、神经网路、贝叶斯分类器、近邻法以及支持向量机等等, 本文就使用的支持向量机来进行评价。
+优点: 相对于 filter 方法, wrapper 方法找到的特征子集分类性能通常更好
+缺点: wrapper 方法选出的特征通用性不强, 当改变学习算法时, 需要针对该学习算法重新进行特征选择, 由于每次对子集的评价都要进行分类器的训练和测试, 所以算法计算复杂度很高, 尤其对于大规模数据集来说, 算法的执行时间越长。</p>
+<h2 id="7-总结">7 总结</h2>
+<p>在这次实验中, 开始在理解题意方面遇到了很多问题, 后来经过多方询问才明白特征提取的几种方法如何实现。这次实验中我通过广泛查询资料了解到了相关的知识, 也认真写代码来完成任务, 这份作业的完成确实比较艰巨, 一份顶多份, 但是我还是有很大的收获, 能力也得到了提升。</p>
+<h2 id="a-作业代码">A 作业代码</h2>
+<p>程序 - 高光谱.py</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> pandas </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> pd</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> numpy </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> np</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> scipy</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">io </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> loadmat</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> sklearn</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> preprocessing</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">ensemble </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> RandomForestClassifier </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> RFC</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">feature_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> SelectFromModel</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">feature_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> VarianceThreshold</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">feature_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> SelectKBest</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> f_classif</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">linear_model </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> LogisticRegression</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">feature_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> RFE</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">model_selection </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> train_test_split</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">metrics </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> confusion_matrix</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> sklearn </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> metrics</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> get_data</span><span style="color:var(--astro-code-foreground)">():</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    dat </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> loadmat</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'./高光谱数据集/KSC.mat'</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)">[</span><span style="color:var(--astro-code-token-string-expression)">'KSC'</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    lab </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> loadmat</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'./高光谱数据集/KSC_gt.mat'</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)">[</span><span style="color:var(--astro-code-token-string-expression)">'KSC_gt'</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    dat </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> dat</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">reshape</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">, </span><span style="color:var(--astro-code-token-constant)">176</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    lab </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> lab</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">reshape</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(dat.shape)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> label </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> []</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> []</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(dat.shape[</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">]):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        if</span><span style="color:var(--astro-code-foreground)"> lab</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">i</span><span style="color:var(--astro-code-token-punctuation)">].</span><span style="color:var(--astro-code-token-function)">all</span><span style="color:var(--astro-code-token-punctuation)">()</span><span style="color:var(--astro-code-token-keyword)"> !=</span><span style="color:var(--astro-code-token-constant)"> 0</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            data</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">append</span><span style="color:var(--astro-code-token-punctuation)">(dat[i, :])</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            label</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">append</span><span style="color:var(--astro-code-token-punctuation)">(lab[i])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    label </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(label)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> label</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> process</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">data</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> preprocessing</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">StandardScaler</span><span style="color:var(--astro-code-token-punctuation)">().</span><span style="color:var(--astro-code-token-function)">fit_transform</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'shape=</span><span style="color:var(--astro-code-token-constant)">{}</span><span style="color:var(--astro-code-token-string-expression)">'</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">format</span><span style="color:var(--astro-code-token-punctuation)">(data.shape))</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    selector </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> VarianceThreshold</span><span style="color:var(--astro-code-token-punctuation)">()</span><span style="color:var(--astro-code-token-comment)">  # 实例化，不填参数默认方差为0</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> selector</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">fit_transform</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(data.shape)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    median_num </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">median</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> VarianceThreshold</span><span style="color:var(--astro-code-token-punctuation)">(median_num).</span><span style="color:var(--astro-code-token-function)">fit_transform</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(data.shape)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> data</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># acc = cross_val_score(KNN(), data, label, cv=5).mean()</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># print("accuracy:{},time:{}".format(acc,time.time()-start))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> select_k</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> k</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    results </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> SelectKBest</span><span style="color:var(--astro-code-token-punctuation)">(f_classif, k</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">k).</span><span style="color:var(--astro-code-token-function)">fit</span><span style="color:var(--astro-code-token-punctuation)">(data, label)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(results)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    features </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> pd</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">DataFrame</span><span style="color:var(--astro-code-token-punctuation)">({</span></span>
+<span class="line"><span style="color:var(--astro-code-token-string-expression)">        "score"</span><span style="color:var(--astro-code-token-punctuation)">: results.scores_,</span></span>
+<span class="line"><span style="color:var(--astro-code-token-string-expression)">        "pvalue"</span><span style="color:var(--astro-code-token-punctuation)">: results.pvalues_,</span></span>
+<span class="line"><span style="color:var(--astro-code-token-string-expression)">        "select"</span><span style="color:var(--astro-code-token-punctuation)">: results.</span><span style="color:var(--astro-code-token-function)">get_support</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">    })</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    features</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">sort_values</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">"score"</span><span style="color:var(--astro-code-token-punctuation)">, ascending</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">False</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(features)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    index </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> results</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">get_support</span><span style="color:var(--astro-code-token-punctuation)">(indices</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(index)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> index</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> rfe</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> n</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    results </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> RFE</span><span style="color:var(--astro-code-token-punctuation)">(estimator</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)">LogisticRegression</span><span style="color:var(--astro-code-token-punctuation)">(), n_features_to_select</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">n)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(results)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    results</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">fit</span><span style="color:var(--astro-code-token-punctuation)">(data, label)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    index </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> results</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">get_support</span><span style="color:var(--astro-code-token-punctuation)">(indices</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(index)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> index</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> rfc</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> label</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    RFC_ </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> RFC</span><span style="color:var(--astro-code-token-punctuation)">(n_estimators</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">50</span><span style="color:var(--astro-code-token-punctuation)">, random_state</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    X_embedded </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> SelectFromModel</span><span style="color:var(--astro-code-token-punctuation)">(RFC_, threshold</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">0.005</span><span style="color:var(--astro-code-token-punctuation)">).</span><span style="color:var(--astro-code-token-function)">fit_transform</span><span style="color:var(--astro-code-token-punctuation)">(data, label)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    result </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">model_selection</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">cross_val_score</span><span style="color:var(--astro-code-token-punctuation)">(RFC_, X_embedded, label, cv</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">5</span><span style="color:var(--astro-code-token-punctuation)">).</span><span style="color:var(--astro-code-token-function)">mean</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(result)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> select_index_data</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">index</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> label</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data_after </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> []</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> index</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        data_after</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">append</span><span style="color:var(--astro-code-token-punctuation)">(data[:, i])</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data_after </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(data_after).</span><span style="color:var(--astro-code-token-function)">transpose</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(data_after.shape)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(label.shape)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-token-function)"> train_test_split</span><span style="color:var(--astro-code-token-punctuation)">(data_after, label, test_size</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">0.3</span><span style="color:var(--astro-code-token-punctuation)">, random_state</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> measure_feature</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">train_data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> test_data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> train_label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> test_label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> gamma</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> c</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    clf </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">svm</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">SVC</span><span style="color:var(--astro-code-token-punctuation)">(kernel</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'poly'</span><span style="color:var(--astro-code-token-punctuation)">, gamma</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">gamma, C</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">c)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    clf</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">fit</span><span style="color:var(--astro-code-token-punctuation)">(train_data, train_label)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    predict </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> clf</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">predict</span><span style="color:var(--astro-code-token-punctuation)">(test_data)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    clf</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">get_params</span><span style="color:var(--astro-code-token-punctuation)">(deep</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    acc </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">metrics</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">accuracy_score</span><span style="color:var(--astro-code-token-punctuation)">(test_label, predict)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    f1 </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> sklearn</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">metrics</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">f1_score</span><span style="color:var(--astro-code-token-punctuation)">(test_label, predict, average</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'micro'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    recall </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> metrics</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">recall_score</span><span style="color:var(--astro-code-token-punctuation)">(test_label, predict, average</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'micro'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    precision </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> metrics</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">precision_score</span><span style="color:var(--astro-code-token-punctuation)">(test_label, predict, average</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'micro'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> acc</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> f1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> recall</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> precision</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">if</span><span style="color:var(--astro-code-token-constant)"> __name__</span><span style="color:var(--astro-code-token-keyword)"> ==</span><span style="color:var(--astro-code-token-string-expression)"> '__main__'</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> label </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> get_data</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> process</span><span style="color:var(--astro-code-token-punctuation)">(data)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # rfc(data,label)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    index </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> select_k</span><span style="color:var(--astro-code-token-punctuation)">(data, label, k</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">50</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # index = rfe(data, label,n=30)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    train_data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_data</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> train_label</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_label </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> select_index_data</span><span style="color:var(--astro-code-token-punctuation)">(index, data, label)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(train_data.shape, test_data.shape, train_label.shape, test_label.shape)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    gamma</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> c </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)"> 0.125</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 60</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    train_acc</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> train_f1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> train_recall</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> train_precision </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> measure_feature</span><span style="color:var(--astro-code-token-punctuation)">(train_data, train_data, train_label,</span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">                                                                         train_label, gamma, c)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    test_acc</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_f1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_recall</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> test_precision </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> measure_feature</span><span style="color:var(--astro-code-token-punctuation)">(train_data, test_data, train_label, test_label,</span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">                                                                     gamma, c)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(train_acc, test_acc)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(train_f1, test_f1)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(train_recall, test_recall)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(train_precision, test_precision)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # print('训练集准确率为{:.4f}，测试集准确率为{:.4f}'.format(train_acc, test_acc))</span></span>
+<span class="line"></span></code></pre> </div> <div class="post-nav"> <a href="/2021/05/23/机器学习上机报告——聚类分析/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">机器学习上机报告——聚类分析</span> </a> <a href="/2021/04/16/计算智能导论作业——遗传算法的实现/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">计算智能导论作业——遗传算法的实现</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#目-录">目 录</a>  </li><li> <a href="#1-实验说明">1 实验说明</a>  </li><li> <a href="#2-数据集">2 数据集</a>  </li><li> <a href="#3-特征选择">3 特征选择</a>  </li><li> <a href="#31-基本方法">3.1 基本方法</a>  </li><li> <a href="#32-单变量选择法">3.2 单变量选择法</a>  </li><li> <a href="#33-递归特征消除法">3.3 递归特征消除法</a>  </li><li> <a href="#4-代码实现">4 代码实现</a>  </li><li> <a href="#41-获取数据">4.1 获取数据</a>  </li><li> <a href="#42-数据预处理">4.2 数据预处理</a>  </li><li> <a href="#43-定义单变量选择函数">4.3 定义单变量选择函数</a>  </li><li> <a href="#45-定义获得数据函数">4.5 定义获得数据函数</a>  </li><li> <a href="#46-定义评定函数">4.6 定义评定函数</a>  </li><li> <a href="#47-主函数">4.7 主函数</a>  </li><li> <a href="#5-结果分析">5 结果分析</a>  </li><li> <a href="#6-优缺点分析">6 优缺点分析</a>  </li><li> <a href="#61-filter">6.1 Filter</a>  </li><li> <a href="#62-wrapper">6.2 Wrapper</a>  </li><li> <a href="#7-总结">7 总结</a>  </li><li> <a href="#a-作业代码">A 作业代码</a>  </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

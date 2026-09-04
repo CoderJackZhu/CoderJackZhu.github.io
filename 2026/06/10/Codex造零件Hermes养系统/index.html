@@ -1,0 +1,563 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2026/06/10/Codex%E9%80%A0%E9%9B%B6%E4%BB%B6Hermes%E5%85%BB%E7%B3%BB%E7%BB%9F/"><!-- Primary Meta Tags --><title>Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程 | Jack&#39;s Blog</title><meta name="title" content="Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程 | Jack's Blog"><meta name="description" content="以 PassiveAgent 为案例，记录我如何用 Hermes 作为长期项目工作台，配合 Codex/Claude Code 开发一个个人注意力调度系统，以及对 Agent 自进化和工程化实践的思考。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2026/06/10/Codex%E9%80%A0%E9%9B%B6%E4%BB%B6Hermes%E5%85%BB%E7%B3%BB%E7%BB%9F/"><meta property="og:title" content="Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程 | Jack's Blog"><meta property="og:description" content="以 PassiveAgent 为案例，记录我如何用 Hermes 作为长期项目工作台，配合 Codex/Claude Code 开发一个个人注意力调度系统，以及对 Agent 自进化和工程化实践的思考。"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-cover.svg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2026/06/10/Codex%E9%80%A0%E9%9B%B6%E4%BB%B6Hermes%E5%85%BB%E7%B3%BB%E7%BB%9F/"><meta property="twitter:title" content="Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程 | Jack's Blog"><meta property="twitter:description" content="以 PassiveAgent 为案例，记录我如何用 Hermes 作为长期项目工作台，配合 Codex/Claude Code 开发一个个人注意力调度系统，以及对 Agent 自进化和工程化实践的思考。"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-cover.svg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">技术与工程</p> <h1>Codex 造零件，Hermes 养系统：我用 Hermes 实践 PassiveAgent 的过程</h1> <div class="article-meta"> <time datetime="2026-06-10T00:00:00.000Z">2026年6月10日</time>  <span>约 14 分钟</span> </div> <p class="article-lead">以 PassiveAgent 为案例，记录我如何用 Hermes 作为长期项目工作台，配合 Codex/Claude Code 开发一个个人注意力调度系统，以及对 Agent 自进化和工程化实践的思考。</p> </header> <div class="prose"> <p>最开始做 PassiveAgent 的时候，我其实一直有一个疑问：如果只是写代码，用 Codex 和 Claude Code 不就够了吗？为什么还要把 Hermes 放进这个开发过程里？</p>
+<p>这个问题很真实。因为在今天，写一个 Python CLI、补几个模块、改几个 bug、加一些测试，Codex / Claude Code 确实已经非常强了。甚至可以说，如果目标只是“把代码写出来”，Hermes 并不是最核心的工具。</p>
+<p>但 PassiveAgent 做到初具规模之后，我对这个问题的答案逐渐清晰了：</p>
+<blockquote>
+<p>Codex / Claude Code 更像施工队，负责把一个个功能实现出来；Hermes 更像这个项目的长期操作系统，负责记住项目、编排工具、沉淀经验，并让这个系统在真实环境里长期活下去。</p>
+</blockquote>
+<p>这篇文章想分享的，不只是 PassiveAgent 这个项目本身，也包括我在用 Hermes 开发它的过程中，对 Agent 工具分工、自进化、长期个人系统的一些体会。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-cover.svg" alt="Codex 造零件，Hermes 养系统"></p>
+<hr>
+<p>这篇文章可以按两条线看：一条线是 PassiveAgent 作为个人注意力调度系统的项目介绍；另一条线是 Hermes 在这个项目中扮演的角色——它不是替代 Codex/Claude Code，而是把一次性 coding 能力放进长期可记忆、可验证、可演化的工程闭环里。</p>
+<hr>
+<h2 id="passiveagent-是什么">PassiveAgent 是什么</h2>
+<p>PassiveAgent 是我给自己做的一个“个人注意力调度系统”。</p>
+<p>现在资料太多了：Zotero 里有论文，Obsidian 里有摘录和临时链接，GitHub Stars 里有项目，HuggingFace Daily Papers 每天也有新论文。真正的问题不是“没有资料”，而是每天不知道应该先看哪几个。</p>
+<p>PassiveAgent 要解决的问题就是：</p>
+<blockquote>
+<p>每天从多个信息池里挑出少量真正值得看的内容，摘要、打分、排序，然后推送给我。</p>
+</blockquote>
+<p>它的基础流程大概是：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Zotero / Obsidian / HuggingFace Daily / GitHub Stars</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>采集与标准化</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>去重</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>LLM 摘要与多维度打分</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>Rank Top N</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>飞书推送 / CLI 查看</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>看、忽略、加入周末、生成面试卡或技术笔记</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>反馈影响后续推荐</span></span></code></pre>
+<p>它适合的场景很明确：不是替我刷信息流，而是替我减少信息流；不是每天推一堆“可能有用”的东西，而是只推少量和当前目标高度相关的内容。</p>
+<p>当前我的主要目标是 Agent / LLM / 算法工程方向的学习和面试准备，所以 PassiveAgent 的打分逻辑会围绕这些主题进行。</p>
+<hr>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-architecture.svg" alt="PassiveAgent 架构：从资料池到注意力调度"></p>
+<h2 id="项目结构一个小型但完整的-agent-应用">项目结构：一个小型但完整的 Agent 应用</h2>
+<p>PassiveAgent 不是一个单文件脚本，而是一个完整的小型 Agent 应用。当前项目结构大致是：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>PassiveAgent/</span></span>
+<span class="line"><span>├── config.yaml.example      # 配置模板</span></span>
+<span class="line"><span>├── .env.example             # 环境变量模板，不提交真实密钥</span></span>
+<span class="line"><span>├── prompts/                 # LLM prompt 模板</span></span>
+<span class="line"><span>├── docs/                    # 配置、飞书、定时任务、排障文档</span></span>
+<span class="line"><span>├── scripts/                 # launchd 安装脚本和 plist 模板</span></span>
+<span class="line"><span>├── src/passive_agent/</span></span>
+<span class="line"><span>│   ├── main.py              # CLI 入口</span></span>
+<span class="line"><span>│   ├── pipeline.py          # 每日处理流水线</span></span>
+<span class="line"><span>│   ├── collectors/          # 数据采集器</span></span>
+<span class="line"><span>│   ├── processors/          # 去重、摘要、打分、排序</span></span>
+<span class="line"><span>│   ├── actions/             # 用户操作处理</span></span>
+<span class="line"><span>│   ├── feishu/              # 飞书 Bot、卡片、回调、命令</span></span>
+<span class="line"><span>│   ├── integrations/        # LLM、Obsidian、Zotero 等外部集成</span></span>
+<span class="line"><span>│   └── storage/             # SQLite 数据库和模型</span></span>
+<span class="line"><span>└── tests/</span></span></code></pre>
+<p>技术栈比较朴素：Python 3.11+、SQLite、Click、Jinja2、OpenAI-compatible LLM API、飞书开放平台。它没有复杂的 Web 前端，也没有刻意追求“平台化”，核心目标就是每天稳定地帮我筛选内容。</p>
+<p>配置集中在 <code>config.yaml</code>，大致分成 8 类：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">runtime</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-comment)">          # 数据库、报告、prompt 路径</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">llm</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-comment)">              # LLM provider、model、base_url、并发、重试</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">goals</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-comment)">            # 当前目标、优先级主题、低优先级主题</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">sources</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-comment)">          # Zotero / Obsidian / GitHub Stars / HF Daily</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">display</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-comment)">          # dashboard、推送、报告展示数量</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">recommendations</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-comment)">  # 推荐生命周期与关联条目数量</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">feishu</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-comment)">           # 飞书异步超时等</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">scoring</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-comment)">          # 打分权重、daily_limit、负反馈降权</span></span></code></pre>
+<p>这样做的好处是：这个项目不是“我自己电脑上碰巧能跑的脚本”，而是一个可以解释、可以迁移、可以排障的系统。</p>
+<hr>
+<h2 id="怎么使用">怎么使用</h2>
+<p>最短路径其实很简单：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-token-function)">git</span><span style="color:var(--astro-code-token-string)"> clone</span><span style="color:var(--astro-code-token-string)"> https://github.com/CoderJackZhu/PassiveAgent.git</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">cd</span><span style="color:var(--astro-code-token-string)"> PassiveAgent</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">uv</span><span style="color:var(--astro-code-token-string)"> sync</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">cp</span><span style="color:var(--astro-code-token-string)"> config.yaml.example</span><span style="color:var(--astro-code-token-string)"> config.yaml</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">cp</span><span style="color:var(--astro-code-token-string)"> .env.example</span><span style="color:var(--astro-code-token-string)"> .env</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">uv</span><span style="color:var(--astro-code-token-string)"> run</span><span style="color:var(--astro-code-token-string)"> passive-agent</span><span style="color:var(--astro-code-token-string)"> init-db</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">uv</span><span style="color:var(--astro-code-token-string)"> run</span><span style="color:var(--astro-code-token-string)"> passive-agent</span><span style="color:var(--astro-code-token-string)"> daily</span></span></code></pre>
+<p>然后可以用这些命令查看结果：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-token-function)">uv</span><span style="color:var(--astro-code-token-string)"> run</span><span style="color:var(--astro-code-token-string)"> passive-agent</span><span style="color:var(--astro-code-token-string)"> status</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">uv</span><span style="color:var(--astro-code-token-string)"> run</span><span style="color:var(--astro-code-token-string)"> passive-agent</span><span style="color:var(--astro-code-token-string)"> dashboard</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">uv</span><span style="color:var(--astro-code-token-string)"> run</span><span style="color:var(--astro-code-token-string)"> passive-agent</span><span style="color:var(--astro-code-token-string)"> list</span><span style="color:var(--astro-code-token-string)"> --stage</span><span style="color:var(--astro-code-token-string)"> recommended</span></span></code></pre>
+<p>如果接入飞书，则可以主动推送：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-token-function)">uv</span><span style="color:var(--astro-code-token-string)"> run</span><span style="color:var(--astro-code-token-string)"> passive-agent</span><span style="color:var(--astro-code-token-string)"> feishu-push</span><span style="color:var(--astro-code-token-string)"> --stage</span><span style="color:var(--astro-code-token-string)"> recommended</span><span style="color:var(--astro-code-token-string)"> --limit</span><span style="color:var(--astro-code-token-constant)"> 5</span></span></code></pre>
+<p>日常使用时，我更希望它不是一个“需要我主动打开的工具”，而是一个低打扰的系统：每天晚上定时跑一次，挑出 3 条左右值得看的内容推给我；周末再推一个适合深读的队列。</p>
+<p>在飞书卡片里，我可以对每条内容做操作：</p>
+<ul>
+<li>展开详情；</li>
+<li>加入周末阅读；</li>
+<li>忽略并记录负反馈；</li>
+<li>在展开后生成面试卡；</li>
+<li>生成技术笔记；</li>
+<li>标记已读。</li>
+</ul>
+<p>其中“面试卡”和“技术笔记”不是只在飞书里展示一下，而是会写入本地 Obsidian vault。例如：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>01-Interview/{topic}/{title}.md</span></span>
+<span class="line"><span>03-Tech-Notes/{topic}/{title}.md</span></span></code></pre>
+<p>这点对我很重要。因为 PassiveAgent 不应该只是一个推荐器，它还应该把有价值的信息沉淀到我的知识系统里。</p>
+<hr>
+<h2 id="一个推荐样例">一个推荐样例</h2>
+<p>一个典型的推送条目会包含这些信息：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>标题：某篇关于 Agent 记忆机制 / Tool Use / RAG 评测的论文或文章</span></span>
+<span class="line"><span>来源：Zotero / HuggingFace Daily / Obsidian / GitHub Stars</span></span>
+<span class="line"><span>摘要：用几句话解释它解决的问题、核心方法和可能价值</span></span>
+<span class="line"><span>评分：目标相关性、新颖性、可操作性、难度匹配、来源质量、时效性</span></span>
+<span class="line"><span>推荐理由：为什么今天值得看</span></span>
+<span class="line"><span>可执行动作：展开 / 周末 / 忽略 / 生成面试卡 / 技术笔记</span></span></code></pre>
+<p>例如，如果它发现一篇和 Agent memory 相关的论文，它不会只是告诉我“这篇论文很新”，而是会尝试回答：</p>
+<ul>
+<li>它和我当前准备 Agent 算法岗面试有什么关系？</li>
+<li>它适合今天快速浏览，还是适合周末深读？</li>
+<li>它能不能转成一道面试题？</li>
+<li>它能不能沉淀成一张技术笔记？</li>
+</ul>
+<p>这也是我做 PassiveAgent 的初衷：不是追热点，而是让信息进入“学习—理解—沉淀”的链路。</p>
+<hr>
+<h2 id="那为什么不用-codex--claude-code-就行">那为什么不用 Codex / Claude Code 就行？</h2>
+<p>回到开头的问题。</p>
+<p>如果只是写 PassiveAgent 的某个模块，比如实现一个 HuggingFace Daily collector、写一个 Feishu card、修一个 SQLite 迁移 bug，Codex 和 Claude Code 完全够用，而且非常适合。</p>
+<p>所以我并不认为 Hermes 的价值是“比 Codex 更会写代码”。这不是它的核心定位。</p>
+<p>我现在更愿意这样理解它们的分工：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>角色</th><th>更擅长什么</th></tr></thead><tbody><tr><td>Codex / Claude Code</td><td>写代码、改 bug、重构、补测试</td></tr><tr><td>Hermes</td><td>长期上下文、工具编排、跨会话记忆、运行环境排障、经验沉淀</td></tr></tbody></table>
+<p>Codex / Claude Code 像施工队。你告诉它：“把这里修一下”“加一个功能”“重构一下这个模块”，它可以快速完成。</p>
+<p>Hermes 更像项目的长期工作台。它知道：</p>
+<ul>
+<li>PassiveAgent repo 在哪里；</li>
+<li>怎么跑测试；</li>
+<li>怎么跑 daily pipeline；</li>
+<li>飞书推送需要哪些权限；</li>
+<li>launchd 有哪些坑；</li>
+<li><code>.env</code> 和继承环境变量可能冲突；</li>
+<li>Zotero 分类应该用 collection，而不是靠 tag 乱贴；</li>
+<li>之前为什么没有推送；</li>
+<li>之前哪些 bug 已经修过；</li>
+<li>这些经验下次应该怎么复用。</li>
+</ul>
+<p>如果每次都从零开始，Codex/CC 当然也能做。但一旦项目进入长期维护状态，“从零开始”本身就是成本。</p>
+<p>Hermes 在这里提供的不是一次性智能，而是连续性。</p>
+<hr>
+<h2 id="hermes-在开发过程里具体做了什么">Hermes 在开发过程里具体做了什么</h2>
+<h3 id="1-项目记忆从一个-repo变成一个长期对象">1. 项目记忆：从“一个 repo”变成“一个长期对象”</h3>
+<p>在开发 PassiveAgent 的过程中，Hermes 逐渐形成了一个项目级记忆：</p>
+<ul>
+<li>这个项目叫 PassiveAgent；</li>
+<li>它是个人注意力调度系统；</li>
+<li>核心输入源是 Zotero、Obsidian、HF Daily、GitHub Stars；</li>
+<li>核心输出是飞书卡片和 Obsidian 笔记；</li>
+<li>当前目标是 Agent / LLM / 面试准备；</li>
+<li>运行方式是 CLI + macOS launchd + Feishu long connection；</li>
+<li>配置和密钥不能混在一起；</li>
+<li>文档要面向新用户，而不是只堆配置项。</li>
+</ul>
+<p>这些内容后来被沉淀到了专门的 <code>passive-agent-development</code> skill 里。于是之后我再问 PassiveAgent 相关问题时，Hermes 不需要重新探索一遍项目，它可以直接带着项目上下文开始工作。</p>
+<p>这和普通聊天最大的区别是：项目不再是一段临时上下文，而是一个长期对象。</p>
+<h3 id="2-工程排障处理真实环境里的非代码问题">2. 工程排障：处理真实环境里的非代码问题</h3>
+<p>PassiveAgent 真正麻烦的地方，很多都不是代码本身。</p>
+<p>比如飞书：</p>
+<ul>
+<li>主动发消息需要 <code>im:message:send_as_bot</code> 或 <code>im:message</code>；</li>
+<li>接收消息需要订阅 <code>im.message.receive_v1</code>；</li>
+<li>卡片按钮需要 <code>card.action.trigger</code>；</li>
+<li>权限或事件改完以后还要发布新版本，并在租户侧升级；</li>
+<li><code>FEISHU_CHAT_ID</code> 必须来自机器人所在的真实目标聊天。</li>
+</ul>
+<p>这些不是“写一个函数”能解决的，它们是系统集成问题。</p>
+<p>再比如 launchd：</p>
+<ul>
+<li>macOS 的 <code>~/Documents</code>、Desktop、Downloads 会受 TCC 保护；</li>
+<li>user LaunchAgent 错过定时点后不会像 systemd <code>Persistent=true</code> 那样自动补跑；</li>
+<li>环境变量来自 launchctl / plist / <code>.env</code>，不同执行路径可能不一致；</li>
+<li>代理环境变量可能影响飞书长连接。</li>
+</ul>
+<p>这些问题如果只交给 coding agent，很容易变成“改了代码但实际没跑通”。Hermes 的优势是它能在一个会话里查日志、读配置、跑命令、结合历史经验，然后给出可验证的判断。</p>
+<p>比如有一次 6.3 没有正常推送，最后定位不是 Feishu 失败，也不是 pipeline 报错，而是 Mac 在 21:00 定时点时用户 LaunchAgent 不在可执行状态，后来开机/登录后 launchd 没有补跑错过的任务。</p>
+<p>这个结论只有把日志、数据库记录、报告文件、launchd 状态和系统启动时间放在一起看，才比较可靠。</p>
+<h3 id="3-工作流沉淀从改一下到-audit--fix--verify--commit">3. 工作流沉淀：从“改一下”到 audit → fix → verify → commit</h3>
+<p>开发过程中逐渐形成了一个固定流程：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>audit → fix → verify → commit</span></span></code></pre>
+<p>先审查真实代码和日志，再定位根因；做最小修改；跑测试或真实命令验证；确认后提交。这个流程后来也成为我用 Hermes 处理 PassiveAgent 问题的默认方式。</p>
+<p>这件事看起来普通，但很重要。</p>
+<p>因为 Agent 工具最容易出问题的地方不是“不会写代码”，而是“太快给出看似合理的改动，但没有验证”。Hermes 在我的使用里承担了一个“完成前验证”的角色：不只是改完，还要确认它真的跑过。</p>
+<h3 id="4-技能进化把踩坑写回系统">4. 技能进化：把踩坑写回系统</h3>
+<p>PassiveAgent 过程中踩过的坑，后来都被写进了 skill 或文档：</p>
+<ul>
+<li>LLM provider 从 DeepSeek 切到 OpenAI-compatible / MiMo 时，不是只改 YAML，还要确认 LLM factory 是否支持；</li>
+<li>WebUI 能用某个 provider，不代表 launchd daily job 也能用同一套环境；</li>
+<li><code>python-dotenv</code> 默认不覆盖已经存在的环境变量，所以从 Hermes/WebUI 里手动跑 PassiveAgent 时，可能继承到 Hermes 自己的飞书环境变量；</li>
+<li>所有新采集内容都被去重后，也不能直接结束 pipeline，而应该从 existing recommendations 里继续推送；</li>
+<li>Feishu 卡片上“面试卡”按钮和展开后的“生成面试卡”重复，会造成交互困惑，应该把生成动作放到详情页之后。</li>
+</ul>
+<p>这些经验如果只停留在一次对话里，很快就会消失。Hermes 的意义是把它们变成下一次可加载的 procedure memory。</p>
+<hr>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/passiveagent-hermes-evolution-loop.svg" alt="Hermes 自进化闭环"></p>
+<h2 id="我理解的自进化">我理解的“自进化”</h2>
+<p>这里的自进化不是说模型权重变强了，也不是说 Agent 突然能自己完成一切。</p>
+<p>在 PassiveAgent 这个案例里，自进化更像是：</p>
+<blockquote>
+<p>每一次真实开发和排障之后，系统都会把经验写回自己的工作流。下一次面对类似问题时，它不再从零开始，而是带着上一次的经验继续工作。</p>
+</blockquote>
+<p>我觉得可以分成四层。</p>
+<h3 id="第一层记忆进化">第一层：记忆进化</h3>
+<p>一开始 Hermes 只知道“有个 PassiveAgent 项目”。后来它知道项目路径、运行方式、常见命令、部署方式、数据源、飞书交互、Zotero 分类习惯、用户目标和偏好。</p>
+<p>这让后续维护不再是冷启动。</p>
+<h3 id="第二层技能进化">第二层：技能进化</h3>
+<p>项目中反复出现的操作，被沉淀成 skill：</p>
+<ul>
+<li>如何运行测试；</li>
+<li>如何手动触发 daily；</li>
+<li>如何排查飞书；</li>
+<li>如何检查 launchd；</li>
+<li>如何做 Zotero taxonomy dry-run；</li>
+<li>如何迁移 LLM provider；</li>
+<li>如何写面向用户的 README。</li>
+</ul>
+<p>Skill 本质上是 Agent 的操作手册。它不是知识库里的静态资料，而是下一次执行任务时会真的进入上下文的工作规程。</p>
+<h3 id="第三层流程进化">第三层：流程进化</h3>
+<p>从“帮我改一下”，变成“先审查、再修复、再验证、再提交”。</p>
+<p>这其实是我对 Agent 工程最深的体会之一：Agent 要可靠，不能只靠更强的模型，还要靠更稳定的流程。</p>
+<h3 id="第四层系统进化">第四层：系统进化</h3>
+<p>PassiveAgent 自己也在这个过程中变得更成熟：</p>
+<ul>
+<li>配置从硬编码走向显式 YAML；</li>
+<li>LLM 输出增加类型校验和兜底；</li>
+<li>推荐逻辑支持无新增时从 existing pool 推送；</li>
+<li>飞书按钮交互变清晰；</li>
+<li>data 目录区分业务报告和运行日志；</li>
+<li>README、配置文档、Feishu 文档、定时任务文档逐渐补齐。</li>
+</ul>
+<p>所以自进化不是玄学，而是一个很工程化的闭环：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>真实使用 → 暴露问题 → 修复问题 → 验证结果 → 沉淀经验 → 下一次更快更稳</span></span></code></pre>
+<hr>
+<h2 id="这个过程给我的几个感受">这个过程给我的几个感受</h2>
+<h3 id="1-不要把-hermes-当另一个-coding-agent">1. 不要把 Hermes 当“另一个 Coding Agent”</h3>
+<p>如果把 Hermes 和 Codex/CC 放在同一个维度比较，它并没有明显优势。</p>
+<p>但如果把 Hermes 放在“长期个人 Agent 环境”的维度，它的定位就清楚很多：它不是替代 coding agent，而是承接 coding agent 的产物，并负责长期运行、记忆和演化。</p>
+<p>一句话概括：</p>
+<blockquote>
+<p>Codex 帮我造零件，Hermes 帮我养系统。</p>
+</blockquote>
+<h3 id="2-真正有价值的-agent-项目通常不是一次性任务">2. 真正有价值的 Agent 项目，通常不是一次性任务</h3>
+<p>PassiveAgent 的价值不在于某个单点功能多复杂，而在于它每天进入我的信息流。</p>
+<p>这类项目需要长期运行、长期调参、长期排障、长期根据反馈变化。它更像一个个人系统，而不是一个 demo。</p>
+<p>Hermes 适合的也正是这种场景：有状态、有历史、有工具、有运行环境、有反馈闭环。</p>
+<h3 id="3-agent-的难点经常不在模型而在边界条件">3. Agent 的难点经常不在模型，而在边界条件</h3>
+<p>LLM 摘要和打分只是中间一环。真正花时间的是：</p>
+<ul>
+<li>数据源质量；</li>
+<li>去重；</li>
+<li>评分权重；</li>
+<li>负反馈；</li>
+<li>推送节奏；</li>
+<li>飞书权限；</li>
+<li>launchd 环境；</li>
+<li>配置与密钥隔离；</li>
+<li>失败后的可观测性。</li>
+</ul>
+<p>这些都是 Agent 应用工程化的一部分。</p>
+<h3 id="4-自进化的前提是把经验写回系统">4. 自进化的前提是“把经验写回系统”</h3>
+<p>如果每次只是让 Agent 改完代码，然后关掉窗口，那么不会有什么自进化。</p>
+<p>自进化发生在这些动作里：</p>
+<ul>
+<li>把踩坑写进 skill；</li>
+<li>把稳定流程写进文档；</li>
+<li>把用户偏好写进 memory；</li>
+<li>把反复出现的问题变成检查项；</li>
+<li>把一次性排障变成下一次的默认知识。</li>
+</ul>
+<p>这也是 Hermes 相比普通一次性问答工具更有意义的地方。</p>
+<hr>
+<h2 id="后续想继续做什么">后续想继续做什么</h2>
+<p>PassiveAgent 现在只是初具规模，后面还有很多可以继续演进的方向：</p>
+<ol>
+<li><strong>补偿机制</strong>：如果 macOS 错过 daily 定时任务，登录后自动检测并补跑。</li>
+<li><strong>更细的反馈学习</strong>：不仅记录忽略，还区分“不相关”“太简单”“重复”“暂时不看”。</li>
+<li><strong>更强的知识沉淀</strong>：从推荐条目自动生成 Obsidian 结构化笔记，并建立和已有笔记的链接。</li>
+<li><strong>面试准备闭环</strong>：把高价值内容进一步转成面试题、回答卡、追问链路。</li>
+<li><strong>推荐质量评估</strong>：定期回看过去一周推送，统计真正被阅读、被沉淀、被忽略的比例。</li>
+</ol>
+<p>这些方向都不是单纯“再加一个功能”，而是让 PassiveAgent 更像一个能陪我长期学习和筛选信息的个人系统。</p>
+<hr>
+<h2 id="结语">结语</h2>
+<p>做 PassiveAgent 让我重新理解了 Hermes 的价值。</p>
+<p>它不是用来证明“我也有一个 coding agent”。写代码这件事，Codex 和 Claude Code 已经做得很好。Hermes 真正有意思的地方，是它让一个项目拥有长期记忆，让开发过程能沉淀为技能，让排障经验能进入下一次执行，让一个个人 Agent 系统在真实环境里持续演化。</p>
+<p>PassiveAgent 管理的是我的信息注意力；Hermes 管理的是这个项目的工程记忆。</p>
+<p>前者帮我每天少看一点没那么重要的东西，后者帮我下次少重复一次已经踩过的坑。</p>
+<p>这就是我目前理解的 Hermes 实践价值：</p>
+<blockquote>
+<p>不是替代 Codex/CC，而是把一次性 coding 能力放进一个长期可记忆、可执行、可调度、可演化的个人工程环境里。</p>
+</blockquote> </div> <div class="post-nav"> <a href="/2026/06/20/SkillEvolver自进化实验复盘/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">SkillEvolver 复盘：自进化没有成功，但评测框架留下来了</span> </a> <a href="/2026/05/13/hermes-self-evolving-blog-engine/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#passiveagent-是什么">PassiveAgent 是什么</a>  </li><li> <a href="#项目结构一个小型但完整的-agent-应用">项目结构：一个小型但完整的 Agent 应用</a>  </li><li> <a href="#怎么使用">怎么使用</a>  </li><li> <a href="#一个推荐样例">一个推荐样例</a>  </li><li> <a href="#那为什么不用-codex--claude-code-就行">那为什么不用 Codex / Claude Code 就行？</a>  </li><li> <a href="#hermes-在开发过程里具体做了什么">Hermes 在开发过程里具体做了什么</a> <ul class="toc-sub"> <li> <a href="#1-项目记忆从一个-repo变成一个长期对象">1. 项目记忆：从“一个 repo”变成“一个长期对象”</a>  </li><li> <a href="#2-工程排障处理真实环境里的非代码问题">2. 工程排障：处理真实环境里的非代码问题</a>  </li><li> <a href="#3-工作流沉淀从改一下到-audit--fix--verify--commit">3. 工作流沉淀：从“改一下”到 audit → fix → verify → commit</a>  </li><li> <a href="#4-技能进化把踩坑写回系统">4. 技能进化：把踩坑写回系统</a>  </li> </ul> </li><li> <a href="#我理解的自进化">我理解的“自进化”</a> <ul class="toc-sub"> <li> <a href="#第一层记忆进化">第一层：记忆进化</a>  </li><li> <a href="#第二层技能进化">第二层：技能进化</a>  </li><li> <a href="#第三层流程进化">第三层：流程进化</a>  </li><li> <a href="#第四层系统进化">第四层：系统进化</a>  </li> </ul> </li><li> <a href="#这个过程给我的几个感受">这个过程给我的几个感受</a> <ul class="toc-sub"> <li> <a href="#1-不要把-hermes-当另一个-coding-agent">1. 不要把 Hermes 当“另一个 Coding Agent”</a>  </li><li> <a href="#2-真正有价值的-agent-项目通常不是一次性任务">2. 真正有价值的 Agent 项目，通常不是一次性任务</a>  </li><li> <a href="#3-agent-的难点经常不在模型而在边界条件">3. Agent 的难点经常不在模型，而在边界条件</a>  </li><li> <a href="#4-自进化的前提是把经验写回系统">4. 自进化的前提是“把经验写回系统”</a>  </li> </ul> </li><li> <a href="#后续想继续做什么">后续想继续做什么</a>  </li><li> <a href="#结语">结语</a>  </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

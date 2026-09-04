@@ -6,6 +6,7 @@ const root = process.cwd();
 const distDir = join(root, "dist");
 const contentDir = join(root, "src/content/blog");
 const expectedOrigin = "https://www.jackzhu.top";
+const migratedPostBaseline = 54;
 const checks = [];
 const failures = [];
 
@@ -102,11 +103,24 @@ const sourceLegacyPaths = contentFiles.map((path) => {
 });
 const htmlFiles = walk(distDir, (path) => path.endsWith(".html"));
 const siteHtmlFiles = htmlFiles.filter((path) => /<!doctype html>/i.test(readFileSync(path, "utf8")));
+const articleHtmlFiles = new Set(
+  sourceLegacyPaths
+    .map((legacyPath) => distCandidates(legacyPath).find((candidate) => existsSync(candidate)))
+    .filter(Boolean)
+    .map((path) => resolve(path)),
+);
 
 check("源文章数量与 legacyPath 一致", () => {
-  ensure(contentFiles.length === 54, `source content 应为 54，实际 ${contentFiles.length}`);
-  ensure(new Set(sourceLegacyPaths).size === 54, "source legacyPath 不是 54 个唯一值");
-  return "54 source、54 个唯一 legacyPath";
+  const uniqueLegacyPathCount = new Set(sourceLegacyPaths).size;
+  ensure(
+    contentFiles.length >= migratedPostBaseline,
+    `source content 不得少于迁移基线 ${migratedPostBaseline}，实际 ${contentFiles.length}`,
+  );
+  ensure(
+    uniqueLegacyPathCount === contentFiles.length,
+    `source legacyPath 应与 ${contentFiles.length} 篇文章一一对应，实际 ${uniqueLegacyPathCount} 个唯一值`,
+  );
+  return `${contentFiles.length} source、${uniqueLegacyPathCount} 个唯一 legacyPath（迁移基线 >= ${migratedPostBaseline}）`;
 });
 
 check("全部 legacy URL 已构建", () => {
@@ -137,10 +151,9 @@ check("内部绝对链接全部可解析", () => {
 });
 
 check("模板身份与非公开署名已清除", () => {
-  const forbidden = [
+  const globallyForbidden = [
     ["example.com", /example\.com/i],
     ["astro-micro.vercel.app", /astro-micro\.vercel\.app/i],
-    ["Astro Micro", /Astro\s+Micro/i],
     ["template author", /trevor\s*(?:tyler\s*)?lee/i],
     ["Jack Zhu", /Jack\s+Zhu/i],
     ["朱一杰", /朱一杰/],
@@ -149,8 +162,17 @@ check("模板身份与非公开署名已清除", () => {
   const hits = [];
   for (const htmlPath of htmlFiles) {
     const html = readFileSync(htmlPath, "utf8");
-    for (const [label, pattern] of forbidden) {
+    for (const [label, pattern] of globallyForbidden) {
       if (pattern.test(html)) hits.push(`${relative(root, htmlPath)}: ${label}`);
+    }
+    let templateNameSurface = html;
+    if (articleHtmlFiles.has(resolve(htmlPath))) {
+      const mainSections = [...html.matchAll(/<main\b[\s\S]*?<\/main>/gi)];
+      ensure(mainSections.length === 1, `${relative(root, htmlPath)}: 文章页 main 数量 ${mainSections.length}`);
+      templateNameSurface = html.replace(mainSections[0][0], "");
+    }
+    if (/Astro\s+Micro/i.test(templateNameSurface)) {
+      hits.push(`${relative(root, htmlPath)}: Astro Micro`);
     }
   }
   ensure(hits.length === 0, hits.join("\n"));

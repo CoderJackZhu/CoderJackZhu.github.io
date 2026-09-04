@@ -32,6 +32,8 @@ function readSourcePosts() {
 }
 
 const manifest = readSourcePosts() as ManifestEntry[];
+const postsPerPage = 24;
+const totalPages = Math.ceil(manifest.length / postsPerPage);
 
 const mimeTypes: Record<string, string> = {
   ".css": "text/css; charset=utf-8",
@@ -188,28 +190,37 @@ test("首页展示定位语、最近六篇与完整入口", async ({ page }) => 
     await expect(cards.nth(index)).toHaveAttribute("href", newestPosts[index].legacyPath);
     await expect(cards.nth(index)).toContainText(newestPosts[index].title);
   }
-  await expect(page.getByRole("link", { name: "查看全部 54 篇文章" })).toHaveAttribute("href", "/blog/");
+  await expect(page.getByRole("link", { name: `查看全部 ${manifest.length} 篇文章` })).toHaveAttribute(
+    "href",
+    "/blog/",
+  );
 });
 
 test("文章列表分页、顺序与总数正确", async ({ page }) => {
-  await page.goto("/blog/");
-  await expect(page.locator(".section-head")).toContainText("54 posts");
-  await expect(page.locator(".post-list > li")).toHaveCount(24);
-  await expect(page.locator(".pagination")).toContainText("第 1 / 3 页");
-  const firstPageHrefs = await page.locator(".post-list .post").evaluateAll((links) =>
-    links.map((link) => link.getAttribute("href") ?? ""),
-  );
-
-  await page.goto("/blog/2/");
-  await expect(page.locator(".post-list > li")).toHaveCount(24);
-  await expect(page.locator(".pagination")).toContainText("第 2 / 3 页");
-  await expect(page.getByRole("link", { name: "上一页" })).toHaveAttribute("href", "/blog/");
-  const secondPageHrefs = await page.locator(".post-list .post").evaluateAll((links) =>
-    links.map((link) => link.getAttribute("href") ?? ""),
-  );
-  const listed = [...firstPageHrefs, ...secondPageHrefs];
+  const listed = [];
+  for (let pageNumber = 1; pageNumber <= totalPages; pageNumber += 1) {
+    await page.goto(pageNumber === 1 ? "/blog/" : `/blog/${pageNumber}/`);
+    await expect(page.locator(".section-head")).toContainText(
+      pageNumber === 1 ? `${manifest.length} posts` : `第 ${pageNumber} 页`,
+    );
+    await expect(page.locator(".post-list > li")).toHaveCount(
+      Math.min(postsPerPage, manifest.length - (pageNumber - 1) * postsPerPage),
+    );
+    await expect(page.locator(".pagination")).toContainText(`第 ${pageNumber} / ${totalPages} 页`);
+    if (pageNumber > 1) {
+      await expect(page.getByRole("link", { name: "上一页" })).toHaveAttribute(
+        "href",
+        pageNumber === 2 ? "/blog/" : `/blog/${pageNumber - 1}`,
+      );
+    }
+    listed.push(
+      ...(await page.locator(".post-list .post").evaluateAll((links) =>
+        links.map((link) => link.getAttribute("href") ?? ""),
+      )),
+    );
+  }
   const byPath = new Map(manifest.map((post) => [post.legacyPath, post]));
-  expect(new Set(listed).size).toBe(48);
+  expect(new Set(listed).size).toBe(manifest.length);
   expect(listed.every((href) => byPath.has(href))).toBe(true);
   const listedDates = listed.map((href) => byPath.get(href)!.date);
   expect(listedDates).toEqual([...listedDates].sort((left, right) => right.localeCompare(left)));

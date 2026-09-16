@@ -241,7 +241,7 @@ test("关于、友链与 404 页面可访问", async ({ page }) => {
 });
 
 test("代表文章保留普通内容、代码、数学、原始 HTML 与多图", async ({ page }) => {
-  await page.goto("/2024/11/06/秋招金山面试分享/");
+  await page.goto("/2024/11/06/秋招金山面试分享/", { waitUntil: "domcontentloaded" });
   await expect(page.getByRole("heading", { level: 1 })).toContainText("秋招金山面试分享");
   await expect(page.locator(".prose p").first()).toBeVisible();
 
@@ -254,7 +254,7 @@ test("代表文章保留普通内容、代码、数学、原始 HTML 与多图",
   await page.goto("/2021/04/28/机器学习报告——高光谱遥感特征选择/");
   await expect(page.locator(".prose table thead th", { hasText: "Index" }).first()).toBeVisible();
 
-  await page.goto("/2026/08/29/当文明踩下加速踏板之后/");
+  await page.goto("/2026/08/29/当文明踩下加速踏板之后/", { waitUntil: "domcontentloaded" });
   expect(await page.locator(".prose img").count()).toBeGreaterThanOrEqual(4);
 });
 

@@ -35,7 +35,7 @@ const sinceYear = new Date(footer.since).getFullYear();
 </footer>
 
 {footer.showRuntime && (
-  <script define:vars={{ since: footer.since }}>
+  <script define:vars={{ since: footer.since }} is:inline>
     (() => {
       const updateRuntime = () => {
         const el = document.getElementById("site-runtime");

@@ -15,7 +15,7 @@ Jack 的个人博客，基于 Astro Micro 构建，部署到 www.jackzhu.top（G
 
 ## 约定
 
-- 工作目录：`/Users/jackzhu/projects/blog-astro-migration`（branch `migration/astro`）
+- 工作目录：`/Users/jackzhu/projects/blog-astro-migration`（branch `main`）
 - 站点可改文案集中在 `site.config.yaml`（站点/导航/社交/友链/页脚/关于/各页文案/照片墙），由 `src/lib/site-config.ts` 用 js-yaml 加载。
 - 文章在 `src/content/blog/<slug>/index.md`，frontmatter：`title` / `description` / `date` / `section` / `legacyPath` / `cover`（`updated`、`draft` 可选）。
 - 文章 URL 由 `legacyPath` 决定，路由 `[year]/[month]/[day]/[...slug]`；改文章标题不改变 URL。

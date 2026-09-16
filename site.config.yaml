@@ -68,7 +68,7 @@ about:
     - "早期文章（尤其技术教程类）随技术演进可能已过时，阅读时请注意发布时间。"
 
 # 友链页副标题
-linkSubtitle: "朋友们的网站，虽然部分可能已经过时失效。"
+linkSubtitle: "做有价值的事情产生连接。"
 
 # 各页面标题 / eyebrow / 标题 / 副标题文案
 # home 的页面标题直接复用 site.title，不在此重复定义。
@@ -94,6 +94,7 @@ pages:
     title: "友链"
     eyebrow: "Friends"
     heading: "友链"
+    subtitle: "做有价值的事情产生连接。"
   photos:
     title: "照片"
     eyebrow: "Photos"

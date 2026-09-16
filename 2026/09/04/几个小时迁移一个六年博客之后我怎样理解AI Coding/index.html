@@ -1,0 +1,387 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2026/09/04/%E5%87%A0%E4%B8%AA%E5%B0%8F%E6%97%B6%E8%BF%81%E7%A7%BB%E4%B8%80%E4%B8%AA%E5%85%AD%E5%B9%B4%E5%8D%9A%E5%AE%A2%E4%B9%8B%E5%90%8E%E6%88%91%E6%80%8E%E6%A0%B7%E7%90%86%E8%A7%A3AI%20Coding/"><!-- Primary Meta Tags --><title>几个小时迁移一个六年博客之后，我怎样理解 AI Coding | Jack&#39;s Blog</title><meta name="title" content="几个小时迁移一个六年博客之后，我怎样理解 AI Coding | Jack's Blog"><meta name="description" content="以一次 Hexo Butterfly 到 Astro 的真实迁移，复盘 AI Coding 擅长什么、容易错在哪里，以及开发者责任如何变化。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2026/09/04/%E5%87%A0%E4%B8%AA%E5%B0%8F%E6%97%B6%E8%BF%81%E7%A7%BB%E4%B8%80%E4%B8%AA%E5%85%AD%E5%B9%B4%E5%8D%9A%E5%AE%A2%E4%B9%8B%E5%90%8E%E6%88%91%E6%80%8E%E6%A0%B7%E7%90%86%E8%A7%A3AI%20Coding/"><meta property="og:title" content="几个小时迁移一个六年博客之后，我怎样理解 AI Coding | Jack's Blog"><meta property="og:description" content="以一次 Hexo Butterfly 到 Astro 的真实迁移，复盘 AI Coding 擅长什么、容易错在哪里，以及开发者责任如何变化。"><meta property="og:image" content="https://www.jackzhu.top/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2026/09/04/%E5%87%A0%E4%B8%AA%E5%B0%8F%E6%97%B6%E8%BF%81%E7%A7%BB%E4%B8%80%E4%B8%AA%E5%85%AD%E5%B9%B4%E5%8D%9A%E5%AE%A2%E4%B9%8B%E5%90%8E%E6%88%91%E6%80%8E%E6%A0%B7%E7%90%86%E8%A7%A3AI%20Coding/"><meta property="twitter:title" content="几个小时迁移一个六年博客之后，我怎样理解 AI Coding | Jack's Blog"><meta property="twitter:description" content="以一次 Hexo Butterfly 到 Astro 的真实迁移，复盘 AI Coding 擅长什么、容易错在哪里，以及开发者责任如何变化。"><meta property="twitter:image" content="https://www.jackzhu.top/og-image.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">技术与工程</p> <h1>几个小时迁移一个六年博客之后，我怎样理解 AI Coding</h1> <div class="article-meta"> <time datetime="2026-09-04T00:00:00.000Z">2026年9月4日</time>  <span>约 17 分钟</span> </div> <p class="article-lead">以一次 Hexo Butterfly 到 Astro 的真实迁移，复盘 AI Coding 擅长什么、容易错在哪里，以及开发者责任如何变化。</p> </header> <div class="prose"> <p>这不是一个多复杂、也不太值得炫耀的 AI 项目：没有训练模型，没有新算法，更没有一个提示词就自动上线。它只是一次边界明确的生产迁移——把一个运行了近六年的 Hexo Butterfly 博客迁到 Astro，在几个小时内完成主体实现，随后经过检查、人工验收、合并和线上回归。</p>
+<p>但也正因为普通，它比精心挑选的演示更能说明问题。这里有 54 篇历史文章、不能改变的旧链接、已经失效的图片、主题遗留语法、部署分支和真实读者；也有“看起来没问题”和“我愿意让它代表自己”之间那段很难自动化的距离。做完之后，我对 AI Coding 的理解反而比做一个从零开始的 Demo 更具体了。</p>
+<h2 id="迁移的不是页面而是博客的重心">迁移的不是页面，而是博客的重心</h2>
+<p>旧站没有什么“错误”。Butterfly 在我搭建博客的那个阶段很合适：大幅背景图、丰富导航、标签和分类、主题组件，让一个刚开始写作的网站很快有了完整形态。只是几年之后，这套表达已经不再贴合我。</p>
+<p><img src="/images/ai-coding-blog-migration/hexo-home-before.jpg" alt="迁移前的 Hexo Butterfly 首页：大幅地球背景占据首屏，顶部包含较密集的主题导航"></p>
+<p>旧首页的视觉中心是整屏 Hero 和背景图，文章需要向下滚动后才真正出现。顶部同时放着首页、时间轴、标签、分类、清单、友链和关于。它有鲜明的主题感，也承载了我更早阶段对“个人网站”的想象；但今天我更希望访客首先看到我在写什么，而不是看到主题提供了多少能力。</p>
+<p><img src="/images/ai-coding-blog-migration/astro-home-after.jpg" alt="迁移后的 Astro 首页：留白克制，站点介绍之后直接呈现最近文章列表"></p>
+<p>新首页把背景图、复杂入口和装饰性组件拿掉，首屏直接给出站点定位与最近写作。导航只保留文章、关于、友链和照片，搜索与主题切换退到辅助位置。新的方向不是追求“极简”这个标签，而是让内容重新成为页面的主角：标题、摘要、日期和栏目构成主要层级，视觉系统只负责建立秩序。</p>
+<p>文章页的变化更能说明迁移原则。下面两张图来自同一篇 2024 年的历史文章。</p>
+<p><img src="/images/ai-coding-blog-migration/hexo-article-before.jpg" alt="迁移前的 Hexo 文章页：封面 Hero、密集元数据、正文卡片与作者侧栏同时出现"></p>
+<p>旧文章页有大幅封面、标题与多组元数据，正文进入卡片容器，右侧还有作者资料、统计和主题挂件。这套设计并不差，它只是把“主题体验”放得比我现在需要的更重。</p>
+<p><img src="/images/ai-coding-blog-migration/astro-article-after.jpg" alt="迁移后的 Astro 文章页：原文章标题、日期和正文保留，采用内容优先的阅读版式与目录"></p>
+<p>迁移后，仍然是那篇文章，标题、发布日期和正文都在，原来的日期型 URL 也继续有效；变化的是承载它的外壳。封面与侧栏让位给标题、导语、正文和目录，阅读宽度与留白更稳定。对我来说，这次迁移最重要的成果不是“换了 Astro”，而是在不抹掉历史的前提下，让网站恢复成今天的自己。</p>
+<h2 id="为什么不用现成模板或一键迁移">为什么不用现成模板或一键迁移</h2>
+<p>既然旧站基于成熟主题，新站也有大量 Astro 博客模板，最自然的问题是：为什么不换一个模板，或者找个转换器一键完成？</p>
+<p>答案不是我偏爱从零造轮子。事实上，这次所谓“手搓”，准确说是<strong>定制整合</strong>，不是从空目录开始写一套博客系统。底层复用了 Astro；以 Astro Micro 作为技术脚手架；搜索沿用 Pagefind；公式渲染使用 KaTeX；响应式与交互回归交给 Playwright；构建和发布继续由 GitHub Actions 承担。成熟工具解决成熟问题，没有必要重写。</p>
+<p>但脚手架不等于最终身份。Astro Micro 提供了内容集合、页面结构和组件组织的起点，之后仍需裁掉示例内容与模板身份，重做信息架构、路由、样式和本站特有的兼容逻辑。直接套用另一个成品主题，往往只是把“如何改 Butterfly”换成“如何改新主题”，主题的默认产品判断仍然会压在内容之上。</p>
+<p>一键迁移工具的困难也不只是把 Markdown 从一个目录搬到另一个目录。它需要同时处理 54 篇文章，保留原有日期 URL，识别 Hexo 特有语法，区分失效图片该删除、保留还是加说明，兼容以 <code>html</code> 分支承载部署产物的流程，还要遵守公开署名与个人信息边界，并落到已经人工确认的克制视觉风格。通用转换器通常能覆盖其中一部分，却很难同时理解这些约束，更无法替我决定哪些东西属于历史、哪些应该继续公开。</p>
+<p>过去面对这种需求，继续改一个重主题可能确实更便宜，因为定制的实现成本太高。AI Coding 改变的首先是这笔账：当页面改造、脚本编写、批量转换和测试补齐的成本显著下降，定制整合不再天然比迁就主题更贵。我因此可以从“哪个模板最接近”转向“这个网站究竟应该是什么”。</p>
+<h2 id="实际过程没有一句话全自动">实际过程没有“一句话全自动”</h2>
+<p>回看提交记录，这次迁移更像一条有停靠点的流水线，而不是一句提示词之后等待成品。每一段都要回答三个问题：人先决定什么，Agent 应该交出什么，以及满足什么条件才能进入下一段。下面这张表是事后整理出的过程，但其中的产物和关卡都来自这次迁移本身。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>阶段</th><th>人的决定与输入</th><th>Agent 的交付物</th><th>进入下一阶段的关卡</th></tr></thead><tbody><tr><td>旧站审计</td><td>指明旧仓库、线上站点与不可丢失的历史</td><td>文章、日期 URL、图片、链接、Hexo 语法、SEO 文件和部署方式清单</td><td>54 篇文章与主要遗留项均有去向，未知项被显式列出</td></tr><tr><td>目标、不变量与非目标</td><td>确认“写作为主”，划定公开身份和产品边界</td><td><code>PROJECT_BRIEF</code> 与约束清单</td><td>旧 URL、内容、验证文件等不变量可检查；评论、独立归档、标签云等非目标写明</td></tr><tr><td>持久化上下文</td><td>确认哪些判断不能只留在聊天里</td><td><code>TASKS</code>、<code>CURRENT_STATE</code>、设计规格和 <code>AGENTS.md</code></td><td>换一个 Agent 只读这些文件，也能说明当前阶段、风险和下一步</td></tr><tr><td>隔离实施环境</td><td>确认迁移不干扰原站和其他工作</td><td>独立 worktree、可回溯的提交边界</td><td>改动范围可辨认，失败时可以退回最近检查点</td></tr><tr><td>探索与实现分离</td><td>先批准信息架构、路由策略和视觉方向</td><td>探索结论、候选方案；获准后才是组件与页面实现</td><td>关键取舍已经由人确认，不在批量编码时临时发明需求</td></tr><tr><td>批量迁移</td><td>给出 frontmatter、路径、特殊语法和异常处理规则</td><td>可重复脚本、迁移结果、异常清单</td><td>数量对得上，旧链接有对应页，异常文章可逐项追踪</td></tr><tr><td>按风险审查</td><td>定义真正可能伤害产品的语义风险</td><td>按不变量组织的 diff 审查与定点修复</td><td>身份、路由、内容语义、部署约束未被破坏</td></tr><tr><td>分层验证</td><td>选择代表性文章、视口和人工观察重点</td><td>静态审计、E2E 结果、视觉检查记录</td><td>构建、内容、交互和视觉分别通过，而不是只看一个绿色命令</td></tr><tr><td>PR、部署与回归</td><td>决定是否合并和上线</td><td>PR 说明、部署结果、线上抽检证据</td><td>生产 URL、资源、搜索与移动端行为正常，才算完成</td></tr></tbody></table>
+<p>第一步之所以是审计，是因为只有先知道历史里有什么，才谈得上自动化。对一个用了近六年的博客，“把 Markdown 复制过去”会漏掉真正困难的部分：日期 URL 是外部承诺；失效图片需要逐项判断；Hexo 标签不是标准 Markdown；SEO 文件与 <code>html</code> 分支部署也不是页面截图能反映的。Agent 可以快速遍历和分类，我则必须决定哪些差异可以接受。这个顺序避免了用新模板的结构反过来解释旧内容。</p>
+<p>审计之后，我先写的是边界，而不是组件。新站仍然是以文章为中心的个人博客，不做作品集、仪表盘、评论系统、独立归档或标签云；54 篇内容、旧 URL、必要的站点验证文件以及公开署名边界不能丢。这个阶段看起来不产出页面，却决定了后面每一次“顺手再加一个功能”到底是改进还是跑偏。</p>
+<h3 id="上下文要能离开聊天继续存在">上下文要能离开聊天继续存在</h3>
+<p>这次迁移实际用了几类持久化文件。<code>PROJECT_BRIEF</code> 保存目标和非目标，回答“为什么做、明确不做什么”；<code>TASKS</code> 把事项分成 current、next、later，防止所有想法同时挤进当前实现；<code>CURRENT_STATE</code> 记录已经完成的工作、仍存风险、验证证据和交接位置。设计规格约束页面结构、视觉取向、内容处理和部署方式，<code>AGENTS.md</code> 则保存仓库层面的工作规则，例如内容放在哪里、URL 如何生成、哪些公开信息不能出现，以及不能擅自发布。</p>
+<p>它们不是为了把文档写得像一个正式流程，而是为了解决 Agent 工作里很实际的失忆问题。聊天上下文会变长，工具会中断，执行者也可能更换。如果目标只存在于最早的一段对话里，后面的 Agent 很容易在局部任务中重新解释它；如果状态只存在于一句“差不多做完了”，接手者只能从大 diff 猜进度。把决策、待办、风险和证据分别放进文件后，中断与换手变成可恢复事件，也减少了多轮提示之后目标逐渐漂移。</p>
+<p>探索和实现也被有意拆开。探索阶段可以让 Agent 读取 Astro Micro 的结构，比较路由和内容模型，提出信息架构或页面方案；但这些候选项不应自动变成代码。只有我确认了定位、页面层级和保留项，Codex 才进入具体实现与批量编辑。否则它会一边研究一边建设，某个“技术上能做”的发现很快就长成一个未经选择的功能。</p>
+<p>实施放在隔离 worktree 中，大批量变更不会污染原站；阶段性文件、检查清单和可回溯提交构成检查点。批量迁移也不靠对话逐篇指挥：先固定 frontmatter、目录、旧路径与特殊语法的规则，再由脚本重复执行，无法可靠判断的图片和内容进入异常清单。这样，机器负责一致性，人只集中处理规则覆盖不到的例外。</p>
+<p>角色分工也因此比“人提需求、AI 写代码”更细。定位、审美、取舍、停止条件和最终验收由我负责；Hermes 负责把上下文写进持久化文件，拆分阶段、控制范围、复核 diff，在中断后恢复，并做独立验证；Codex 负责组件、路由、样式、批量转换和定点修复等具体实现；脚本、静态审计和 E2E 不负责决策，只负责留下可以复查的证据。任何一方都不能单独宣布项目完成。</p>
+<h2 id="ai-coding-真正做得好的部分">AI Coding 真正做得好的部分</h2>
+<p>这类迁移很适合 AI，并不是因为它“会设计”，而是因为任务里有大量规则明确、涉及多文件、人工执行又容易漏的工作。</p>
+<p>它很擅长做模板手术：读懂陌生项目结构，留下可复用的骨架，移除不需要的页面与组件，再把新路由和内容模型接进去。它也适合批量迁移，将 frontmatter、目录结构、特殊标签和链接按统一规则转换，并在几十篇文章之间维持一致性。对一个并非我长期深耕的前端技术栈，它能迅速完成实现层探索，把我从逐个查询 API 和样板代码中解放出来。</p>
+<p>更重要的是，AI 可以把自然语言约束翻译成可重复检查。与其人工读完每一行模板代码，我更愿意按风险审查不变量：文章数是否一致，旧 URL 是否生成，失效图片是否有明确处置，构建产物里是否残留旧身份，代表性长文、公式和移动端布局是否通过。AI 生成检查、补齐静态审计，再根据失败结果迭代，这比“它一次写对了多少代码”更有工程价值。</p>
+<p>这种方式也重新分配了人的注意力。54 篇文章逐字比对既慢，也未必能发现系统性遗漏；清单先回答“迁了什么”，脚本保证规则能够重放，抽样页面再检查规则落到真实内容后的效果。人不必和机器竞争批处理速度，而要设计足以暴露错误的检查面，并对异常项作出判断。AI 提高了实现吞吐量，验证体系才决定这些产出能不能进入生产。</p>
+<h2 id="踩坑不在不会写而在写得太快">踩坑不在“不会写”，而在“写得太快”</h2>
+<p>这次最典型的问题，不是 Agent 写不出页面，而是它会把“可以做”很自然地推进成“应该做”。分类功能一度已经实现，重新核对博客定位后又被删除；照片墙经历了多轮迭代，先做出来，再把内容配置化，最后与文章系统解耦；访客计数器先因为精简而移除，确认它仍有意义后又恢复；About 和友链文案也随着公开边界与页面语气反复调整。这些都不是编译错误，而是范围和判断在实现过程中继续变化。</p>
+<p>这里不能简单归咎于 Agent。高生成速度也会放大人的犹豫：一个念头很快就能看到成品，于是“试试看”的成本低到让人不断打开新分支。过去因为实现昂贵而被迫提前做的取舍，现在更容易被拖到代码之后。生成越快，返工看起来越便宜，项目就越可能在局部优化里迟迟结束。因此，停止规则不再只是个人自制，而是项目约束：非目标有没有被突破，当前版本是否满足已定义的不变量，新增改动是在修复验收问题，还是只因为还能继续改。</p>
+<p>另一个坑是把构建成功当成产品验收。构建只能说明代码和内容在当前规则下能够产出页面，不能说明页面值得上线。这次仍要分别检查视觉判断、失效图片、元数据、移动端溢出和线上行为。首页的留白是否失衡、标题换行是否自然，需要人看；图片是真的可访问，还是只留下了合法的标签，需要资源检查；发布日期、描述和旧路径是否正确，需要内容审计；窄屏是否横向溢出，需要多视口 E2E；部署后搜索索引、资源路径和真实 URL 是否工作，则只能在线上回归。一个绿色构建无法替代这些互不相同的证据。</p>
+<p>长时间运行也确实出过问题：一次 Codex 任务挂住，后续定点修复和全量复验由 Hermes 接手。如果此前的判断只存在于聊天记忆里，恢复几乎等于重做一次需求分析。真正让工作续上的，是 <code>PROJECT_BRIEF</code>、<code>TASKS</code>、<code>CURRENT_STATE</code>、设计规格和仓库规则，是清单、阶段性提交与测试结果。它们共同回答了“要做什么、做到哪里、什么仍有风险、哪些已经被证明”，而不是指望另一个 Agent 猜出上一段对话的隐含状态。</p>
+<p>这也改变了我看大 diff 的方式。54 篇文章、路由和样式一起迁移，生成的行数必然很大；在这个低风险、可回退的静态站点迁移里，行数本身并不自动等于高风险。更有效的审查单位是语义和不变量：文章有没有少，旧链接有没有断，公开身份有没有越界，模板残留有没有进入成品，部署契约有没有改变。批量生成但规则一致的内容，可能比十行错误的路径逻辑更安全。这个判断只适用于本次场景，不能外推到支付、权限、安全边界或数据库迁移；在那些系统里，小 diff 也可能造成不可逆后果，需要更严格的逐项审查、隔离和回滚设计。</p>
+<h2 id="从这次迁移留下的可复用方法">从这次迁移留下的可复用方法</h2>
+<p>这次经历没有让我总结出一套“万能提示词”，反而留下了几条更朴素的工作原则。它们都对应上面真实发生过的返工或中断。</p>
+<p>第一，在实现前先写非目标。目标告诉 Agent 往哪里走，非目标决定它在哪里停。分类页面被做出又删除，正说明“能实现”不能替代产品边界。非目标不是永远不能改，但改变它应当是人的显式决定，而不是编码过程中的顺手扩张。</p>
+<p>第二，把探索和执行分开。探索可以宽，允许比较模板结构、内容模型和交互方案；执行要窄，只实现已经确认的选择。让同一个 Agent 在同一阶段自由探索并批量落地，效率看起来很高，却会把尚未讨论的假设直接埋进代码。</p>
+<p>第三，给每个阶段明确的输出与关卡。审计必须交清单，迁移必须交异常项，审查必须对照不变量，验证必须留下构建、静态审计、E2E 和视觉观察的不同证据。没有过关就不把任务推给下一阶段，也不靠“整体看起来差不多”掩盖未知项。</p>
+<p>第四，尽量把不变量变成可执行检查。文章数量、旧路径、特定文件、敏感署名、移动端溢出和关键交互，都比一句“注意不要弄坏旧站”更适合交给脚本或测试。测试不能判断品味，却能持续守住那些已经说清楚、不应该反复由人确认的底线。</p>
+<p>第五，保存可恢复的检查点。上下文文件、任务清单、提交边界和验证结果不是额外仪式，而是长任务能够换 Agent、断点续做和独立复核的基础。对话可以帮助推进工作，但不应该成为项目唯一的状态存储。</p>
+<p>最后，把视觉与产品判断，以及何时停止，留在人手里。Agent 可以提供选项、实现速度和检查覆盖，Hermes 可以复核范围，脚本可以提供证据；但“这是否仍是我想要的博客”“继续修改是否还有实际收益”只能由网站所有者回答。AI Coding 最需要人的地方，不是最后按一次批准按钮，而是持续决定什么值得做，并对完成的含义负责。</p>
+<h2 id="从写代码转向定义与负责">从写代码，转向定义与负责</h2>
+<p>在我自己的团队实践里，现在 <strong>90% 以上的代码都有 AI 辅助或直接生成</strong>。这只是我的一手观察，不是行业统计，也不意味着所有项目、团队和任务都会得到同样的收益。它说明的是：至少在我们的工作方式里，代码生产已经不再是最稀缺的一环。</p>
+<p>外部证据也需要放在一起看，而不是只挑最乐观的数字。Stack Overflow 2025 开发者调查中，84% 的受访者正在使用或计划使用 AI 开发工具，51% 的职业开发者每天使用；这说明采用已经很广，但不直接等于生产率必然提高。[1] Anthropic 2025 年 4 月对其产品内编程对话的分析，将 79% 的 Claude Code 对话归为“自动化”，UI/UX 组件和 Web/移动应用任务也很突出；Anthropic 据此推测，偏简单应用和界面的工作可能更早受到冲击，但这仍是基于单一产品样本的推测。[2] 另一边，世界经济论坛《Future of Jobs Report 2025》仍把软件与应用开发者列为增长最快的岗位之一。[3] METR 在 2025 年初工具条件下做的随机对照研究则发现，经验丰富的开源开发者在自己熟悉的仓库完成指定任务时，使用 AI 后平均多花了 19% 的时间；研究者也明确提醒，不应把这个特定场景外推到全部软件工作。[4] 合起来看，AI 的影响高度依赖任务、上下文、使用方式和验收标准，“使用更多”与“任何场景都更快”不是一回事。</p>
+<p>即使保持这些限定，我仍然认为结构性变化已经发生：代码生产成本在下降，过去由语言和框架形成的技术栈边界正在变薄。只提供实现、不参与问题定义和结果验收的岗位会承受更大压力。前端也不会简单“消失”，而会更明显地向全栈整合、产品判断、用户体验、性能、可访问性与系统集成延伸。能生成一个组件之后，真正的问题变成它为何存在、服务谁、如何进入数据与部署链路，以及出了问题由谁处理。</p>
+<p>开发者价值因此更多地移向问题定义、上下文组织、架构取舍、验证、运行维护和责任承担。这里没有“程序员都会消失”的结论，也没有“只要会提问就能做工程”的捷径。恰恰相反，当实现更容易涌现，识别错误方向、压住不必要复杂度、验证系统行为的能力会更贵。</p>
+<h2 id="结语">结语</h2>
+<p>迁移一个博客没有证明 AI 能独立完成复杂软件。它只让我看到，在一个真实但普通的项目里，AI 已经足以改变“买主题、改主题、自己做”之间的成本关系，也足以把开发者从大量机械实现推向约束、审查与取舍。</p>
+<p>程序员以后也许会少写很多代码，但不能少理解系统。相反，我们必须理解得足够多，才能约束它、检查它、在它卡住时接管它、在它出错时调试它，并最终为系统的结果负责。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>[1] <a href="https://survey.stackoverflow.co/2025/ai">Stack Overflow Developer Survey 2025：AI</a></li>
+<li>[2] <a href="https://www.anthropic.com/research/impact-software-development">Anthropic Economic Index：AI 对软件开发的影响（2025-04）</a></li>
+<li>[3] <a href="https://www.weforum.org/stories/2025/01/future-of-jobs-report-2025-the-fastest-growing-and-declining-jobs">World Economic Forum：Future of Jobs Report 2025 的岗位增减</a></li>
+<li>[4] <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study">METR：早期 2025 AI 工具对资深开源开发者生产率的随机对照研究</a></li>
+</ul> </div> <div class="post-nav"> <span></span> <a href="/2026/08/29/当文明踩下加速踏板之后/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">当文明踩下加速踏板之后</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#迁移的不是页面而是博客的重心">迁移的不是页面，而是博客的重心</a>  </li><li> <a href="#为什么不用现成模板或一键迁移">为什么不用现成模板或一键迁移</a>  </li><li> <a href="#实际过程没有一句话全自动">实际过程没有“一句话全自动”</a> <ul class="toc-sub"> <li> <a href="#上下文要能离开聊天继续存在">上下文要能离开聊天继续存在</a>  </li> </ul> </li><li> <a href="#ai-coding-真正做得好的部分">AI Coding 真正做得好的部分</a>  </li><li> <a href="#踩坑不在不会写而在写得太快">踩坑不在“不会写”，而在“写得太快”</a>  </li><li> <a href="#从这次迁移留下的可复用方法">从这次迁移留下的可复用方法</a>  </li><li> <a href="#从写代码转向定义与负责">从写代码，转向定义与负责</a>  </li><li> <a href="#结语">结语</a>  </li><li> <a href="#参考资料">参考资料</a>  </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

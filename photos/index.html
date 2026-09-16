@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/photos/"><!-- Primary Meta Tags --><title>照片 | Jack&#39;s Blog</title><meta name="title" content="照片 | Jack's Blog"><meta name="description" content="照片集。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/photos/"><meta property="og:title" content="照片 | Jack's Blog"><meta property="og:description" content="照片集。"><meta property="og:image" content="https://www.jackzhu.top/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/photos/"><meta property="twitter:title" content="照片 | Jack's Blog"><meta property="twitter:description" content="照片集。"><meta property="twitter:image" content="https://www.jackzhu.top/og-image.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="container"> <div class="animate"> <header class="archive-head"> <p class="eyebrow">Photos</p> <h1>照片</h1> <p>照片集。</p> </header> <div class="photo-grid"> <button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20260415002257322.jpg" aria-label="查看照片 1"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20260415002257322.jpg" alt="照片 1" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/82DA5A8E1D99BD7DC83A051FA8EA75E2.jpg" aria-label="查看照片 2"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/82DA5A8E1D99BD7DC83A051FA8EA75E2.jpg" alt="照片 2" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg" aria-label="查看照片 3"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hyy.jpg" alt="照片 3" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/f786f54959c72a37297a42973764cd39_720.jpg" aria-label="查看照片 4"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/f786f54959c72a37297a42973764cd39_720.jpg" alt="照片 4" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg" aria-label="查看照片 5"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9df566a73df3459ced3a41e6a9b124c4.jpeg" alt="照片 5" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/addc1330ad0be5e99fdcfcb83dbbef6a.jpeg" aria-label="查看照片 6"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/addc1330ad0be5e99fdcfcb83dbbef6a.jpeg" alt="照片 6" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/1c6fc333392b998f32dffef731788ea7.jpeg" aria-label="查看照片 7"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/1c6fc333392b998f32dffef731788ea7.jpeg" alt="照片 7" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/cda763e55b037970dd17031cffcd4e97.png" aria-label="查看照片 8"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/cda763e55b037970dd17031cffcd4e97.png" alt="照片 8" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/4dd98d0dc7fdb586f07c96d9d9dbe5eb.jpeg" aria-label="查看照片 9"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/4dd98d0dc7fdb586f07c96d9d9dbe5eb.jpeg" alt="照片 9" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/ed0b2439c6e30589320d7561ef5af581.jpeg" aria-label="查看照片 10"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/ed0b2439c6e30589320d7561ef5af581.jpeg" alt="照片 10" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/e236385b88c57c4a60ef5aaf72189cff.jpeg" aria-label="查看照片 11"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/e236385b88c57c4a60ef5aaf72189cff.jpeg" alt="照片 11" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/3e5e22a30f48d04a78793025395c668b.jpeg" aria-label="查看照片 12"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/3e5e22a30f48d04a78793025395c668b.jpeg" alt="照片 12" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/617da713d7b9fda5210171a556bd7f37.jpeg" aria-label="查看照片 13"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/617da713d7b9fda5210171a556bd7f37.jpeg" alt="照片 13" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9e2a0c81735df6e2537970db4d444c69.jpeg" aria-label="查看照片 14"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/9e2a0c81735df6e2537970db4d444c69.jpeg" alt="照片 14" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/744bb81c16f19a7793ade4c7a0ddd655.jpeg" aria-label="查看照片 15"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/744bb81c16f19a7793ade4c7a0ddd655.jpeg" alt="照片 15" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/8b7a826c00d8ada33d1dfa9ac7ce64dd.jpeg" aria-label="查看照片 16"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/8b7a826c00d8ada33d1dfa9ac7ce64dd.jpeg" alt="照片 16" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/01cb6bf5523d02fb95edf8da1c02b62b.jpeg" aria-label="查看照片 17"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/01cb6bf5523d02fb95edf8da1c02b62b.jpeg" alt="照片 17" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/5a4d35a32963632fb3d07910503c13b3.jpeg" aria-label="查看照片 18"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/5a4d35a32963632fb3d07910503c13b3.jpeg" alt="照片 18" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/ec650a59372c0b622e7065b01ab37920.jpeg" aria-label="查看照片 19"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/ec650a59372c0b622e7065b01ab37920.jpeg" alt="照片 19" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/53a57a8ff31e36a01cc76723d34c6235.jpeg" aria-label="查看照片 20"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/53a57a8ff31e36a01cc76723d34c6235.jpeg" alt="照片 20" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/effa96253b0b302d9ae7cfa94c7f5ae3.jpeg" aria-label="查看照片 21"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/effa96253b0b302d9ae7cfa94c7f5ae3.jpeg" alt="照片 21" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/dc196f33f2ea5313a41518c2016b80cf.jpeg" aria-label="查看照片 22"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/dc196f33f2ea5313a41518c2016b80cf.jpeg" alt="照片 22" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/65f920634dd84d2fd4d66db85d113e3f.jpeg" aria-label="查看照片 23"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/65f920634dd84d2fd4d66db85d113e3f.jpeg" alt="照片 23" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/da31bfb39d7d0fb356ac618060ece6b7.png" aria-label="查看照片 24"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/da31bfb39d7d0fb356ac618060ece6b7.png" alt="照片 24" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/b3b1b24841d210d0cbe1bf5a64b04d44.jpeg" aria-label="查看照片 25"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/b3b1b24841d210d0cbe1bf5a64b04d44.jpeg" alt="照片 25" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/6dd5501e98b9dfdfdb8ed3f0d19a4a19.jpeg" aria-label="查看照片 26"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/6dd5501e98b9dfdfdb8ed3f0d19a4a19.jpeg" alt="照片 26" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/2349135dde1b4a4828b209c87569c4a8.jpeg" aria-label="查看照片 27"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/2349135dde1b4a4828b209c87569c4a8.jpeg" alt="照片 27" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/790dbf2659a8aff75e42f73ecf06fab9.png" aria-label="查看照片 28"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/790dbf2659a8aff75e42f73ecf06fab9.png" alt="照片 28" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/e00a8894b3eeeffa688d3fe1b80dc395.jpeg" aria-label="查看照片 29"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/e00a8894b3eeeffa688d3fe1b80dc395.jpeg" alt="照片 29" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/xidian1.jpg" aria-label="查看照片 30"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/PicGo/xidian1.jpg" alt="照片 30" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/a22477f98ae4f50717035574c2f85a32.jpeg" aria-label="查看照片 31"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/a22477f98ae4f50717035574c2f85a32.jpeg" alt="照片 31" loading="lazy"> </button><button type="button" class="photo-card" data-src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/1cfcf9e2b6691718b5bc070c3b7f222b.jpeg" aria-label="查看照片 32"> <img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/1cfcf9e2b6691718b5bc070c3b7f222b.jpeg" alt="照片 32" loading="lazy"> </button> </div> </div> </div> <div id="photo-lightbox" class="photo-lightbox" role="dialog" aria-modal="true" aria-label="照片预览"> <button type="button" class="photo-lightbox-close" aria-label="关闭">×</button> <img class="photo-lightbox-img" src="" alt=""> </div> <script type="module">const e=document.getElementById("photo-lightbox"),o=e?.querySelector(".photo-lightbox-img"),n=e?.querySelector(".photo-lightbox-close");let l=null;function d(t){const s=t?.dataset.src,i=t?.querySelector("img")?.getAttribute("alt")??"";!e||!o||!s||(l=t,o.src=s,o.alt=i,e.classList.add("is-open"),document.body.style.overflow="hidden",n?.focus())}function c(){e&&(e.classList.remove("is-open"),document.body.style.overflow="",l?.focus())}document.querySelectorAll(".photo-card").forEach(t=>{t.addEventListener("click",()=>d(t))});n?.addEventListener("click",c);e?.addEventListener("click",t=>{t.target===e&&c()});document.addEventListener("keydown",t=>{t.key==="Escape"&&e?.classList.contains("is-open")&&c()});</script>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

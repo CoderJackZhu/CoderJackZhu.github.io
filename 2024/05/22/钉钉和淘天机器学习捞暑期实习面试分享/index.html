@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2024/05/22/%E9%92%89%E9%92%89%E5%92%8C%E6%B7%98%E5%A4%A9%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8D%9E%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><!-- Primary Meta Tags --><title>钉钉和淘天机器学习捞暑期实习面试分享 | Jack&#39;s Blog</title><meta name="title" content="钉钉和淘天机器学习捞暑期实习面试分享 | Jack's Blog"><meta name="description" content="淘天技术的面试记录分享。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2024/05/22/%E9%92%89%E9%92%89%E5%92%8C%E6%B7%98%E5%A4%A9%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8D%9E%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><meta property="og:title" content="钉钉和淘天机器学习捞暑期实习面试分享 | Jack's Blog"><meta property="og:description" content="淘天技术的面试记录分享。"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/a22477f98ae4f50717035574c2f85a32.jpeg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2024/05/22/%E9%92%89%E9%92%89%E5%92%8C%E6%B7%98%E5%A4%A9%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8D%9E%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><meta property="twitter:title" content="钉钉和淘天机器学习捞暑期实习面试分享 | Jack's Blog"><meta property="twitter:description" content="淘天技术的面试记录分享。"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/a22477f98ae4f50717035574c2f85a32.jpeg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">经历与记录</p> <h1>钉钉和淘天机器学习捞暑期实习面试分享</h1> <div class="article-meta"> <time datetime="2024-05-22T00:00:00.000Z">2024年5月22日</time>  <span>约 3 分钟</span> </div> <p class="article-lead">淘天技术的面试记录分享。</p> </header> <div class="prose"> <h2 id="面试前的内容">面试前的内容</h2>
+<p>本来今天中午是打算面钉钉的，前面推了三次，终于约到了今天中午，结果提前淘天打电话让直接面试了，所以今天就先面了淘天</p>
+<h2 id="淘天面试">淘天面试</h2>
+<p>在之前的时候淘天的视觉已经G了</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240522153311.png" alt="20240522153311"></p>
+<p>事实证明，视觉这块真不行，要求太高了，真做不了，不是简历挂就是面试挂，今天给调到了机器学习。</p>
+<p>面试首先就是自我介绍，然后开始问项目，问哪个项目印象深刻，然后就重点讲了第三个项目，讲了之后问论文做了啥，大致都讲了下，然后是比赛，问做的过程中用了什么方法，前几名是用的什么方法，有什么差距，具体是哪里的差距；然后我用的什么方法，有什么亮点，我说前几名用的主要方法都差不太多，重点在于策略和具体的应用调整。反正这块主要就是拷问简历上的项目了，毕竟前面笔试啥的都弄了，算法八股倒是没问。</p>
+<p>之后是反问环节，然后问他们部门是做什么的，然后说他们主要是做搜广推的，主要是搜索和广告，然后大致讲了做啥。</p>
+<p>已经G了</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240528131547.png" alt="20240528131547"></p>
+<h2 id="钉钉面试">钉钉面试</h2>
+<p>刚面完淘天就是面钉钉，钉钉的这个笔试和面试挨着的，这个笔试不是力扣算法题，而是深度学习方面的题，首先手撕三选二：</p>
+<ol>
+<li>层归一化</li>
+<li>多头注意力</li>
+<li>kmeans</li>
+</ol>
+<p>层归一化我确实不太会理论，就没写，多头注意力是经典手撕了，凑合写了下，kmeans我是很熟悉的，毕竟大三第一次写这种算法就是kmeans， 手撕完之后让逐行讲解，凑合讲了下，不过细节还是有点漏，这块可以再看看。</p>
+<p>之后是说怎么项目都是去年的，我说前面也有个，然后问了问论文，也问的详细，相比前人贡献是啥，我说这块前人工作很少，我主要是开辟了这样一个流程和处理方法，然后各种细节问了下，这块问的很细，具体来说，这个部分包括一个流程，其中视频部分具体用了什么模型，为什么用这个模型，这个模型架构是什么样的，具体是如何实现这个功能的，对比效果如何；检测和关键点部分用了什么模型，相应的模型架构是什么样的，卷积神经网络和transformer相比特点分别是什么。</p>
+<p>然后问常见的激活函数都有哪些，然后都介绍一下，这块比较新的我都没怎么记，就只说了下之前的激活函数。</p>
+<p>然后问最喜欢的网络模型是什么，为什么喜欢这个模型，讲一下结构，然后相比前人工作改进是什么，我大致讲了下，不过模型结构讲的不够细节。</p>
+<p>之后是说看我简历上写了多模态大模型啥的，我说这块了解了些，但是发现算力什么的差很多，然后主要是做老师的项目，所以这块只是了解。</p>
+<p>然后问职业规划，这块我没准备，也没经验，只能凑合说下，后面还是要准备下。</p>
+<p>之后是说我学习能力强，各种项目都做，所以迁移到学习新东西也很快，然后问具体如何体现，这块我就不是很知道怎么回答了。</p>
+<p>最后反问环节，我也是问了部门是做的什么，说部门主要三个方向，第一是风控，第二个是啥我给忘了，第三个就是大模型文生文，图生成文，语言和图文多模态啥的。</p>
+<h2 id="总结">总结</h2>
+<p>这两场面完仍然是汗流浃背，总之还是比上次淘天的要好一点吧，至少手撕八股准备了下。具体这次问项目和论文的细节也是非常的细致，具体很多问题已经记不清了，总之简历上的东西还是要详细到问每个细节都能答得上来。</p> </div> <div class="post-nav"> <a href="/2024/05/23/阿里国际暑实面试分享/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">阿里国际暑实面试分享</span> </a> <a href="/2024/04/30/淘天暑期实习面试分享/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">淘天暑期实习计算机视觉面试凉经</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#面试前的内容">面试前的内容</a>  </li><li> <a href="#淘天面试">淘天面试</a>  </li><li> <a href="#钉钉面试">钉钉面试</a>  </li><li> <a href="#总结">总结</a>  </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

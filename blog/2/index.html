@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/blog/2/"><!-- Primary Meta Tags --><title>文章 - 第 2 页 | Jack&#39;s Blog</title><meta name="title" content="文章 - 第 2 页 | Jack's Blog"><meta name="description" content="全部文章，按发布日期倒序排列。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/blog/2/"><meta property="og:title" content="文章 - 第 2 页 | Jack's Blog"><meta property="og:description" content="全部文章，按发布日期倒序排列。"><meta property="og:image" content="https://www.jackzhu.top/og-image.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/blog/2/"><meta property="twitter:title" content="文章 - 第 2 页 | Jack's Blog"><meta property="twitter:description" content="全部文章，按发布日期倒序排列。"><meta property="twitter:image" content="https://www.jackzhu.top/og-image.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="container"> <aside data-pagefind-ignore> <header class="archive-head"> <p class="eyebrow">All writing</p> <h1>全部文章</h1> <p>全部文章，按发布日期倒序排列。</p> </header> <div class="section-head"> <h2>文章</h2> <span>第 2 页</span> </div> <ol class="post-list"> <li> <a href="/2024/09/24/秋招快手面试分享/" class="post"> <time class="post-date" datetime="2024-09-24T00:00:00.000Z"> 09.24<br>2024 </time> <div> <h3>秋招快手面试分享</h3> <p>秋招正式批快手技术面试分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 2 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/09/23/秋招合肥安迅精密技术面试分享/" class="post"> <time class="post-date" datetime="2024-09-23T00:00:00.000Z"> 09.23<br>2024 </time> <div> <h3>秋招合肥安迅精密技术面试分享</h3> <p>秋招正式批合肥安迅精密技术面试分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 1 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/09/23/秋招比亚迪面试分享/" class="post"> <time class="post-date" datetime="2024-09-23T00:00:00.000Z"> 09.23<br>2024 </time> <div> <h3>秋招比亚迪面试分享</h3> <p>秋招正式批比亚迪面试分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 2 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/09/22/秋招得物面试分享/" class="post"> <time class="post-date" datetime="2024-09-22T00:00:00.000Z"> 09.22<br>2024 </time> <div> <h3>秋招得物面试分享</h3> <p>秋招正式批得物面试分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 1 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/09/19/秋招中兴面试分享/" class="post"> <time class="post-date" datetime="2024-09-19T00:00:00.000Z"> 09.19<br>2024 </time> <div> <h3>秋招中兴面试分享</h3> <p>秋招正式批中兴面试分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 2 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/09/19/秋招淘天面试分享/" class="post"> <time class="post-date" datetime="2024-09-19T00:00:00.000Z"> 09.19<br>2024 </time> <div> <h3>秋招淘天凉经</h3> <p>秋招正式批淘天面试分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 9 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/09/12/秋招美团面试分享/" class="post"> <time class="post-date" datetime="2024-09-12T00:00:00.000Z"> 09.12<br>2024 </time> <div> <h3>秋招美团机器学习面试分享</h3> <p>秋招正式批美团机器学习面试分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 3 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/08/06/秋招提前批百度面试分享/" class="post"> <time class="post-date" datetime="2024-08-06T00:00:00.000Z"> 08.06<br>2024 </time> <div> <h3>秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享</h3> <p>秋招提前批百度机器学习/数据挖掘/自然语言处理工程师面试分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 4 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/05/28/腾讯AI Lab暑实面试分享/" class="post"> <time class="post-date" datetime="2024-05-28T00:00:00.000Z"> 05.28<br>2024 </time> <div> <h3>腾讯AI Lab暑实面试分享</h3> <p>腾讯AI Lab暑实面试记录分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 3 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/05/23/阿里国际暑实面试分享/" class="post"> <time class="post-date" datetime="2024-05-23T00:00:00.000Z"> 05.23<br>2024 </time> <div> <h3>阿里国际暑实面试分享</h3> <p>阿里国际技术的面试记录分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 2 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/05/22/钉钉和淘天机器学习捞暑期实习面试分享/" class="post"> <time class="post-date" datetime="2024-05-22T00:00:00.000Z"> 05.22<br>2024 </time> <div> <h3>钉钉和淘天机器学习捞暑期实习面试分享</h3> <p>淘天技术的面试记录分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 3 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/04/30/淘天暑期实习面试分享/" class="post"> <time class="post-date" datetime="2024-04-30T00:00:00.000Z"> 04.30<br>2024 </time> <div> <h3>淘天暑期实习计算机视觉面试凉经</h3> <p>淘天技术的面试记录分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 38 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/04/28/华为暑期实习面试分享/" class="post"> <time class="post-date" datetime="2024-04-28T00:00:00.000Z"> 04.28<br>2024 </time> <div> <h3>华为暑期实习面试分享</h3> <p>华为一面二面的面试记录分享。</p> <div class="post-meta"> <span>经历与记录</span> <span>约 6 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2024/03/03/Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署/" class="post"> <time class="post-date" datetime="2024-03-03T00:00:00.000Z"> 03.03<br>2024 </time> <div> <h3>Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署</h3> <p>本文介绍如何使用Github Actions自动部署博客，并且使用仓库分支存储图片等资源。</p> <div class="post-meta"> <span>技术与工程</span> <span>约 4 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2023/09/03/服务器常见技术问题与技巧/" class="post"> <time class="post-date" datetime="2023-09-03T00:00:00.000Z"> 09.03<br>2023 </time> <div> <h3>服务器常见技术问题与技巧</h3> <p>本文记录了一些常见的技术问题与技巧</p> <div class="post-meta"> <span>技术与工程</span> <span>约 12 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2023/02/07/浅谈《原神》游戏的理解/" class="post"> <time class="post-date" datetime="2023-02-07T00:00:00.000Z"> 02.07<br>2023 </time> <div> <h3>浅谈《原神》游戏的理解</h3> <p>一点点的理解</p> <div class="post-meta"> <span>思考与随笔</span> <span>约 7 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2022/11/10/学术交流分享ActionFormer/" class="post"> <time class="post-date" datetime="2022-11-10T00:00:00.000Z"> 11.10<br>2022 </time> <div> <h3>ActionFormer论文分享</h3> <p>之前读的论文</p> <div class="post-meta"> <span>学习与研究</span> <span>约 8 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2022/11/02/ubuntu的使用/" class="post"> <time class="post-date" datetime="2022-11-02T00:00:00.000Z"> 11.02<br>2022 </time> <div> <h3>Ubuntu的基本使用</h3> <p>一点小记录</p> <div class="post-meta"> <span>技术与工程</span> <span>约 4 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2022/09/21/HRNet/" class="post"> <time class="post-date" datetime="2022-09-21T00:00:00.000Z"> 09.21<br>2022 </time> <div> <h3>【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition</h3> <p>读论文的记录</p> <div class="post-meta"> <span>学习与研究</span> <span>约 2 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2022/05/10/今日随笔/" class="post"> <time class="post-date" datetime="2022-05-10T00:00:00.000Z"> 05.10<br>2022 </time> <div> <h3>今日随笔</h3> <p>进步了</p> <div class="post-meta"> <span>思考与随笔</span> <span>约 1 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2022/04/10/Ubuntu 20.04下深度学习环境搭建以及常用工具配置/" class="post"> <time class="post-date" datetime="2022-04-10T00:00:00.000Z"> 04.10<br>2022 </time> <div> <h3>Ubuntu 20.04下Pytorch深度学习环境搭建以及常用工具配置</h3> <p>一点小记录</p> <div class="post-meta"> <span>技术与工程</span> <span>约 9 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2021/12/29/我的生活/" class="post"> <time class="post-date" datetime="2021-12-29T00:00:00.000Z"> 12.29<br>2021 </time> <div> <h3>考研后的思考</h3> <p>反内卷而不躺平</p> <div class="post-meta"> <span>思考与随笔</span> <span>约 1 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2021/06/18/机器学习课程报告——波士顿房价预测/" class="post"> <time class="post-date" datetime="2021-06-18T00:00:00.000Z"> 06.18<br>2021 </time> <div> <h3>机器学习课程报告——波士顿房价预测</h3> <p>实现波士顿房价预测，比较神经网络模型与线性回归模型的效果。</p> <div class="post-meta"> <span>学习与研究</span> <span>约 16 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li><li> <a href="/2021/05/30/计算智能导论作业——FCM 聚类的实现/" class="post"> <time class="post-date" datetime="2021-05-30T00:00:00.000Z"> 05.30<br>2021 </time> <div> <h3>计算智能导论作业——FCM 聚类的实现</h3> <p>实现模糊 C 均值（FCM）聚类算法，并在 Iris 数据集上完成聚类实验。</p> <div class="post-meta"> <span>学习与研究</span> <span>约 7 分钟</span> </div> </div> <span class="post-arrow">→</span> </a> </li> </ol> <nav class="pagination"> <a href="/blog/">上一页</a> <span class="page-info">第 2 / 3 页</span> <a href="/blog/3">下一页</a> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2024/10/15/%E7%A7%8B%E6%8B%9B%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><!-- Primary Meta Tags --><title>秋招华为面试分享 | Jack&#39;s Blog</title><meta name="title" content="秋招华为面试分享 | Jack's Blog"><meta name="description" content="秋招正式批华为面试分享。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2024/10/15/%E7%A7%8B%E6%8B%9B%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><meta property="og:title" content="秋招华为面试分享 | Jack's Blog"><meta property="og:description" content="秋招正式批华为面试分享。"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/4dd98d0dc7fdb586f07c96d9d9dbe5eb.jpeg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2024/10/15/%E7%A7%8B%E6%8B%9B%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E5%88%86%E4%BA%AB/"><meta property="twitter:title" content="秋招华为面试分享 | Jack's Blog"><meta property="twitter:description" content="秋招正式批华为面试分享。"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/4dd98d0dc7fdb586f07c96d9d9dbe5eb.jpeg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">经历与记录</p> <h1>秋招华为面试分享</h1> <div class="article-meta"> <time datetime="2024-10-15T00:00:00.000Z">2024年10月15日</time>  <span>约 6 分钟</span> </div> <p class="article-lead">秋招正式批华为面试分享。</p> </header> <div class="prose"> <h1 id="一面">一面</h1>
+<p>15号的比较早，9：30左右，等了一会，叫号，过去面试，自我介绍完，先拿出来了笔试时候的题目让复盘一下，我用的还是投实习时候过的，正式批就没有笔试，简单看下，大致说出了思路。</p>
+<p>然后说重点讲三个项目，我就讲一个实习+两个项目了。</p>
+<p>开始问实习，也是介绍完之后问细节，具体也问了不少，然后讲第一个和第二个项目，讲完让手撕个题目，题目是一段01的比特流字符串，给一个target是0或者1，然后比特流只能变一位，求最多多少个连续的target，想了几分钟双指针写了出来。总体来说，一面还是比较友好的。</p>
+<h2 id="二面">二面</h2>
+<p>等了一会就二面了，二面过去自我介绍完，我讲完实习，就问了几个套路性的常用问题，大概不到十分钟，然后就给一个手撕题目，场景题，用卷积算二阶导，对图像做边缘检测。这个没怎么见过，没想出来，要用题目给定的方法做，大致写了下，然后就结束了，写的应该不太对。面试官直接说今天面试结束了可以回去了，然后就短信通知今天的结束了，进入系统一看，果然挂了。</p>
+<p>这种手撕场景题不太好准备，没得办法，二面都没怎么问，手撕g就g了，这题真没见过，太难了，全程都没问八股，二面一堆项目都没问，实习问的比一面还浅，没办法。</p>
+<p>我回头问了我我同学们，还没有见过有二面挂的，他们题目都可以三选一，而且基本都是力扣，还都不是很难的那种，出这个题他们也都不会，让面试官给提示也不给，只报还剩下多少时间。毕竟连项目和八股都不问的面试我还是第一次见，一面的面试官就好的多。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/3d0afaab4a49212c06ee3d91bc12e82.jpg" alt="3d0afaab4a49212c06ee3d91bc12e82"></p>
+<p>我回去复盘了一下，这个题大致应该是这样的，总体来说也不能算完全的hard，但是难就难在开始这部分，如何用[1,-1]和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1</mn><mo separator="true">,</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">]</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">[1,-1]^T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">T</span></span></span></span></span></span></span></span></span></span></span>计算拉普拉斯算子，后面的就很容易了。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20241017224856.png" alt="20241017224856"></p>
+<p>ChatGPT给的答案是：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> edge_detection_laplacian</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">image</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # 获取图像尺寸</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    rows</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> cols </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> len</span><span style="color:var(--astro-code-token-punctuation)">(image),</span><span style="color:var(--astro-code-token-function)"> len</span><span style="color:var(--astro-code-token-punctuation)">(image[</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">])</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # 定义Laplacian卷积核g</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    g </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> [[</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-keyword)"> -</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 0</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">,</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">         [</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 4</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-keyword)"> -</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">,</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">         [</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-keyword)"> -</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 0</span><span style="color:var(--astro-code-foreground)">]]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # 添加padding, 初始化f为图像+2边框的0矩阵</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    f </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> [[</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-keyword)"> for</span><span style="color:var(--astro-code-foreground)"> _ </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(cols </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)"> 2</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)">] </span><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> _ </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(rows </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)"> 2</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # 将原始图像数据填充到f的中心部分</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(rows):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        for</span><span style="color:var(--astro-code-foreground)"> j </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(cols):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            f</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">i </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-foreground)">[j </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-foreground)">] </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> image</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">i</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-foreground)">[j]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # 创建结果矩阵，用于存储边缘检测的结果</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    result </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> [[</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-keyword)"> for</span><span style="color:var(--astro-code-foreground)"> _ </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(cols)</span><span style="color:var(--astro-code-foreground)">] </span><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> _ </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(rows)</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # 主卷积循环，遍历图像中的每一个像素</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">, rows </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-punctuation)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        for</span><span style="color:var(--astro-code-foreground)"> j </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">, cols </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-punctuation)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">            # 进行卷积操作</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            conv_sum </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)"> 0</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">            for</span><span style="color:var(--astro-code-foreground)"> m </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">3</span><span style="color:var(--astro-code-token-punctuation)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">                for</span><span style="color:var(--astro-code-foreground)"> n </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">3</span><span style="color:var(--astro-code-token-punctuation)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">                    conv_sum </span><span style="color:var(--astro-code-token-keyword)">+=</span><span style="color:var(--astro-code-foreground)"> f</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">i </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-foreground)"> m </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-foreground)">[j </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-foreground)"> n </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-foreground)">] </span><span style="color:var(--astro-code-token-keyword)">*</span><span style="color:var(--astro-code-foreground)"> g</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">m</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-foreground)">[n]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">            # 将卷积结果存入结果矩阵</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            result</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">i </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-foreground)">[j </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-foreground)">] </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> conv_sum</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># 示例输入</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">image </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> [</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    [</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 2</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 0</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">,</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    [</span><span style="color:var(--astro-code-token-constant)">4</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 5</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 6</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">,</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    [</span><span style="color:var(--astro-code-token-constant)">7</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 8</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 9</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 2</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">,</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    [</span><span style="color:var(--astro-code-token-constant)">3</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 4</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 5</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)"> 6</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># 调用Laplacian边缘检测函数</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">edge_result </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> edge_detection_laplacian</span><span style="color:var(--astro-code-token-punctuation)">(image)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># 输出结果</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> row </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> edge_result</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    print</span><span style="color:var(--astro-code-token-punctuation)">(row)</span></span></code></pre>
+<p>但是他这个回答没有给出拉普拉斯算子怎么算的，其实这个算子我也是知道，也会用，其实早在投实习的时候一面就问了这个算子，我直接手写了出来，但是如果不给算子，而是用[1,-1]和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1</mn><mo separator="true">,</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">]</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">[1,-1]^T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">T</span></span></span></span></span></span></span></span></span></span></span>计算拉普拉斯算子，再算的话，就不太容易了。我当时只算了水平的，没有算垂直的，水平垂直的叠加其实就可以了，有算子之后后面就容易了。</p>
+<p>chatgpt给出了推导过程：</p>
+<h3 id="1-一阶导数的离散化">1. 一阶导数的离散化</h3>
+<p>在连续情况下，函数 <code>f(x)</code> 的一阶导数是：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>f</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f'(x) = \frac{d}{dx}f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></span>
+<p>在离散情况下，我们用差分来近似一阶导数。在离散网格上，假设 <code>f(x)</code> 是一组离散的数值表示（如图像中的像素值），我们可以用<strong>向前差分</strong>或<strong>向后差分</strong>来近似一阶导数。</p>
+<p><strong>向前差分</strong>表示为：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>f</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>≈</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f'(x) \approx f(x+1) - f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></span>
+<p>这相当于卷积核 <code>[1, -1]</code>，它计算当前点与下一个点的差值。</p>
+<p><strong>向后差分</strong>表示为：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>f</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>≈</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f'(x) \approx f(x) - f(x-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span>
+<p>这相当于卷积核 <code>[-1, 1]</code>。</p>
+<p>如果我们想取中间值（中心差分），可以将这两个差分的平均值作为一阶导数的离散近似：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>f</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>≈</mo><mfrac><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">f'(x) \approx \frac{f(x+1) - f(x-1)}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p>这一中心差分可以表示为卷积核 <code>[1, 0, -1]</code>，它计算左右相邻点的差异。</p>
+<h3 id="2-二阶导数的离散化">2. 二阶导数的离散化</h3>
+<p>二阶导数表示的是函数变化的变化率。二阶导数是通过对一阶导数再次求导数得到的。在连续情况下，二阶导数是：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>f</mi><mrow><mo mathvariant="normal">′</mo><mo mathvariant="normal">′</mo></mrow></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><msup><mi>d</mi><mn>2</mn></msup><mrow><mi>d</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f''(x) = \frac{d^2}{dx^2}f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1771em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4911em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></span>
+<p>对于离散网格，我们可以用差分的形式来近似二阶导数。</p>
+<h3 id="3-从一阶导数推导二阶导数">3. 从一阶导数推导二阶导数</h3>
+<p>假设我们已经知道一阶导数的离散近似表示为 <code>f'(x) = f(x+1) - f(x)</code>，那么二阶导数可以通过对一阶导数再次取差分来计算：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>f</mi><mrow><mo mathvariant="normal">′</mo><mo mathvariant="normal">′</mo></mrow></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>≈</mo><msup><mi>f</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>−</mo><msup><mi>f</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f''(x) \approx f'(x+1) - f'(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></span>
+<p>将一阶导数的表达式代入：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>f</mi><mrow><mo mathvariant="normal">′</mo><mo mathvariant="normal">′</mo></mrow></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>≈</mo><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo stretchy="false">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>−</mo><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f''(x) \approx (f(x+2) - f(x+1)) - (f(x+1) - f(x))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">))</span></span></span></span></span>
+<p>展开后得到：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>f</mi><mrow><mo mathvariant="normal">′</mo><mo mathvariant="normal">′</mo></mrow></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>≈</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo stretchy="false">)</mo><mo>−</mo><mn>2</mn><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f''(x) \approx f(x+2) - 2f(x+1) + f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></span>
+<p>这就是二阶导数的离散近似形式。其卷积核为 <code>[1, -2, 1]</code>，它计算当前像素值及其左右两个像素值的加权和，能够检测到亮度变化的速率，也就是图像中的曲率。</p>
+<h3 id="4-解读-1--2-1">4. 解读 <code>[1, -2, 1]</code></h3>
+<ul>
+<li><code>1</code>：代表距离当前像素一个单位距离的前后像素值的贡献。</li>
+<li><code>-2</code>：代表当前像素的值，权重大，表示它与左右两个像素的关系。</li>
+<li><code>1</code>：再次代表左右相邻像素的贡献。</li>
+</ul>
+<p>这个差分算子 <code>[1, -2, 1]</code> 通过结合当前像素与其左右像素的值，近似计算二阶导数，检测出图像中变化最剧烈的部分（例如边缘或轮廓）。</p>
+<h3 id="5-二维情况laplacian-算子">5. 二维情况：Laplacian 算子</h3>
+<p>在二维图像处理的场景下，类似的二阶导数可以推广到多个方向。我们可以分别对 <code>x</code> 方向和 <code>y</code> 方向应用上述 <code>[1, -2, 1]</code> 的差分算子，得到图像在这两个方向的二阶导数。然后通过将两个方向的二阶导数合并，我们得到 <strong>Laplacian 算子</strong>，其标准形式是：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>g</mi><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>−</mo><mn>1</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>−</mo><mn>1</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>4</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>−</mo><mn>1</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>−</mo><mn>1</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">g = \begin{bmatrix} 0 &#x26; -1 &#x26; 0 \\ -1 &#x26; 4 &#x26; -1 \\ 0 &#x26; -1 &#x26; 0 \end{bmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.6em;vertical-align:-1.55em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.667em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.667em" height="3.6em" viewBox="0 0 667 3600"><path d="M403 1759 V84 H666 V0 H319 V1759 v0 v1759 v84 h347 v-84
+H403z M403 1759 V0 H319 V1759 v0 v1759 v84 h84z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord">1</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord">1</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord">1</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.667em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.667em" height="3.6em" viewBox="0 0 667 3600"><path d="M347 1759 V0 H0 V84 H263 V1759 v0 v1759 H0 v84 H347z
+M347 1759 V0 H263 V1759 v0 v1759 h84z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span></span></span></span></span>
+<p>其中：</p>
+<ul>
+<li>中心位置的 <code>4</code> 对应着当前像素值的权重。</li>
+<li><code>-1</code> 表示与上下左右像素的二阶差分贡献。</li>
+</ul>
+<p>这一卷积核检测的是像素与其邻域的二阶亮度变化，从而可以用于边缘检测。</p>
+<h3 id="总结">总结</h3>
+<p>总之，这个题不算拉普拉斯的推导就是easy，但是算上的话，就不太容易，我当时算出来了水平的梯度了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-1,2,-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mclose">]</span></span></span></span>，垂直的应该也是一样的，但是把垂直的和水平的合并就不会了，合并了就是拉普拉斯算子了，后面就没啥了。</p>
+<p>血亏</p> </div> <div class="post-nav"> <a href="/2024/10/19/秋招招联面试分享/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">秋招招联面试分享</span> </a> <a href="/2024/10/15/秋招携程面试分享/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">秋招携程面试分享</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#二面">二面</a> <ul class="toc-sub"> <li> <a href="#1-一阶导数的离散化">1. 一阶导数的离散化</a>  </li><li> <a href="#2-二阶导数的离散化">2. 二阶导数的离散化</a>  </li><li> <a href="#3-从一阶导数推导二阶导数">3. 从一阶导数推导二阶导数</a>  </li><li> <a href="#4-解读-1--2-1">4. 解读 [1, -2, 1]</a>  </li><li> <a href="#5-二维情况laplacian-算子">5. 二维情况：Laplacian 算子</a>  </li><li> <a href="#总结">总结</a>  </li> </ul> </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

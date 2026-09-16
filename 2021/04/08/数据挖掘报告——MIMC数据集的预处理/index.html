@@ -1,0 +1,1105 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2021/04/08/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94MIMC%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E9%A2%84%E5%A4%84%E7%90%86/"><!-- Primary Meta Tags --><title>数据挖掘报告——MIMC数据集的预处理 | Jack&#39;s Blog</title><meta name="title" content="数据挖掘报告——MIMC数据集的预处理 | Jack's Blog"><meta name="description" content="利用 MySQL 与 Python 对 MIMC 数据集进行提取、缺失值与离群点处理、去噪与插值的数据预处理实验记录。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2021/04/08/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94MIMC%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E9%A2%84%E5%A4%84%E7%90%86/"><meta property="og:title" content="数据挖掘报告——MIMC数据集的预处理 | Jack's Blog"><meta property="og:description" content="利用 MySQL 与 Python 对 MIMC 数据集进行提取、缺失值与离群点处理、去噪与插值的数据预处理实验记录。"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2021/04/08/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E6%8A%A5%E5%91%8A%E2%80%94%E2%80%94MIMC%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E9%A2%84%E5%A4%84%E7%90%86/"><meta property="twitter:title" content="数据挖掘报告——MIMC数据集的预处理 | Jack's Blog"><meta property="twitter:description" content="利用 MySQL 与 Python 对 MIMC 数据集进行提取、缺失值与离群点处理、去噪与插值的数据预处理实验记录。"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">学习与研究</p> <h1>数据挖掘报告——MIMC数据集的预处理</h1> <div class="article-meta"> <time datetime="2021-04-08T00:00:00.000Z">2021年4月8日</time>  <span>约 10 分钟</span> </div> <p class="article-lead">利用 MySQL 与 Python 对 MIMC 数据集进行提取、缺失值与离群点处理、去噪与插值的数据预处理实验记录。</p> </header> <div class="prose"> <h2 id="摘-要">摘 要</h2>
+<p>在本次的大作业中，这里首先利用 MySQL 对数据进行整合，并提取出包含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><msub><mi>O</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">CO_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>O</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">O_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 相应指标的数据，然后将提取的数据导出，并导入到 Python 中。然后利用第一组数据为示例分别进行缺失值、离群点处理，并完成去噪以及插值处理。随后选出另两组为示例进行可视化，最后得出实验感想与分析，这里去噪利用了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>σ</mi></mrow><annotation encoding="application/x-tex">3\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span></span></span></span> 原则。</p>
+<p>关键词: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mspace width="1em"></mspace></mrow><annotation encoding="application/x-tex">\quad</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;"></span><span class="mspace" style="margin-right:1em;"></span></span></span></span> MySQL Python <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mspace width="1em"></mspace><mn>3</mn><mi>σ</mi></mrow><annotation encoding="application/x-tex">\quad 3\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span></span></span></span> 原则</p>
+<h2 id="目-录">目 录</h2>
+<ul>
+<li>1 数据处理 1</li>
+<li>1.1 数据提取 1</li>
+<li>1.2 数据具体处理 1</li>
+<li>1.3 数据合并 1</li>
+<li>1.4 缺失值处理 2</li>
+<li>1.5 离群点处理 2</li>
+<li>1.6 去噪 4</li>
+<li>1.7 插值 5</li>
+<li>2 第二组数据 5</li>
+<li>2.1 离群点处理 5</li>
+<li>2.2 去噪 6</li>
+<li>2.3 插值 7</li>
+<li>3 第三组数据 8</li>
+<li>3.1 离群点处理 8</li>
+<li>3.2 去噪 9</li>
+<li>3.3 插值 9</li>
+<li>4 总结 10</li>
+<li>A SQL 程序代码 1 11</li>
+<li>B SQL 程序代码 2 11</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">C</mi></mrow><annotation encoding="application/x-tex">\mathrm{C}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathrm">C</span></span></span></span> 主程序代码 11</li>
+<li>D 作业要求 14</li>
+<li>D. 1 数据集说明 14</li>
+<li>D. 2 任务说明 14</li>
+</ul>
+<h2 id="1-数据处理">1 数据处理</h2>
+<h2 id="11-数据提取">1.1 数据提取</h2>
+<p>这次作业中数据较大, 直接读取很难看出数据具体细节, 直接打开会崩溃, 因此这里开始使用 MySQL, 将提供的三个文件导入进去, 然后进行初步处理, 利用附录 A 和附录 B 中所示代码, 将 PO2 和 PCO2 两个指标提取出来, 得到数据 CO2 如下图所示。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>f1</th><th>ROW ID</th><th>SUBJECT ID</th><th>HADM ID</th><th>ITEMID</th><th>CHARTTIMEVALUE</th><th>VALUENUM</th><th>VALUEUOM</th><th>FLAG</th><th>time</th></tr></thead><tbody><tr><td></td><td>974</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2204:31:0025</td><td>25.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>231</td><td>988</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2207:13:0028</td><td>28.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>240</td><td>997</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2210:16:0028</td><td>28.0</td><td>mmHg</td><td>(NuII)</td><td>0</td></tr><tr><td>249</td><td>1006</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2211:21:0027</td><td>27.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>262</td><td>1019</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2213:02:0026</td><td>26.0</td><td>mmHg</td><td>CNUII</td><td>0</td></tr><tr><td>271</td><td>1028</td><td>a</td><td>145B34.0</td><td>50818</td><td>2101-10-2215:59:0024</td><td>24.0</td><td>mmHg</td><td>(NuII)</td><td>0</td></tr><tr><td>285</td><td>1042</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2216:02:0030</td><td>30.0</td><td>mmHg</td><td>(Nuith</td><td>0</td></tr><tr><td>310</td><td>1067</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2221:20:0027</td><td>27.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>325</td><td>1082</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2302:46:0029</td><td>29.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>338</td><td>1095</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2302:49:0033</td><td>33.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>379</td><td>1136</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2310:14:0025</td><td>25.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>392</td><td>1149</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2310:22:0030</td><td>30.0</td><td>mmHg</td><td>CNUI</td><td>0</td></tr><tr><td>406</td><td>1163</td><td>a</td><td>145834.0</td><td>50818</td><td>2101-10-2316:10:0029</td><td>29.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>468</td><td>588</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2020:04:0028</td><td>28.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>486</td><td>606</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2021:51:0033</td><td>33.0</td><td>mmHg</td><td>(Nuil)</td><td>0</td></tr><tr><td>502</td><td>622</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2100:42:0030</td><td>30.0</td><td>mmHg</td><td>(NuII)</td><td>0</td></tr><tr><td>568</td><td>506</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2019:12:0040</td><td>40.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>580</td><td>518</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2019:14:0028</td><td>28.0</td><td>mmHg</td><td>(Num</td><td>0</td></tr><tr><td>783</td><td>189</td><td>3</td><td>(NuII)</td><td>50818</td><td>2101-10-1209:18:00338</td><td>38.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>802</td><td>208</td><td>3</td><td>(NuM)</td><td>50818</td><td>2101-10-1210:51:0039</td><td>39.0</td><td>mmHg</td><td>(Num</td><td>0</td></tr><tr><td>820</td><td>226</td><td>2</td><td>(NuM)</td><td>50818</td><td>2101-10-12 12:05:0044</td><td>44.0</td><td>mmHg</td><td>(NuII)</td><td>0</td></tr><tr><td>836</td><td>242</td><td>3</td><td>(NuII)</td><td>50818</td><td>2101-10-1213:00:0040</td><td>40.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>853</td><td>259</td><td>3</td><td>(Nu 0)</td><td>50818</td><td>2101-10-1214:22:0042</td><td>42.0</td><td>mmHg</td><td>(NuII)</td><td>0</td></tr><tr><td>1089</td><td>2509</td><td>4</td><td>CNUM</td><td>50818</td><td>2191-05-1813:16:0027</td><td>27.0</td><td>mmHg</td><td>abnormal</td><td>0</td></tr><tr><td>1281</td><td>687</td><td>3</td><td>145834.0</td><td>SO818</td><td>2101-10-2103:09:0029</td><td>29.0</td><td>mmHg</td><td>(Null</td><td>0</td></tr><tr><td>1313</td><td>719</td><td>a</td><td>145834.0</td><td>50818</td><td>2101-10-2109:46:0026</td><td>26.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>1322</td><td>728</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2109:51:0033</td><td>33.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>1330</td><td>736</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2110:23:0027</td><td>27.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>1379</td><td>785</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2115:48:0028</td><td>28.0</td><td>mmHg</td><td>(NoII)</td><td>0</td></tr><tr><td>1393</td><td>799</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2115:52:0036</td><td>36.0</td><td>mmHg</td><td>(Null)</td><td>0</td></tr><tr><td>1409</td><td>815</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2117:33:0030</td><td>30.0</td><td>mmHg</td><td>(NuII)</td><td>0</td></tr><tr><td>1424</td><td>830</td><td>3</td><td>145834.0</td><td>50818</td><td>2101-10-2117:37:0037</td><td>37.0</td><td>mmHg</td><td>(Nuti)</td><td>0</td></tr></tbody></table>
+<p>图 1: 初步提取数据图</p>
+<h2 id="12-数据具体处理">1.2 数据具体处理</h2>
+<p>由于 MySQL 时间戳利用的 Unix 时间只能表示到 2038 年, 不便于后续处理, 因此这
+段用 Python 语言进行处理。
+将上部分的数据导出为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">v</mi></mrow><annotation encoding="application/x-tex">\mathrm{csv}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.0139em;">csv</span></span></span></span></span> 格式,并利用 python 读取。这里首先选择 SUBJECT_ID
+为 3 的数据作为示例。</p>
+<h2 id="13-数据合并">1.3 数据合并</h2>
+<p>这里首先将 PO2 和 PCO2 中 SUBJECT_ID 相同的数据合并到一个表格中, 并删除其余无关列, 仅保留下时间 CHARTTIME、住院时期 HADM_ID 以及 O2 和 CO2 的值。这里用的数据 SUBJECT_ID 分别为 3 ,</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>HADM_ID_X</th><th>CHARTTIME</th><th>CO2</th><th>02</th></tr></thead><tbody><tr><td>0</td><td>NaN</td><td>2101-10-12 09:18:00</td><td>38</td><td>244</td></tr><tr><td>1</td><td>NaN</td><td>2101-10-12 10:51:00</td><td>39</td><td>159</td></tr><tr><td>2</td><td>NaN</td><td>2101-10-12 12:05:00</td><td>44</td><td>173</td></tr><tr><td>3</td><td>NaN</td><td>2101-10-12 13:00:00</td><td>40</td><td>151</td></tr><tr><td>4</td><td>NaN</td><td>2101-10-12 14:22:00</td><td>42</td><td>138</td></tr><tr><td>5</td><td>NaN</td><td>2101-10-12 18:17:00</td><td>33</td><td>80</td></tr><tr><td>6</td><td>145834.0</td><td>2101-10-20 19:12:00</td><td>40</td><td>20</td></tr><tr><td>7</td><td>145834.0</td><td>2101-10-20 19:14:00</td><td>28</td><td>313</td></tr><tr><td>8</td><td>145834.0</td><td>2101-10-2020:04:00</td><td>28</td><td>329</td></tr><tr><td>9</td><td>145834.0</td><td>2101-10-2021:51:00</td><td>33</td><td>287</td></tr><tr><td>10</td><td>145834.0</td><td>2101-10-2100:42:00</td><td>30</td><td>175</td></tr><tr><td>11</td><td>145834.0</td><td>2101-10-21 03:09:00</td><td>29</td><td>181</td></tr></tbody></table>
+<p>图 2: 初步处理数据图</p>
+<h2 id="14-缺失值处理">1.4 缺失值处理</h2>
+<p>可以看到此时的数据中存在一些缺失值, 根据分析, 前部分确实的为一次住院, 最后有
+一个数据异常, 因此不妨将缺失的值赋为 1 。
+此时准备对结果进行可视化, 发现氧气和二氧化碳的数据值并非为数型, 而是为字符
+型, 因此将这两列转为数字型, 此时将数据可视化得到下图:</p>
+<p>图 3: 离群点处理前（原图已失效）</p>
+<h2 id="15-离群点处理">1.5 离群点处理</h2>
+<p>由于离群点仅有一个, 一个病人再住院期间可以进行一次或者多次血气指标收集, 对于一个病人, 在单次住院期间仅收集一次是无意义的, 也无法进行插值, 只有在一个病人单次住院期间收集多次的情况下, 插值才有意义。因此可将该点去除, 去除后数据如下图所
+示。</p>
+<p>图 4: 离群点处理后（原图已失效）</p>
+<p>由于数据明显可分为两部分, 因此数据应为两次住院期间的数据, 因此将数据分为两
+部分, 即两次住院的数据。
+第一部分可视化</p>
+<p>图 5: 一部分去噪前（原图已失效）</p>
+<p>由于该部分数据量较少, 插值准确率低, 因此不采用第一部分数据进行处理。第二部分可视化的结果如下图所示:</p>
+<p>图 6: 二部分去噪前（原图已失效）</p>
+<h2 id="16-去噪">1.6 去噪</h2>
+<p>这里使用了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>σ</mi></mrow><annotation encoding="application/x-tex">3\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span></span></span></span> 原则进行去噪 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\lbrack 1\rbrack</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mclose">]</span></span></span></span> ,由于样本处于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>μ</mi><mo lspace="0em" rspace="0em">−</mo><mn>3</mn><mi>σ</mi><mo separator="true">,</mo><mi>μ</mi><mo>+</mo><mn>3</mn><mi>σ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\mu {-} 3\sigma,\mu + 3\sigma)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">μ</span><span class="mord"><span class="mord">−</span></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">μ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mclose">)</span></span></span></span> 的概率为 0.9973 。因
+此用此原则进行去噪有很大的作用。具体代码如下:</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> drop_noisy</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">df</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    df_copy </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">copy</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    df_describe </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_copy</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">describe</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    for</span><span style="color:var(--astro-code-foreground)"> column </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> [</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)"> 'O2'</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        mean </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_describe</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'mean'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> column</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        std </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_describe</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'std'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)"> column</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        minvalue </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> mean </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)"> 3</span><span style="color:var(--astro-code-token-keyword)"> *</span><span style="color:var(--astro-code-foreground)"> std</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        maxvalue </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> mean </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)"> 3</span><span style="color:var(--astro-code-token-keyword)"> *</span><span style="color:var(--astro-code-foreground)"> std</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        df_copy </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_copy</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">df_copy</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">column</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> >=</span><span style="color:var(--astro-code-foreground)"> minvalue</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        df_copy </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_copy</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">df_copy</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">column</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> &#x3C;=</span><span style="color:var(--astro-code-foreground)"> maxvalue</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    return</span><span style="color:var(--astro-code-foreground)"> df_copy</span></span></code></pre>
+<p>去噪后的结果如下图所示:</p>
+<p>图 7: 二部分去噪后（原图已失效）</p>
+<h2 id="17-插值">1.7 插值</h2>
+<p>在插值地方, 首先将时间一列转为时间戳的形式, 然后分别对每一天的数据进行插值, 这里对于时间使用了线性插值,对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">C</mi><mi mathvariant="normal">O</mi></mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">\mathrm{CO}2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathrm">CO</span></span><span class="mord">2</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">O</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\mathrm{O}2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathrm">O</span><span class="mord">2</span></span></span></span> 使用了阶梯插值,最后将数据整合到一起, 并将时间戳转化为时间的形式, 从而完成插值。
+插值前, 结果如下图所示:</p>
+<p>图 8: 样本三第二部分部分数据插值前（原图已失效）</p>
+<p>经过插值后, 结果如下图所示:</p>
+<p>图 9: 样本三第二部分部分数据插值后（原图已失效）</p>
+<h2 id="2-第二组数据">2 第二组数据</h2>
+<p>由上述第一组数据的处理可以得到处理方法, 下述处理同上。</p>
+<h2 id="21-离群点处理">2.1 离群点处理</h2>
+<p>图 10: 第二组数据离群点处理前（原图已失效）</p>
+<p>图 11: 第二组数据离群点处理后（原图已失效）</p>
+<p>2.2 去噪</p>
+<p>图 12: 第二组数据去噪处理后（原图已失效）</p>
+<p>2.3 插值
+插值前:</p>
+<p>图 13: 第二组数据插值前（原图已失效）</p>
+<p>图 14: 第二组数据插值后（原图已失效）</p>
+<h2 id="3-第三组数据">3 第三组数据</h2>
+<p>3.1 离群点处理</p>
+<p>图 15: 第三组数据去离群点前（原图已失效）</p>
+<p>图 16: 第三组数据去离群点后（原图已失效）</p>
+<p>3.2 去噪</p>
+<p>图 17: 第三组数据去噪后（原图已失效）</p>
+<p>3.3 插值</p>
+<p>图 18: 第三组数据插值前（原图已失效）</p>
+<p>图 19: 第三组数据插值后（原图已失效）</p>
+<h2 id="4-总结">4 总结</h2>
+<p>这次作业在很多地方都有较大的坑, 也是很久以来最难的一次大作业, 以至于做了很久才有一点头绪, 对于我而言, 最难的地方在于插值部分, 由于作为横轴的时间必须经过处理后才能进行相关处理, 在这方面进行插值以及可视化都出现了不小的问题, 经过反复思考并请教相关同学才成功解决。
+通过这次数据挖掘的作业, 我感觉自己收获很大, 也学到了很多知识, 我有了一些新的认识, 数据预处理很重要, 未处理过的数据中往往有很多问题, 如果直接拿去用由于数据中存在的很多有问题的地方会使得结果与预期有很大的差异, 因此做好数据预处理是很有必要的一个步骤。在近期的学习中我学习到了数据库以及数据处理方面的很多技巧, 这对于进一步的数据挖掘应该有着不小的帮助, 也有助于今后在该领域的发展。</p>
+<h2 id="参考文献">参考文献</h2>
+<p>[1] 刘彬, 戴桂平. 基于白化检验和 3 准则的小波阈值去噪算法 [J]. 传感技术学报,2005,18(3):473-476. DOI:10.3969/j.issn.1004-1699.2005.03.008.</p>
+<h2 id="a-sql-程序代码-1">A SQL 程序代码 1</h2>
+<p>提取 PO2 数据</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td>USE hello_mysql;</td><td>SELECT</td><td></td></tr><tr><td></td><td>*:</td><td></td></tr><tr><td>FROM</td><td></td><td></td></tr><tr><td>labevents mini</td><td></td><td></td></tr><tr><td></td><td>WHERE</td><td></td></tr><tr><td>T</td><td>ITEMID = 490</td><td></td></tr><tr><td>M</td><td>OR ITEMID = 3785</td><td></td></tr><tr><td>9</td><td>OR ITEMID = 3837</td><td></td></tr><tr><td>0</td><td>OR ITEMID = 50821</td><td></td></tr></tbody></table>
+<p>B SQL 程序代码 2
+提取 PCO2 数据</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td>USE hello_mysql;</td><td>SELECT</td><td></td></tr><tr><td></td><td>*:</td><td></td></tr><tr><td>FROM</td><td></td><td></td></tr><tr><td>labevents_mini</td><td></td><td></td></tr><tr><td></td><td>WHERE</td><td></td></tr><tr><td></td><td>ITEMID = 3784</td><td></td></tr><tr><td></td><td>OR ITEMID = 3835</td><td></td></tr><tr><td></td><td>OR ITEMID = 50818</td><td></td></tr></tbody></table>
+<h2 id="c-主程序代码">C 主程序代码</h2>
+<ul>
+<li>Data enhancement.py</li>
+</ul>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-comment)"># -*- coding: utf-8 -*-</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">"""</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">Created on Thu Apr  8 20:01:07 2021</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">@author: tremble</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">"""</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> pandas </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> pd </span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> numpy </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> np</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> sklearn</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> datetime</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> matplotlib</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">pyplot </span><span style="color:var(--astro-code-token-keyword)">as</span><span style="color:var(--astro-code-foreground)"> plt</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">from</span><span style="color:var(--astro-code-foreground)"> scipy </span><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> interpolate</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">import</span><span style="color:var(--astro-code-foreground)"> time </span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> plot_img</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">df</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    t</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[:,</span><span style="color:var(--astro-code-token-string-expression)">'CHARTTIME'</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    t</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">[datetime</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">datetime</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">strptime</span><span style="color:var(--astro-code-token-punctuation)">(i,</span><span style="color:var(--astro-code-token-string-expression)">'%Y-%m-</span><span style="color:var(--astro-code-token-constant)">%d</span><span style="color:var(--astro-code-token-string-expression)"> %H:%M:%S'</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-token-keyword)"> for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> t]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    co2 </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> [</span><span style="color:var(--astro-code-token-constant)">float</span><span style="color:var(--astro-code-token-punctuation)">(i)</span><span style="color:var(--astro-code-token-keyword)"> for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[:,</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    o2 </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> [</span><span style="color:var(--astro-code-token-constant)">float</span><span style="color:var(--astro-code-token-punctuation)">(i)</span><span style="color:var(--astro-code-token-keyword)"> for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[:,</span><span style="color:var(--astro-code-token-string-expression)">'O2'</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-foreground)">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    fig </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">figure</span><span style="color:var(--astro-code-token-punctuation)">(figsize</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">20</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-constant)">8</span><span style="color:var(--astro-code-token-punctuation)">))</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">subplot</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">211</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">plot</span><span style="color:var(--astro-code-token-punctuation)">(t,co2,</span><span style="color:var(--astro-code-token-string-expression)">'o-'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">xlabel</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'data'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">ylabel</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">grid</span><span style="color:var(--astro-code-token-punctuation)">(ls</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'--'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">subplot</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">212</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">plot</span><span style="color:var(--astro-code-token-punctuation)">(t,o2,</span><span style="color:var(--astro-code-token-string-expression)">'o-'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">xlabel</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'data '</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">ylabel</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'O2'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">grid</span><span style="color:var(--astro-code-token-punctuation)">(ls</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'--'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    plt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">show</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> drop_noisy</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">df</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    df_copy </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">copy</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    df_describe </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_copy</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">describe</span><span style="color:var(--astro-code-token-punctuation)">()</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    for</span><span style="color:var(--astro-code-foreground)"> column </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> [</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)">'O2'</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        mean </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_describe</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'mean'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)">column</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        std </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_describe</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'std'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-foreground)">column</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        minvalue </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> mean </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)"> 3</span><span style="color:var(--astro-code-token-keyword)">*</span><span style="color:var(--astro-code-foreground)">std</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        maxvalue </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> mean </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)"> 3</span><span style="color:var(--astro-code-token-keyword)">*</span><span style="color:var(--astro-code-foreground)">std</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        df_copy </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_copy</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">df_copy</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">column</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> >=</span><span style="color:var(--astro-code-foreground)"> minvalue</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">        df_copy </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> df_copy</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">df_copy</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">column</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> &#x3C;=</span><span style="color:var(--astro-code-foreground)"> maxvalue</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        return</span><span style="color:var(--astro-code-foreground)"> df_copy</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> date_to_timestamp</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">date</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> format_string</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">"%Y-%m-</span><span style="color:var(--astro-code-token-constant)">%d</span><span style="color:var(--astro-code-token-string-expression)"> %H:%M:%S"</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)"> time_array </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> time</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">strptime</span><span style="color:var(--astro-code-token-punctuation)">(date, format_string)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)"> time_stamp </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)"> int</span><span style="color:var(--astro-code-token-punctuation)">(time.</span><span style="color:var(--astro-code-token-function)">mktime</span><span style="color:var(--astro-code-token-punctuation)">(time_array))</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)"> return</span><span style="color:var(--astro-code-foreground)"> time_stamp</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> timestamp_to_date</span><span style="color:var(--astro-code-foreground)">(</span><span style="color:var(--astro-code-token-parameter)">time_stamp</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-parameter)"> format_string</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">"%Y-%m-</span><span style="color:var(--astro-code-token-constant)">%d</span><span style="color:var(--astro-code-token-string-expression)"> %H:%M:%S"</span><span style="color:var(--astro-code-foreground)">):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)"> time_array </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> time</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">localtime</span><span style="color:var(--astro-code-token-punctuation)">(time_stamp)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)"> str_date </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> time</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">strftime</span><span style="color:var(--astro-code-token-punctuation)">(format_string, time_array)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)"> return</span><span style="color:var(--astro-code-foreground)"> str_date</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">data_co2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">pd</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">read_csv</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-keyword)">r</span><span style="color:var(--astro-code-token-string-expression)">'D:\桌面</span><span style="color:var(--astro-code-token-constant)">\d</span><span style="color:var(--astro-code-token-string-expression)">ata mining\PCO2</span><span style="color:var(--astro-code-token-constant)">.</span><span style="color:var(--astro-code-token-string-expression)">csv'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">data_o2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">pd</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">read_csv</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-keyword)">r</span><span style="color:var(--astro-code-token-string-expression)">'D:\桌面</span><span style="color:var(--astro-code-token-constant)">\d</span><span style="color:var(--astro-code-token-string-expression)">ata mining\PO2</span><span style="color:var(--astro-code-token-constant)">.</span><span style="color:var(--astro-code-token-string-expression)">csv'</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)"> </span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df1</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">pd</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">DataFrame</span><span style="color:var(--astro-code-token-punctuation)">(data_co2)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">pd</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">DataFrame</span><span style="color:var(--astro-code-token-punctuation)">(data_o2)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df1</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df1</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">df1</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'SUBJECT_ID'</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> ==</span><span style="color:var(--astro-code-token-constant)"> 3</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'SUBJECT_ID'</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> ==</span><span style="color:var(--astro-code-token-constant)"> 3</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df1</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">rename</span><span style="color:var(--astro-code-token-punctuation)">(columns</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">{</span><span style="color:var(--astro-code-token-string-expression)">'VALUE'</span><span style="color:var(--astro-code-token-punctuation)">:</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">},inplace</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)"> </span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">rename</span><span style="color:var(--astro-code-token-punctuation)">(columns</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">{</span><span style="color:var(--astro-code-token-string-expression)">'VALUE'</span><span style="color:var(--astro-code-token-punctuation)">:</span><span style="color:var(--astro-code-token-string-expression)">'O2'</span><span style="color:var(--astro-code-token-punctuation)">},inplace</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-foreground)"> </span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">pd</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">DataFrame</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">merge</span><span style="color:var(--astro-code-token-punctuation)">(df1, df2, how</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'inner'</span><span style="color:var(--astro-code-token-punctuation)">, on</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'CHARTTIME'</span><span style="color:var(--astro-code-token-punctuation)">, left_on</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">None</span><span style="color:var(--astro-code-token-punctuation)">, right_on</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">None</span><span style="color:var(--astro-code-token-punctuation)">,   </span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">      left_index</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">False</span><span style="color:var(--astro-code-token-punctuation)">, right_index</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">False</span><span style="color:var(--astro-code-token-punctuation)">, sort</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">,   </span></span>
+<span class="line"><span style="color:var(--astro-code-token-punctuation)">      suffixes</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-string-expression)">'_x'</span><span style="color:var(--astro-code-token-punctuation)">, </span><span style="color:var(--astro-code-token-string-expression)">'_y'</span><span style="color:var(--astro-code-token-punctuation)">), copy</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">True</span><span style="color:var(--astro-code-token-punctuation)">, indicator</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">False</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">[</span><span style="color:var(--astro-code-token-string-expression)">'HADM_ID_x'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)">'CHARTTIME'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)">'O2'</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">fillna</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">[</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)">'O2'</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> =</span><span style="color:var(--astro-code-foreground)"> df</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">[</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)">'O2'</span><span style="color:var(--astro-code-foreground)">]</span><span style="color:var(--astro-code-token-punctuation)">].</span><span style="color:var(--astro-code-token-function)">apply</span><span style="color:var(--astro-code-token-punctuation)">(pd.to_numeric)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">plot_img</span><span style="color:var(--astro-code-token-punctuation)">(df)</span><span style="color:var(--astro-code-foreground)"> </span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">drop</span><span style="color:var(--astro-code-token-punctuation)">([</span><span style="color:var(--astro-code-token-constant)">44</span><span style="color:var(--astro-code-token-punctuation)">],axis</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df1</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'HADM_ID_x'</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> ==</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">loc</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-foreground)">df</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'HADM_ID_x'</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)"> ==</span><span style="color:var(--astro-code-token-constant)"> 145834.0</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">plot_img</span><span style="color:var(--astro-code-token-punctuation)">(df2)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)">drop_noisy</span><span style="color:var(--astro-code-token-punctuation)">(df2)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">plot_img</span><span style="color:var(--astro-code-token-punctuation)">(df2)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">interpolate</span><span style="color:var(--astro-code-token-punctuation)">(method</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'time'</span><span style="color:var(--astro-code-token-punctuation)">,axis</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">plot_img</span><span style="color:var(--astro-code-token-punctuation)">(df2)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2_1</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df2</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-constant)">4</span><span style="color:var(--astro-code-token-punctuation)">:</span><span style="color:var(--astro-code-token-constant)">17</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">plot_img</span><span style="color:var(--astro-code-token-punctuation)">(df2_1)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-constant)">set</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">df2_1</span></span>
+<span class="line"><span style="color:var(--astro-code-token-constant)">set</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">set</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">x</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">linspace</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-function)">len</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">set</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-function)">len</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">set</span><span style="color:var(--astro-code-token-punctuation)">))</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">value</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">[]</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-function)">len</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">set</span><span style="color:var(--astro-code-token-punctuation)">)):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    value</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">append</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-function)">date_to_timestamp</span><span style="color:var(--astro-code-token-punctuation)">(set[i, </span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">]))</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">value</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(value)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">diff</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">value</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">]</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-foreground)">value</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">]</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">location</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">linspace</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">0</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-function)">len</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-constant)">set</span><span style="color:var(--astro-code-token-punctuation)">)</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">,diff</span><span style="color:var(--astro-code-token-keyword)">//</span><span style="color:var(--astro-code-token-constant)">3600</span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-constant)">1</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">f0</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">interpolate</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">interp1d</span><span style="color:var(--astro-code-token-punctuation)">(x,value,kind</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'linear'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">f1</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">interpolate</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">interp1d</span><span style="color:var(--astro-code-token-punctuation)">(x,np.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(set[:,</span><span style="color:var(--astro-code-token-constant)">2</span><span style="color:var(--astro-code-token-punctuation)">]),kind</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'zero'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">f2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">interpolate</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">interp1d</span><span style="color:var(--astro-code-token-punctuation)">(x,np.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(set[:,</span><span style="color:var(--astro-code-token-constant)">3</span><span style="color:var(--astro-code-token-punctuation)">]),kind</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">'zero'</span><span style="color:var(--astro-code-token-punctuation)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">F0</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)">f0</span><span style="color:var(--astro-code-token-punctuation)">(location)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">F0_time</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">[]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-token-function)"> range</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-function)">len</span><span style="color:var(--astro-code-token-punctuation)">(F0)):</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)"> F0_time</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">append</span><span style="color:var(--astro-code-token-punctuation)">(</span><span style="color:var(--astro-code-token-function)">timestamp_to_date</span><span style="color:var(--astro-code-token-punctuation)">(F0[i]))</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)"> F1 </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> f1</span><span style="color:var(--astro-code-token-punctuation)">(location)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)"> F2 </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> f2</span><span style="color:var(--astro-code-token-punctuation)">(location)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">combined_data </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">vstack</span><span style="color:var(--astro-code-token-punctuation)">((np.</span><span style="color:var(--astro-code-token-function)">array</span><span style="color:var(--astro-code-token-punctuation)">(F0_time),F1, F2))</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2_2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> np</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">transpose</span><span style="color:var(--astro-code-token-punctuation)">(combined_data)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">df2_2</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">pd</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-function)">DataFrame</span><span style="color:var(--astro-code-token-punctuation)">(columns</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">[</span><span style="color:var(--astro-code-token-string-expression)">'CHARTTIME'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)">'CO2'</span><span style="color:var(--astro-code-token-punctuation)">,</span><span style="color:var(--astro-code-token-string-expression)">'O2'</span><span style="color:var(--astro-code-token-punctuation)">,],data</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-punctuation)">df2_2)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">plot_img</span><span style="color:var(--astro-code-token-punctuation)">(df2_2)</span></span></code></pre>
+<h2 id="d-作业要求">D 作业要求</h2>
+<h2 id="d-1-数据集说明">D. 1 数据集说明</h2>
+<p>该数据集是一个免费的大型数据库, 包含与 2001 年至 2012 年之某医疗机构重症监护
+室收治的 40,000 多名患者相关的健康相关数据。该数据集已进行数据脱敏。
+数据集的说明参阅 <a href="https://mimic.physionet.org/about/mimic/%E3%80%82%E6%AD%A4%E6%AC%A1%E4%BB%BB%E5%8A%A1%E6%B6%89%E5%8F%8A%E5%88%B0%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E8%A1%A8%E6%A0%BC">https://mimic.physionet.org/about/mimic/。此次任务涉及到数据集中的三个表格</a>, PATIENTS, CHARTEVENTS 和 LABEVENTS, 表格的说明分别参考
+<a href="https://mimic.physionet.org/mimictables/patients/">https://mimic.physionet.org/mimictables/patients/</a> <a href="https://mimic.physionet.org/mimictables/chartevents/">https://mimic.physionet.org/mimictables/chartevents/</a> <a href="https://mimic.physionet.org/mimictables/labevents/">https://mimic.physionet.org/mimictables/labevents/</a></p>
+<h2 id="d-2-任务说明">D. 2 任务说明</h2>
+<p>本次任务的目的是处理 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">O</mi></mrow><mn>2</mn><mo separator="true">,</mo><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">C</mi><mi mathvariant="normal">O</mi></mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">\mathrm{pO}2,\mathrm{pCO}2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">pO</span></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">pCO</span></span><span class="mord">2</span></span></span></span> 两个指标。这两个指标均为病人的血气指标,以一定的时间间隔采集。一个病人一次住院期间可能收集一次或者多次。要求, 按照采集时间的前后顺序,汇总每个病人每次住院期间的所有的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">O</mi></mrow><mn>2</mn><mo separator="true">,</mo><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">C</mi><mi mathvariant="normal">O</mi></mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">\mathrm{pO}2,\mathrm{pCO}2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">pO</span></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">pCO</span></span><span class="mord">2</span></span></span></span> 指标值。涉及到的预处理方法包括插值, 去噪, 缺失值填充, 离群点数据处理, 可视化等。
+pO2 和 PCO2 数据存储在 CHARTEVENTS 和 LABEVENTS 两个表格中 (不是分别存储, 而是每个表格都包括这两个指标)。两个表格中以 ITEMID 字段进行标注, 其中 PO2 的 ITEMID 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>490</mn><mo separator="true">,</mo><mn>3785</mn><mo separator="true">,</mo><mn>3837</mn><mo separator="true">,</mo><mn>50821</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\lbrack 490,3785,3837,50821\rbrack</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">490</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3785</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3837</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">50821</span><span class="mclose">]</span></span></span></span> 之一,PCO2 的 ITEMID 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>3784</mn><mo separator="true">,</mo><mn>3835</mn><mo separator="true">,</mo><mn>50818</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\lbrack 3784,3835,50818\rbrack</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">3784</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3835</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">50818</span><span class="mclose">]</span></span></span></span> 之一。SUBJECT_ID 字段指示不同的病人 (如张三和李四的 SUBJECT_ID 分别为 00001
+和 00002), HADM_ID 指示一次住院时期 (一个病人可能多次入院, 同一 SUBJECT_ID, HADM_ID 不同则认为是同一病人不同的住院经历, 在收集数据时需要区分)。</p> </div> <div class="post-nav"> <a href="/2021/04/11/机器学习报告——数据分类的实现/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">机器学习报告——数据分类的实现</span> </a> <a href="/2020/10/31/记录第一次搭博客/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">记录我的第一次搭建博客</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#摘-要">摘 要</a>  </li><li> <a href="#目-录">目 录</a>  </li><li> <a href="#1-数据处理">1 数据处理</a>  </li><li> <a href="#11-数据提取">1.1 数据提取</a>  </li><li> <a href="#12-数据具体处理">1.2 数据具体处理</a>  </li><li> <a href="#13-数据合并">1.3 数据合并</a>  </li><li> <a href="#14-缺失值处理">1.4 缺失值处理</a>  </li><li> <a href="#15-离群点处理">1.5 离群点处理</a>  </li><li> <a href="#16-去噪">1.6 去噪</a>  </li><li> <a href="#17-插值">1.7 插值</a>  </li><li> <a href="#2-第二组数据">2 第二组数据</a>  </li><li> <a href="#21-离群点处理">2.1 离群点处理</a>  </li><li> <a href="#3-第三组数据">3 第三组数据</a>  </li><li> <a href="#4-总结">4 总结</a>  </li><li> <a href="#参考文献">参考文献</a>  </li><li> <a href="#a-sql-程序代码-1">A SQL 程序代码 1</a>  </li><li> <a href="#c-主程序代码">C 主程序代码</a>  </li><li> <a href="#d-作业要求">D 作业要求</a>  </li><li> <a href="#d-1-数据集说明">D. 1 数据集说明</a>  </li><li> <a href="#d-2-任务说明">D. 2 任务说明</a>  </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

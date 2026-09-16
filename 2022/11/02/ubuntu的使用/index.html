@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2022/11/02/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/"><!-- Primary Meta Tags --><title>Ubuntu的基本使用 | Jack&#39;s Blog</title><meta name="title" content="Ubuntu的基本使用 | Jack's Blog"><meta name="description" content="一点小记录"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2022/11/02/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/"><meta property="og:title" content="Ubuntu的基本使用 | Jack's Blog"><meta property="og:description" content="一点小记录"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2022/11/02/ubuntu%E7%9A%84%E4%BD%BF%E7%94%A8/"><meta property="twitter:title" content="Ubuntu的基本使用 | Jack's Blog"><meta property="twitter:description" content="一点小记录"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/nilu1.jpg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">技术与工程</p> <h1>Ubuntu的基本使用</h1> <div class="article-meta"> <time datetime="2022-11-02T00:00:00.000Z">2022年11月2日</time>  <span>约 4 分钟</span> </div> <p class="article-lead">一点小记录</p> </header> <div class="prose"> <p>实验室的服务器到了，今天给组里的同学们分享了一下Ubuntu的基本使用，匆忙写了一点相关的东西，顺便发上来，虽然也挺基础的，但反正博客也没多少东西，就记录一下好了。</p>
+<h1 id="文件组织结构">文件组织结构</h1>
+<p><code>/</code>为根目录，为系统最基本的目录</p>
+<p><code>/home</code>下有用户名的文件夹，该文件夹就是<code>~</code>为主目录，为日常使用的目录</p>
+<p>命令在终端中输入，需要注意当前所在的文件夹</p>
+<h1 id="常用命令">常用命令</h1>
+<p>创建文件夹</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>mkdir xx</span></span></code></pre>
+<p>进入文件夹</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>cd xxx</span></span></code></pre>
+<p>可以使用相对路劲和绝对路径</p>
+<p>使用相对目录回到上一级目录</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>cd ..</span></span></code></pre>
+<p>进入根目录</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>cd /</span></span></code></pre>
+<p>根目录下的文件非常重要，不要轻易动。</p>
+<p>显示当前文件夹下有哪些文件和文件夹</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ls</span></span></code></pre>
+<p>后面可以接参数</p>
+<p>如果是接-a则是查看隐藏文件</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ls -a</span></span></code></pre>
+<p>如果后接-l则是查看详细信息，包括权限</p>
+<p>vim的使用</p>
+<p>vim是一个非常经典的文件编辑工具</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>vim hello.py</span></span></code></pre>
+<p>即可进入编辑</p>
+<p>进入模式之后可以点击键盘的<code>i</code>或者<code>a</code>插入，即可输入，方向键可以控制，详细的命令很多，可以自行查询</p>
+<p>编辑完成之后，需要点击<code>esc</code>退出编辑模式</p>
+<p>随后点击<code>shift + :</code>，就是输入:，然后输入w表示保存，随后输入q表示退出</p>
+<p>即输入<code>:wq</code>完成保存退出，后面有时候需要加上<code>!</code>表示强制</p>
+<h1 id="权限">权限</h1>
+<p>root是最高权限，在此状态下不要轻易动一些东西，危险</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo -i</span></span></code></pre>
+<p>进入root模式</p>
+<p>或者</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo su</span></span></code></pre>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>exit</span></span></code></pre>
+<p>退出root模式</p>
+<p>发现文件上有锁或者x说明当前是不能使用的，需要授权</p>
+<p>权限包括三个部分，用户user、组group、其他人other</p>
+<p>权限内容也包括方面，读r、写w、执行x，对应的编码是4、2、1</p>
+<p>如向日葵远程传文件，无法执行，常用</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo chmod 777 xxx</span></span></code></pre>
+<p>xxx为文件名，包括扩展名</p>
+<p>给文件夹和文件夹下的所有都授权</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo chmod -R 777 xxx</span></span></code></pre>
+<p>常用*</p>
+<p>如</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo chmod 777 *</span></span></code></pre>
+<p>*一般是指全部，这里就是指当前文件夹下的所有文件（不包含下一级目录）</p>
+<p>很多命令执行没有权限的时候都需要前面加<code>sudo</code></p>
+<p>删除</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo rm xx</span></span></code></pre>
+<p>有时候后面会跟-rf，表示不询问，把子目录也都删除，<strong>慎用，非常危险</strong></p>
+<h1 id="日常使用文件">日常使用文件</h1>
+<p>下载的<code>.deb</code>文件可以直接点击安装，或者使用</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo dpkg -i xxx</span></span></code></pre>
+<p>也可以安装</p>
+<p><code>.sh</code>文件可以直接输入<code>./xxx.sh</code>执行，或者<code>sh xxx.sh</code>，没有权限的时候先授权</p>
+<p>常用命令，查看有哪些包可以升级</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo apt update</span></span></code></pre>
+<p>随后执行</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo apt upgrade</span></span></code></pre>
+<p>将这些包升级，这是经常需要做的</p>
+<p>apt为一种包管理的工具，有很多时候可以直接</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo apt install xx</span></span></code></pre>
+<p>直接下载安装</p>
+<p>snap是ubuntu近些年大力推广的一种包管理的工具</p>
+<h1 id="anaconda的基本使用">anaconda的基本使用</h1>
+<p>创建虚拟环境可以使用</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>conda create -n &#x3C;name> python=3.x</span></span></code></pre>
+<p>这种方式，随后可以根据<code>requirements.txt</code>的信息执行</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>pip install -r requirements.txt</span></span></code></pre>
+<p>安装所需的包</p>
+<p>也可以通过</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>conda env create -f environment.yaml</span></span></code></pre>
+<p>从yaml文件中创建环境并安装包。</p>
+<p>在linux下使用</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>source activate &#x3C;name></span></span></code></pre>
+<p>在windows下执行</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>conda activate &#x3C;name></span></span></code></pre>
+<p>激活指定的虚拟环境</p>
+<p>使用以下命令可以删除环境</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>conda remove -n &#x3C;name> --all</span></span></code></pre>
+<h1 id="ssh">ssh</h1>
+<p>这是一种非常方便的远程控制的方法，广泛使用</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ssh ps@10.120.16.12</span></span></code></pre>
+<p>输入密码即可远程命令行控制，ps为用户名，后面的为当前局域网下的ip地址，目前在有线校园网的情况下可以直接这样连接</p>
+<p>pycharm（专业版）、vscode等软件都可以直接使用远程ssh的解释器，本地写代码，然后远程直接跑。</p> </div> <div class="post-nav"> <a href="/2022/11/10/学术交流分享ActionFormer/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">ActionFormer论文分享</span> </a> <a href="/2022/09/21/HRNet/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">【论文阅读】 Deep High-Resolution Representation Learning for Visual Recognition</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list">  </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

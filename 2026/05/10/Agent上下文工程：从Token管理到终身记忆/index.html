@@ -1,0 +1,564 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/"><!-- Primary Meta Tags --><title>Agent 上下文工程：从 Token 管理到终身记忆 | Jack&#39;s Blog</title><meta name="title" content="Agent 上下文工程：从 Token 管理到终身记忆 | Jack's Blog"><meta name="description" content="深入探讨 AI Agent 的上下文工程，从 Token 预算管理到三层记忆架构，构建能让 Agent 越用越聪明的记忆系统。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/"><meta property="og:title" content="Agent 上下文工程：从 Token 管理到终身记忆 | Jack's Blog"><meta property="og:description" content="深入探讨 AI Agent 的上下文工程，从 Token 预算管理到三层记忆架构，构建能让 Agent 越用越聪明的记忆系统。"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-context-engineering-cover.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2026/05/10/Agent%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E4%BB%8EToken%E7%AE%A1%E7%90%86%E5%88%B0%E7%BB%88%E8%BA%AB%E8%AE%B0%E5%BF%86/"><meta property="twitter:title" content="Agent 上下文工程：从 Token 管理到终身记忆 | Jack's Blog"><meta property="twitter:description" content="深入探讨 AI Agent 的上下文工程，从 Token 预算管理到三层记忆架构，构建能让 Agent 越用越聪明的记忆系统。"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-context-engineering-cover.jpg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">技术与工程</p> <h1>Agent 上下文工程：从 Token 管理到终身记忆</h1> <div class="article-meta"> <time datetime="2026-05-10T00:00:00.000Z">2026年5月10日</time>  <span>约 11 分钟</span> </div> <p class="article-lead">深入探讨 AI Agent 的上下文工程，从 Token 预算管理到三层记忆架构，构建能让 Agent 越用越聪明的记忆系统。</p> </header> <div class="prose"> <h2 id="0-引言">0. 引言</h2>
+<p>想象这样一个场景：你让 Agent 帮你调研一个开源项目。第一轮，你告诉它「只关注 Python 实现，忽略 JS 版本」。第三轮，它兴高采烈地给你推荐了一个 Node.js 库。你纠正了它。到了第五轮，它又忘了。</p>
+<p>你忍不住问：<strong>你的记性为什么这么差？</strong></p>
+<p>这个问题背后，是 AI Agent 领域一个被严重低估的核心挑战——<strong>上下文工程（Context Engineering）</strong>。大多数人以为，只要上下文窗口足够大（比如 Gemini 的 1M tokens），Agent 就能「记住一切」。但真实情况是：<strong>上下文窗口是 Agent 的 RAM，记忆系统才是 Agent 的硬盘——两者缺一不可，且各自有各自的工程难题。</strong></p>
+<p>本文将系统性地拆解 Agent 记忆系统，从问题定义到工程方案，分为六个层次逐步深入。</p>
+<hr>
+<h2 id="1-问题定义上下文窗口的幻觉">1. 问题定义：上下文窗口的幻觉</h2>
+<p>长上下文是必要条件，但它带来的问题远比解决的问题多。我们来看四个核心挑战：</p>
+<h3 id="11-注意力稀释lost-in-the-middle">1.1 注意力稀释：Lost in the Middle</h3>
+<p>2023 年，Liu 等人在论文 <em>Lost in the Middle: How Language Models Use Long Contexts</em> 中揭示了一个反直觉的发现：当信息位于上下文窗口的中间位置时，模型的检索准确率会显著下降。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/lost-in-middle-chart.svg" alt="Lost in the Middle 效应"></p>
+<p>这个发现的重要性怎么强调都不为过。模型不是均匀地「注意」所有上下文——它天然倾向于关注开头（首因效应）和结尾（近因效应），中间部分的信息被严重稀释。当你把 100K tokens 的上下文一股脑塞给模型时，中间 40K-60K 位置的关键指令可能已经被「淹没」了。</p>
+<h3 id="12-成本爆炸">1.2 成本爆炸</h3>
+<p>以 GPT-4 级别模型为例，输入价格为 $10/1M tokens。1M token 上下文的一次推理就要 $10，而一个复杂的 Agent 任务可能需要十几轮甚至几十轮对话。成本不是线性增长，而是飞轮效应——每轮都把历史带上，上下文越来越长，成本越来越高。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>上下文长度</th><th>单轮成本（估算）</th><th>10 轮对话成本</th></tr></thead><tbody><tr><td>32K tokens</td><td>$0.32</td><td>~$5</td></tr><tr><td>128K tokens</td><td>$1.28</td><td>~$25</td></tr><tr><td>500K tokens</td><td>$5.00</td><td>~$80+</td></tr><tr><td>1M tokens</td><td>$10.00</td><td>~$150+</td></tr></tbody></table>
+<h3 id="13-幻觉加剧">1.3 幻觉加剧</h3>
+<p>上下文越长，无关信息越多。模型在多轮对话中会逐渐被早期噪声干扰，产生「上下文幻觉」——用错误的记忆覆盖正确的信息。这不是模型本身的幻觉问题，而是上下文工程的问题。</p>
+<h3 id="14-延迟不可控">1.4 延迟不可控</h3>
+<p>KV Cache 的大小与上下文长度成正比。1M token 上下文的 prefilling 阶段可能需要数秒甚至数十秒，首 token 延迟（TTFT）从毫秒级膨胀到秒级。对于需要快速响应的 Agent 场景，这是致命的。</p>
+<blockquote>
+<p><strong>结论：</strong> 上下文窗口大 ≠ 记忆好。你需要一套工程体系来管理 Agent 的「注意力预算」。</p>
+</blockquote>
+<hr>
+<h2 id="2-上下文分层架构">2. 上下文分层架构</h2>
+<p>Agent 记忆系统的核心设计理念是<strong>分层</strong>——不是一层记忆，而是三层。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/agent-memory-architecture.svg" alt="Agent 记忆系统三层架构"></p>
+<h3 id="21-工作记忆working-memory">2.1 工作记忆（Working Memory）</h3>
+<p><strong>定义：</strong> 当前对话窗口中的全部信息，4K–32K tokens，严格顺序保留。</p>
+<p>工作记忆是 Agent 的「意识」。它包含系统提示（角色定义、行为规则）、对话历史（用户输入和 Agent 回复的完整序列）、工具定义（函数签名和参数 schema），以及从长期记忆中检索到的相关上下文。</p>
+<p><strong>关键工程挑战：</strong></p>
+<ul>
+<li><strong>触发压缩的时机：</strong> 当 token 预算达到阈值（如 70%）时，必须触发压缩，而不是等 OOM 再处理</li>
+<li><strong>压缩策略选择：</strong> 摘要（保留语义，丢失精确细节）vs 截断（保留最新信息，丢失历史）vs 关键对话提取（保留决策点和纠正，丢弃过程噪音）</li>
+<li><strong>压缩粒度：</strong> 对早期轮次进行激进压缩（只保留摘要），对近期轮次保持原始内容</li>
+</ul>
+<h3 id="22-情景记忆episodic-memory">2.2 情景记忆（Episodic Memory）</h3>
+<p><strong>定义：</strong> 历史会话的结构化摘要，向量化存储，支持语义检索。</p>
+<p>情景记忆是 Agent 的「短期记忆」。当一次会话结束后，不是把原始对话全部丢掉，而是提取关键信息——决策、纠正、偏好变化——并以向量的形式存储。</p>
+<p><strong>存储什么：</strong></p>
+<ul>
+<li>用户在这次会话中的偏好表达（「以后用 pytest 不要用 unittest」）</li>
+<li>Agent 在这次会话中的关键决策及其原因</li>
+<li>用户对 Agent 行为的纠正（「上次你说 X，实际是 Y」）</li>
+<li>会话最终产出的摘要</li>
+</ul>
+<p><strong>不存储什么：</strong></p>
+<ul>
+<li>过程性讨论和试探性尝试</li>
+<li>工具调用的中间结果</li>
+<li>用户明确表示「不要记」的内容</li>
+</ul>
+<h3 id="23-语义记忆semantic-memory">2.3 语义记忆（Semantic Memory）</h3>
+<p><strong>定义：</strong> 长期累积的结构化知识，包含用户画像、领域知识、工具经验和固化技能。</p>
+<p>语义记忆是 Agent 的「长期记忆」，也是最稳定的一层。它不随会话结束而消失，而是逐步累积和更新。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>类别</th><th>示例</th><th>存储方式</th></tr></thead><tbody><tr><td>用户画像</td><td>角色、编程风格偏好、时区</td><td>结构化标签</td></tr><tr><td>领域知识</td><td>项目文件结构、常用 API 端点</td><td>文档化存储</td></tr><tr><td>工具经验</td><td>「该 API 超时设为 30s 而非 5s」</td><td>结构化经验库</td></tr><tr><td>固化技能</td><td>从多次重复操作中提取 SOP</td><td>可执行技能定义</td></tr></tbody></table>
+<p><strong>核心原则：</strong> 语义记忆必须是<strong>结构化</strong>的，不能是纯文本堆砌。因为它在每次推理时都会被注入到系统提示中，结构化的信息更容易被模型有效利用。</p>
+<hr>
+<h2 id="3-token-预算管理">3. Token 预算管理</h2>
+<p>如果把上下文窗口比作 Agent 的「预算」，那么 Token 就是 Agent 的「货币」。你需要一个精打细算的财务管理系统。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/token-budget-chart.svg" alt="Token 预算分配策略"></p>
+<h3 id="31-静态预算分配">3.1 静态预算分配</h3>
+<p>以 128K 上下文窗口为例，建议的分配策略：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>组件</th><th>建议占比</th><th>说明</th></tr></thead><tbody><tr><td>系统提示</td><td>10-15%</td><td>角色定义、行为规则、语义记忆注入</td></tr><tr><td>工具定义</td><td>10-15%</td><td>函数签名、参数 schema、工具描述</td></tr><tr><td>对话历史</td><td>40-50%</td><td>工作记忆核心内容</td></tr><tr><td>检索上下文</td><td>15-20%</td><td>从情景记忆中检索到的相关信息</td></tr><tr><td>预留余量</td><td>5-10%</td><td>工具调用返回结果的空间</td></tr></tbody></table>
+<h3 id="32-动态调度机制">3.2 动态调度机制</h3>
+<p>静态分配只是起点。真正的挑战在于动态调度：</p>
+<p><strong>工具返回截断：</strong> 当工具调用结果超过预留空间时，不直接截断到固定长度，而是提取关键信息——比如从 10000 行的日志中只保留 ERROR 和 WARNING 级别的内容。</p>
+<p><strong>递进式压缩：</strong> 不是一次性压缩所有历史，而是递进式处理。早期轮次（第 1-5 轮）高度压缩为摘要，中期轮次（第 6-10 轮）保留关键对话，近期轮次（最近 5 轮）完整保留。</p>
+<p><strong>记忆外化：</strong> 当上下文即将耗尽时，主动将部分信息「外化」到外部存储，并在需要时通过检索召回。这类似于操作系统的虚拟内存机制。</p>
+<h3 id="33-实践建议">3.3 实践建议</h3>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:var(--astro-code-token-comment)"># 伪代码：Token 预算检查</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">def</span><span style="color:var(--astro-code-token-function)"> before_each_turn</span><span style="color:var(--astro-code-foreground)">():</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    tokens_used </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-function)"> count_tokens</span><span style="color:var(--astro-code-token-punctuation)">(system_prompt </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-punctuation)"> history </span><span style="color:var(--astro-code-token-keyword)">+</span><span style="color:var(--astro-code-token-punctuation)"> tools)</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    tokens_left </span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)"> max_context </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-foreground)"> tokens_used </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-foreground)"> RESERVE</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    </span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    if</span><span style="color:var(--astro-code-foreground)"> tokens_left </span><span style="color:var(--astro-code-token-keyword)">&#x3C;</span><span style="color:var(--astro-code-foreground)"> SAFETY_THRESHOLD</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        if</span><span style="color:var(--astro-code-token-function)"> oldest_rounds_not_compressed</span><span style="color:var(--astro-code-token-punctuation)">():</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">            compress_oldest_rounds</span><span style="color:var(--astro-code-token-punctuation)">()</span><span style="color:var(--astro-code-token-comment)">  # 递进式压缩</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        else</span><span style="color:var(--astro-code-token-punctuation)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">            externalize_to_memory</span><span style="color:var(--astro-code-token-punctuation)">()</span><span style="color:var(--astro-code-token-comment)">   # 记忆外化</span></span></code></pre>
+<p><strong>重要提示：</strong> 不要信任模型自报的 token 计数。始终使用独立的 tokenizer 维护精确计数，在每次工具调用前后检查预算。</p>
+<hr>
+<h2 id="4-记忆检索agent-的搜索引擎">4. 记忆检索：Agent 的搜索引擎</h2>
+<p>存得好不如取得好。如果检索系统不能在海量记忆中精准召回相关信息，那记忆系统就是个昂贵的摆设。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/hybrid-retrieval.svg" alt="混合检索流程图"></p>
+<h3 id="41-agent-场景的检索特殊性">4.1 Agent 场景的检索特殊性</h3>
+<p>相比传统 RAG，Agent 的记忆检索有三个独特挑战：</p>
+<ul>
+<li><strong>时间敏感性：</strong> 上一条消息中用户说的「不要用 unittest」比三个月前说过的话重要得多</li>
+<li><strong>上下文依赖性：</strong> 同样的查询「跑一下测试」，在不同项目、不同阶段含义完全不同</li>
+<li><strong>精确匹配需求：</strong> 用户可能明确提到实体名（如「那个叫 hermes-agent 的项目」），需要关键词级别的精确匹配</li>
+</ul>
+<h3 id="42-混合检索公式">4.2 混合检索公式</h3>
+<p>单一维度无法满足 Agent 的需求。我们需要混合检索：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>score = α × 语义相似度 + β × 时间衰减 + γ × 关键词匹配 + δ × 重要性权重</span></span></code></pre>
+<p><strong>各维度详解：</strong></p>
+<ul>
+<li><strong>α × 语义相似度（权重 0.40）：</strong> 基于 embedding 的 cosine similarity，捕捉语义层面的相似性</li>
+<li><strong>β × 时间衰减（权重 0.25）：</strong> 指数衰减函数 <code>e^(-λ × Δt)</code>，让近期记忆有更高的召回率</li>
+<li><strong>γ × 关键词匹配（权重 0.20）：</strong> 使用 BM25 算法，确保用户提到的精确实体能被命中</li>
+<li><strong>δ × 重要性权重（权重 0.15）：</strong> 在存储时由 LLM 对记忆的重要性进行预打分</li>
+</ul>
+<h3 id="43-检索时机">4.3 检索时机</h3>
+<p>Agent 不应该只在用户明确要求时才去检索记忆。三种触发时机：</p>
+<ol>
+<li><strong>主动检索：</strong> 每轮对话开始时，根据用户最新输入检索相关记忆，注入工作记忆</li>
+<li><strong>被动检索：</strong> 当 Agent 对自己的回答不确定时，主动查询记忆进行校验</li>
+<li><strong>触发词检索：</strong> 用户说「上次」「之前」「我记得你说过」时，强制触发跨会话检索</li>
+</ol>
+<hr>
+<h2 id="5-终身学习让-agent-越用越聪明">5. 终身学习：让 Agent 越用越聪明</h2>
+<p>三层记忆架构解决的是「记住什么」和「怎么取」的问题。但还有一个更深刻的问题：<strong>Agent 能不能从经验中学习，而不是每次都需要用户重新教一遍？</strong></p>
+<p>这就是<strong>终身学习（Lifelong Learning）</strong>——Agent 记忆系统的最上层。</p>
+<h3 id="51-学习什么">5.1 学习什么</h3>
+<p>Agent 可以从以下几个维度持续学习：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>学习维度</th><th>触发条件</th><th>示例</th></tr></thead><tbody><tr><td>用户偏好</td><td>用户明确表达或行为暗示</td><td>「回复简洁一点」→ 更新用户画像</td></tr><tr><td>纠正学习</td><td>Agent 犯错后被用户纠正</td><td>「你说的 X 不对，实际是 Y」→ 更新知识</td></tr><tr><td>工具经验</td><td>任务执行中遇到问题并解决</td><td>「此 API 并发限制 10 req/s」→ 更新工具使用经验</td></tr><tr><td>项目约定</td><td>用户多次使用相同模式</td><td>连续 5 次用 <code>pytest -n 4</code> → 固化为默认</td></tr><tr><td>成功模式</td><td>某个任务流程多次成功执行</td><td>「这种调研任务分 3 步做最快」→ 固化为技能</td></tr></tbody></table>
+<h3 id="52-学习机制">5.2 学习机制</h3>
+<p><strong>显式学习：</strong> 用户明确纠正 Agent → 立即更新相关记忆。这是最高优先级的学习信号。</p>
+<p><strong>隐式学习：</strong> Agent 从成功完成的任务中提取模式。不需要用户干预，但需要足够多的样本（连续 3-5 次相同模式）才会触发固化。</p>
+<p><strong>反思学习：</strong> 任务失败后，Agent 进行根因分析（Root Cause Analysis），将教训以「反模式」的形式存入记忆，避免下次犯同样的错误。</p>
+<h3 id="53-防止灾难性遗忘">5.3 防止灾难性遗忘</h3>
+<p>记忆系统最大的敌人不是「记不住」，而是「记错了」或者「新知识覆盖了旧知识」。</p>
+<p><strong>三大防御机制：</strong></p>
+<ol>
+<li><strong>冲突检测：</strong> 新记忆与旧记忆矛盾时，优先信任用户最新表达，但保留旧记忆作为上下文参考</li>
+<li><strong>衰减而非删除：</strong> 长期未使用的记忆降低检索权重，但不删除。因为「很久没用的知识」可能只是暂时不需要</li>
+<li><strong>定期审计：</strong> 定期让 Agent 自查记忆一致性。例如：用户说他是「Python 开发者」，但某条记忆写的是「主要写 Rust」——这种矛盾应该标记出来</li>
+</ol>
+<hr>
+<h2 id="6-工程实践与总结">6. 工程实践与总结</h2>
+<h3 id="61-架构全景">6.1 架构全景</h3>
+<p>完整的 Agent 记忆系统架构可以总结为三层 + 两个管道：</p>
+<ul>
+<li><strong>三层：</strong> 工作记忆 → 情景记忆 → 语义记忆</li>
+<li><strong>向下管道（压缩沉淀）：</strong> 工作记忆过期 → 压缩为情景记忆 → 长期知识提取为语义记忆</li>
+<li><strong>向上管道（检索召回）：</strong> 语义记忆 + 情景记忆通过混合检索 → 注入工作记忆</li>
+</ul>
+<h3 id="62-选型建议">6.2 选型建议</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>场景规模</th><th>推荐方案</th></tr></thead><tbody><tr><td>个人开发者 / 原型验证</td><td>SQLite + ChromaDB + 简单摘要策略</td></tr><tr><td>小团队 / 内部工具</td><td>PostgreSQL + pgvector + Redis 缓存 + 混合检索</td></tr><tr><td>生产级 Agent 系统</td><td>自研记忆服务 + 专用向量数据库 + 事件溯源 + 持续评估管道</td></tr></tbody></table>
+<h3 id="63-关键启示">6.3 关键启示</h3>
+<p>回顾全文，我想强调三个核心理念：</p>
+<ul>
+<li><strong>「上下文窗口是 Agent 的 RAM，记忆系统是 Agent 的硬盘」</strong>——两者缺一不可，且各自需要精心设计</li>
+<li><strong>「好的记忆系统让 Agent 从工具变成伙伴」</strong>——它不需要你反复交代，能从过往交互中学习成长</li>
+<li><strong>「不要等到上下文不够用了才想记忆——在设计的第一天就要考虑三层架构」</strong></li>
+</ul>
+<h3 id="64-展望">6.4 展望</h3>
+<p>Agent 记忆系统还远未成熟。展望未来，有几个值得关注的方向：</p>
+<ul>
+<li><strong>多模态记忆：</strong> Agent 不仅要记住文本，还要记住图片、代码片段、结构化数据</li>
+<li><strong>联邦记忆：</strong> 多个 Agent 共享部分记忆，形成集体智能</li>
+<li><strong>自适应记忆架构：</strong> 根据用户使用模式自动调整各层容量和检索策略</li>
+<li><strong>隐私感知记忆：</strong> 用户可以选择性地「遗忘」某些信息，符合 GDPR 等隐私法规</li>
+</ul>
+<hr>
+<p><em>本文首发于 <a href="https://jackzhu.top">jackzhu.top</a>。如果你在大厂 Agent 团队工作或有相关实践经验，欢迎在评论区交流讨论。</em></p> </div> <div class="post-nav"> <a href="/2026/05/13/hermes-self-evolving-blog-engine/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">Hermes 自进化博客引擎：从选题到部署，几十分钟全自动闭环</span> </a> <a href="/2025/04/30/现代的包管理工具uv/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">现代化的包管理工具：uv</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#0-引言">0. 引言</a>  </li><li> <a href="#1-问题定义上下文窗口的幻觉">1. 问题定义：上下文窗口的幻觉</a> <ul class="toc-sub"> <li> <a href="#11-注意力稀释lost-in-the-middle">1.1 注意力稀释：Lost in the Middle</a>  </li><li> <a href="#12-成本爆炸">1.2 成本爆炸</a>  </li><li> <a href="#13-幻觉加剧">1.3 幻觉加剧</a>  </li><li> <a href="#14-延迟不可控">1.4 延迟不可控</a>  </li> </ul> </li><li> <a href="#2-上下文分层架构">2. 上下文分层架构</a> <ul class="toc-sub"> <li> <a href="#21-工作记忆working-memory">2.1 工作记忆（Working Memory）</a>  </li><li> <a href="#22-情景记忆episodic-memory">2.2 情景记忆（Episodic Memory）</a>  </li><li> <a href="#23-语义记忆semantic-memory">2.3 语义记忆（Semantic Memory）</a>  </li> </ul> </li><li> <a href="#3-token-预算管理">3. Token 预算管理</a> <ul class="toc-sub"> <li> <a href="#31-静态预算分配">3.1 静态预算分配</a>  </li><li> <a href="#32-动态调度机制">3.2 动态调度机制</a>  </li><li> <a href="#33-实践建议">3.3 实践建议</a>  </li> </ul> </li><li> <a href="#4-记忆检索agent-的搜索引擎">4. 记忆检索：Agent 的搜索引擎</a> <ul class="toc-sub"> <li> <a href="#41-agent-场景的检索特殊性">4.1 Agent 场景的检索特殊性</a>  </li><li> <a href="#42-混合检索公式">4.2 混合检索公式</a>  </li><li> <a href="#43-检索时机">4.3 检索时机</a>  </li> </ul> </li><li> <a href="#5-终身学习让-agent-越用越聪明">5. 终身学习：让 Agent 越用越聪明</a> <ul class="toc-sub"> <li> <a href="#51-学习什么">5.1 学习什么</a>  </li><li> <a href="#52-学习机制">5.2 学习机制</a>  </li><li> <a href="#53-防止灾难性遗忘">5.3 防止灾难性遗忘</a>  </li> </ul> </li><li> <a href="#6-工程实践与总结">6. 工程实践与总结</a> <ul class="toc-sub"> <li> <a href="#61-架构全景">6.1 架构全景</a>  </li><li> <a href="#62-选型建议">6.2 选型建议</a>  </li><li> <a href="#63-关键启示">6.3 关键启示</a>  </li><li> <a href="#64-展望">6.4 展望</a>  </li> </ul> </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

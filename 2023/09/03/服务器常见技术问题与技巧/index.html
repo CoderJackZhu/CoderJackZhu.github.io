@@ -1,0 +1,604 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/"><!-- Primary Meta Tags --><title>服务器常见技术问题与技巧 | Jack&#39;s Blog</title><meta name="title" content="服务器常见技术问题与技巧 | Jack's Blog"><meta name="description" content="本文记录了一些常见的技术问题与技巧"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/"><meta property="og:title" content="服务器常见技术问题与技巧 | Jack's Blog"><meta property="og:description" content="本文记录了一些常见的技术问题与技巧"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2023/09/03/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E8%A7%81%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E4%B8%8E%E6%8A%80%E5%B7%A7/"><meta property="twitter:title" content="服务器常见技术问题与技巧 | Jack's Blog"><meta property="twitter:description" content="本文记录了一些常见的技术问题与技巧"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/20240303022754.png"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.BPFR0fzZ.css"></head> <body> <noscript> <style>
+        .animate{
+          opacity:1;
+          transform:none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/blog/">文章</a><a href="/about/">关于</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">技术与工程</p> <h1>服务器常见技术问题与技巧</h1> <div class="article-meta"> <time datetime="2023-09-03T00:00:00.000Z">2023年9月3日</time>  <span>约 12 分钟</span> </div> <p class="article-lead">本文记录了一些常见的技术问题与技巧</p> </header> <div class="prose"> <h1 id="目前碰到的一些技术问题与知识">目前碰到的一些技术问题与知识</h1>
+<h2 id="ubuntu安装驱动时候出现的问题">ubuntu安装驱动时候出现的问题</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">echo</span><span style="color:var(--astro-code-token-string)"> -e</span><span style="color:var(--astro-code-token-string)"> “blacklist</span><span style="color:var(--astro-code-token-string)"> nouveau</span><span style="color:var(--astro-code-foreground)">\n</span><span style="color:var(--astro-code-token-string)">options</span><span style="color:var(--astro-code-token-string)"> nouveau</span><span style="color:var(--astro-code-token-string)"> modeset=0”</span><span style="color:var(--astro-code-token-keyword)"> ></span><span style="color:var(--astro-code-token-string)"> /etc/modprobe.d/disable-nouveau.conf</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">update-initramfs</span><span style="color:var(--astro-code-token-string)"> -u</span></span>
+<span class="line"></span></code></pre>
+<p>修改启动参数:在GRUB菜单中选择Ubuntu启动选项，按下”e”键以编辑启动参数。尝试在命令行中添加”nomodeset”参数，然后按下F10键启动。</p>
+<h2 id="ubuntu安装cuda驱动时候出现报错">ubuntu安装cuda驱动时候出现报错</h2>
+<ul>
+<li>安装显卡驱动需要关闭图形界面，在命令行完成安装（提前下好安装包）
+关闭图形界面</li>
+</ul>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo systemctl isolate multi-user.target</span></span></code></pre>
+<p>开机可能出现黑屏，按<code>ctrl + shift + F2</code>即可进入命令行窗口，登录即可，随后安装驱动，安装完成之后，执行下边命令开机默认进入图形用户界面。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>systemctl isolate graphical.target</span></span></code></pre>
+<p><a href="https://blog.csdn.net/xiaoyuxin1/article/details/124526430">给Ubuntu安装驱动（nvidia）保姆级教程（方法一）_X.等雨停的博客-CSDN博客</a></p>
+<h2 id="ubuntu拨号上网以及各种方式上网设置">ubuntu拨号上网以及各种方式上网设置</h2>
+<p>命令行输入即可进入图形管理界面</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">nm-connection-editor</span></span></code></pre>
+<h2 id="ubuntu2204-向日葵远程无法连接成功">ubuntu22.04 向日葵远程无法连接成功</h2>
+<p>需要切换桌面模式</p>
+<h2 id="ubuntu机械盘挂载">ubuntu机械盘挂载</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-comment)">#创建挂载路径</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> mkdir</span><span style="color:var(--astro-code-token-string)"> /data</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">#格式化硬盘</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> mkfs</span><span style="color:var(--astro-code-token-string)"> -t</span><span style="color:var(--astro-code-token-string)"> ext4</span><span style="color:var(--astro-code-token-string)"> /dev/sda</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">#挂载硬盘</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> mount</span><span style="color:var(--astro-code-token-string)"> -t</span><span style="color:var(--astro-code-token-string)"> ext4</span><span style="color:var(--astro-code-token-string)"> /dev/sda</span><span style="color:var(--astro-code-token-string)"> /data</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">#开机自动挂载</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> vim</span><span style="color:var(--astro-code-token-string)"> /etc/fstab</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">#在最后一行加入</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">/dev/sda</span><span style="color:var(--astro-code-token-string)"> /data</span><span style="color:var(--astro-code-token-string)"> ext4</span><span style="color:var(--astro-code-token-string)">  defaults</span><span style="color:var(--astro-code-token-constant)"> 0</span><span style="color:var(--astro-code-token-constant)"> 0</span></span></code></pre>
+<h2 id="使用yaml创建虚拟环境">使用yaml创建虚拟环境</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">conda</span><span style="color:var(--astro-code-token-string)"> env</span><span style="color:var(--astro-code-token-string)"> create</span><span style="color:var(--astro-code-token-string)"> -f</span><span style="color:var(--astro-code-token-string)"> environment.yml</span></span></code></pre>
+<p>例如：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">name</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-string-expression)"> transformer</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">channels</span><span style="color:var(--astro-code-token-keyword)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  - </span><span style="color:var(--astro-code-token-string-expression)">pytorch</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  - </span><span style="color:var(--astro-code-token-string-expression)">conda-forge</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  - </span><span style="color:var(--astro-code-token-string-expression)">defaults</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">dependencies</span><span style="color:var(--astro-code-token-keyword)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  - </span><span style="color:var(--astro-code-token-string-expression)">_libgcc_mutex=0.1=main</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  - </span><span style="color:var(--astro-code-token-string-expression)">_openmp_mutex=4.5=1_gnu</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  - </span><span style="color:var(--astro-code-token-string-expression)">astor=0.8.1=py39h06a4308_0</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  - </span><span style="color:var(--astro-code-token-string-expression)">autograd=1.3=pyhd3eb1b0_1</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">  - </span><span style="color:var(--astro-code-token-keyword)">pip</span><span style="color:var(--astro-code-token-keyword)">:</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    - </span><span style="color:var(--astro-code-token-string-expression)">argparse==1.4.0</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    - </span><span style="color:var(--astro-code-token-string-expression)">einops==0.3.2</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    - </span><span style="color:var(--astro-code-token-string-expression)">nystrom-attention==0.0.11</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">prefix</span><span style="color:var(--astro-code-token-keyword)">:</span><span style="color:var(--astro-code-token-string-expression)"> /home/ps/anaconda3/envs/transformer</span></span></code></pre>
+<p>最后的<code>prefix</code>指定环境位置</p>
+<h2 id="使用gitkeep文件保存空文件夹">使用<code>.gitkeep</code>文件保存空文件夹</h2>
+<h2 id="创建一个新的普通用户">创建一个新的普通用户</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> useradd</span><span style="color:var(--astro-code-token-string)"> -m</span><span style="color:var(--astro-code-token-string)"> ai</span><span style="color:var(--astro-code-token-string)"> -s</span><span style="color:var(--astro-code-token-string)"> /bin/bash</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> passwd</span><span style="color:var(--astro-code-token-string)"> ai</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># sudo adduser ai sudo</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">su</span><span style="color:var(--astro-code-token-string)"> ai</span></span></code></pre>
+<ul>
+<li>创建了可以登录的ai用户并使用/bin/bash作为shell。</li>
+<li>设置密码。</li>
+<li>为ai用户增加管理员权限。</li>
+<li>切换登录用户为ai。</li>
+</ul>
+<h2 id="为普通用户添加sudo权限">为普通用户添加sudo权限</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-comment)"># 为用户username添加sudo权限</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> usermod</span><span style="color:var(--astro-code-token-string)"> -a</span><span style="color:var(--astro-code-token-string)"> -G</span><span style="color:var(--astro-code-token-string)"> sudo</span><span style="color:var(--astro-code-token-string)"> username</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)"> </span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># 去除用户username的sudo权限</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> usermod</span><span style="color:var(--astro-code-token-string)"> -G</span><span style="color:var(--astro-code-token-string)"> usergroup</span><span style="color:var(--astro-code-token-string)"> username</span></span></code></pre>
+<p>给用户授权</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">groups</span><span style="color:var(--astro-code-token-string)"> ai</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">usermod</span><span style="color:var(--astro-code-token-string)"> -aG</span><span style="color:var(--astro-code-token-string)"> sudo</span><span style="color:var(--astro-code-token-string)"> meow</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">visudo</span></span></code></pre>
+<p>删除用户</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> deluser</span><span style="color:var(--astro-code-token-string)"> --remove-home</span><span style="color:var(--astro-code-token-string)"> ai</span></span></code></pre>
+<p>删除用户目录</p>
+<p>查看所有用户</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">grep</span><span style="color:var(--astro-code-token-string)"> bash</span><span style="color:var(--astro-code-token-string)"> /etc/passwd</span></span></code></pre>
+<h2 id="linux新建用户也使用原来conda环境">linux新建用户也使用原来conda环境</h2>
+<p>a用户下安装anaconda，默认地址不变，b用户直接不可用，在b用户登录的终端编辑b用户的<code>.bashrc</code>文件，在文档最后一行加入</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">export</span><span style="color:var(--astro-code-foreground)"> PATH</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">$PATH:/home/</span><span style="color:var(--astro-code-token-keyword)">&#x3C;</span><span style="color:var(--astro-code-foreground)">Username</span><span style="color:var(--astro-code-token-keyword)">></span><span style="color:var(--astro-code-foreground)">/anaconda3/bin</span></span></code></pre>
+<p>保存退出，并<code>source .bashrc</code>，然后<code>conda init</code>就可以了</p>
+<p>高级配置参考<a href="https://zhuanlan.zhihu.com/p/570747928?utm_id=0">Anaconda 多用户共享安装（Ubuntu） - 知乎 (zhihu.com)</a></p>
+<h2 id="给用户授予docker使用权限">给用户授予docker使用权限</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> gpasswd</span><span style="color:var(--astro-code-token-string)"> -a</span><span style="color:var(--astro-code-foreground)"> $USER </span><span style="color:var(--astro-code-token-string)">docker</span><span style="color:var(--astro-code-foreground)"> </span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">newgrp</span><span style="color:var(--astro-code-token-string)"> docker</span></span></code></pre>
+<p><code>$USER</code>可以更换为其他，不换就是默认的。第二步有可能需要输密码，然后输入会发现错误，其实是没有设置密码，需要先设置密码，然后这样更新组</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> chmod</span><span style="color:var(--astro-code-token-string)"> a+rw</span><span style="color:var(--astro-code-token-string)"> /var/run/docker.sock</span></span></code></pre>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> usermod</span><span style="color:var(--astro-code-token-string)"> -aG</span><span style="color:var(--astro-code-token-string)"> docker</span><span style="color:var(--astro-code-foreground)"> $USER</span></span></code></pre>
+<h2 id="neofetch">neofetch</h2>
+<p>方便的查看系统的工具</p>
+<h2 id="卸载图形界面">卸载图形界面</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> apt-get</span><span style="color:var(--astro-code-token-string)"> remove</span><span style="color:var(--astro-code-token-string)"> gnome-shell</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> apt-get</span><span style="color:var(--astro-code-token-string)"> remove</span><span style="color:var(--astro-code-token-string)"> gnome</span><span style="color:var(--astro-code-foreground)"> </span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> apt-get</span><span style="color:var(--astro-code-token-string)"> autoremove</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> apt-get</span><span style="color:var(--astro-code-token-string)"> purge</span><span style="color:var(--astro-code-token-string)"> gnome</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> apt-get</span><span style="color:var(--astro-code-token-string)"> autoclean</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> apt-get</span><span style="color:var(--astro-code-token-string)"> clean</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">reboot</span></span></code></pre>
+<h2 id="ssh免密登录">ssh免密登录</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">ssh-keygen</span><span style="color:var(--astro-code-token-string)"> -t</span><span style="color:var(--astro-code-token-string)"> rsa</span></span></code></pre>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">cat</span><span style="color:var(--astro-code-token-string)"> ~/.ssh/id_rsa.pub</span><span style="color:var(--astro-code-token-keyword)"> >></span><span style="color:var(--astro-code-token-string)"> ~/.ssh/authorized_keys</span></span></code></pre>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">ssh-copy-id</span><span style="color:var(--astro-code-token-string)"> -i</span><span style="color:var(--astro-code-token-string)"> ~/.ssh/id_rsa.pub</span><span style="color:var(--astro-code-token-string)"> root@服务器IP</span></span></code></pre>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">lscpu</span></span></code></pre>
+<h2 id="cudnn-source-problem">cudnn source problem</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>W: GPG error: file:/var/cudnn-local-repo-ubuntu2004-8.6.0.163  InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 323547C4B0FE0A41</span></span>
+<span class="line"><span>E: The repository 'file:/var/cudnn-local-repo-ubuntu2004-8.6.0.163  InRelease' is not signed.</span></span>
+<span class="line"><span>N: Updating from such a repository can't be done securely, and is therefore disabled by default.</span></span>
+<span class="line"><span>N: See apt-secure(8) manpage for repository creation and user configuration details.</span></span></code></pre>
+<p>then input <code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 323547C4B0FE0A41</code> to solve the problem.</p>
+<p>But it doesn’t work. You can follow the steps below to solve the problem.</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo cp /var/cudnn-local-repo-ubuntu2004-8.4.1.50/*.gpg /usr/share/keyrings/</span></span></code></pre>
+<p>复制到/usr/share/keyrings即可。</p>
+<h2 id="两个盘软raid命令">两个盘软raid命令</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo apt-get install mdadm</span></span>
+<span class="line"><span>#格式化两块硬盘</span></span>
+<span class="line"><span>#sudo mkfs.ext4 -F /dev/sdb</span></span>
+<span class="line"><span>#sudo mkfs.ext4 -F /dev/sdc</span></span>
+<span class="line"><span>#mdadm管理 raid0</span></span>
+<span class="line"><span>sudo mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sd{b,c}</span></span>
+<span class="line"><span>#格式化并挂载</span></span>
+<span class="line"><span>sudo mkfs.ext4 -F /dev/md0 sudo mkdir -p /home/md0 sudo mount /dev/md0 /home/md0</span></span></code></pre>
+<h2 id="每隔时间杀程序">每隔时间杀程序</h2>
+<p>kill_python.py</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>while [ true ];do</span></span>
+<span class="line"><span>	sleep 5</span></span>
+<span class="line"><span>	ps -ef |grep -w  python |grep -v grep | awk '{print $2}' | xargs kill -9</span></span>
+<span class="line"><span>done</span></span></code></pre>
+<p>然后再讲其添加到crontab中，执行crontab -e，添加如下：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">*</span><span style="color:var(--astro-code-foreground)">/30 </span><span style="color:var(--astro-code-token-keyword)">*</span><span style="color:var(--astro-code-token-keyword)"> *</span><span style="color:var(--astro-code-token-keyword)"> *</span><span style="color:var(--astro-code-token-keyword)"> *</span><span style="color:var(--astro-code-foreground)"> /usr/bin/sh /aa/bb/cleanFfmpegProcess.sh</span></span></code></pre>
+<p>:wq即可。</p>
+<h2 id="关闭服务器自动休眠">关闭服务器自动休眠</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target</span></span></code></pre>
+<p>查看系统休眠状态</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>systemctl status sleep.target</span></span></code></pre>
+<h2 id="设置github的ssh连上github">设置github的ssh连上github</h2>
+<p>生成ssh key</p>
+<p>读取公钥</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>cat ~/.ssh/id_rsa.pub</span></span></code></pre>
+<p>复制粘贴到github。github配置ssh key的地方在
+<a href="https://github.com/settings/keys">https://github.com/settings/keys</a></p>
+<p>测试ssh key是否配置成功，在linux开发机上输入
+<code>ssh -T git@github.com</code></p>
+<p>如果出现Hi xxx! You’ve successfully authenticated, but GitHub does not provide shell access 。这就表示已成功连上github</p>
+<p>3、配置git的用户名和邮箱</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span> $ git config --global user.name "your name"</span></span>
+<span class="line"><span> $ git config --global user.email "your_email@youremail.com"</span></span></code></pre>
+<p>以后可以通过git config —global -l来查看全局设置，git config —global -e来编辑</p>
+<h2 id="更新包导致cuda和驱动版本不对应nvidia-smi-has-failed-because-it-couldnt-communicate-with-the-nvidia-driver">更新包导致cuda和驱动版本不对应，NVIDIA-SMI has failed because it couldn‘t communicate with the NVIDIA driver</h2>
+<p>终端nvidia-smi出现这样，<strong>是内核版本更新的问题，导致新版本内核和原来显卡驱动不匹配</strong></p>
+<p>查看已安装内核</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:var(--astro-code-foreground)">dpkg </span><span style="color:var(--astro-code-token-keyword)">--</span><span style="color:var(--astro-code-foreground)">get</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-foreground)">selections </span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-foreground)">grep linux</span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-foreground)">image</span></span></code></pre>
+<p>查看正在使用的内核</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:var(--astro-code-foreground)">uname </span><span style="color:var(--astro-code-token-keyword)">-</span><span style="color:var(--astro-code-foreground)">a</span></span></code></pre>
+<p>利用命令 <code>ll /usr/src/</code> 可查看下面有一个nvidia-470.82.00文件夹，版本号因电脑而异。</p>
+<p>只需执行两条命令就好：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo apt-get install dkms</span></span>
+<span class="line"><span>sudo dkms install -m nvidia -v 470.82.00</span></span></code></pre>
+<p>（470.82.00表示的是驱动版本号）</p>
+<h3 id="禁止内核自动更新">禁止内核自动更新</h3>
+<p>1）命令行关闭系统自动更新，使用命令打开文件并编辑</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:var(--astro-code-foreground)">sudo gedit </span><span style="color:var(--astro-code-token-keyword)">/</span><span style="color:var(--astro-code-foreground)">etc</span><span style="color:var(--astro-code-token-keyword)">/</span><span style="color:var(--astro-code-foreground)">apt</span><span style="color:var(--astro-code-token-keyword)">/</span><span style="color:var(--astro-code-token-constant)">apt</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-token-constant)">conf</span><span style="color:var(--astro-code-token-punctuation)">.</span><span style="color:var(--astro-code-foreground)">d</span><span style="color:var(--astro-code-token-keyword)">/</span><span style="color:var(--astro-code-token-constant)">10</span><span style="color:var(--astro-code-token-keyword)">periodic</span></span></code></pre>
+<p>将双引号中的“1”全部置“0”即可，修改后保存。</p>
+<p>ubuntu默认启动了自动更新内核，为了避免出现重启系统后遇到错误进入不到系统中去，我们可以进一步关闭内核更新，使用当前内核。</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$ sudo apt-mark hold linux-image-generic linux-headers-generic </span></span>
+<span class="line"><span>linux-image-generic set on hold.</span></span>
+<span class="line"><span>linux-headers-generic set on hold.</span></span></code></pre>
+<p>如果要重启启动内核更新：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>sudo apt-mark unhold linux-image-generic linux-headers-generic</span></span></code></pre>
+<h2 id="文件格式问题">文件格式问题</h2>
+<p>qsub:script is written in DOS/Windows text format</p>
+<p>dos格式文件传输到unix系统时，会在每行的结尾多一个^M（/r），当然也有可能看不到。但是在vim的时候，会在下面显示此文件的格式，比如 “dos.txt” [dos] 120L, 2532C 字样,表示是一个[dos]格式文件，如果是MAC系统的，会显示[MAC]。因为文件格式的原因有时会导致我们的unix程序，或者shell程序出现错误，那么需要把这些dos文件格式转换成unix格式，方法是</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>vim dos.txt</span></span>
+<span class="line"><span>:set fileformat=unix</span></span>
+<span class="line"><span>:w</span></span></code></pre>
+<h2 id="centos7安装驱动">centos7安装驱动</h2>
+<p><a href="https://www.cnblogs.com/2012blog/p/9431432.html">https://www.cnblogs.com/2012blog/p/9431432.html</a></p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/</span></span>
+<span class="line"><span>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge</span></span>
+<span class="line"><span>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span></span>
+<span class="line"><span>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/</span></span>
+<span class="line"><span>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</span></span>
+<span class="line"><span>conda config --set show_channel_urls yes</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="彻底卸载wsl">彻底卸载wsl</h2>
+<p>在powerShell上
+先看还有哪些子系统</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>wsl --list --all</span></span></code></pre>
+<p>注销子系统</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>wsl --unregister Ubuntu</span></span></code></pre>
+<h2 id="只读文件系统">只读文件系统</h2>
+<p>在linux硬盘挂载时候，部分情况磁盘变成ro只读而不是rw
+一般df查看挂载设备</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>umount -i 挂载路径</span></span></code></pre>
+<p>rm -rf 目录/文件</p>
+<p>在部分情况下，先使用windows系统，后使用linux，可能有系统挂载问题，即使chmod 777 也没用，出现错误：</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/image2.png" alt="image">
+需要重新挂载</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>umount /dev/sda2</span></span></code></pre>
+<p>报错target busy
+杀死使用该目录的进程：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-token-function)">fuser</span><span style="color:var(--astro-code-token-string)">  -mv</span><span style="color:var(--astro-code-token-string)"> -k</span><span style="color:var(--astro-code-token-string)"> /dev/sda2</span></span></code></pre>
+<p>再次卸载，卸载成功后重新挂载：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-token-function)">mount</span><span style="color:var(--astro-code-token-string)"> /dev/sda2</span><span style="color:var(--astro-code-token-string)"> /data</span></span></code></pre>
+<p>报错解决：
+报错1：“The disk contains an unclean file system (0, 0). Metadata kept in Windows cache, refused to mount. Falling back to read-only mount because the NTFS partition is in an unsafe state. Please resume and shutdown Windows fully (no hibernation or fast restarting.)”。说明是NTFS分区格式错误
+解决方法：ntfsfix修复，需要安装工具：
+sudo apt-get install ntfs-3g
+安装完成后进行ntfsfix修复：
+sudo ntfsfix /dev/sda2
+提示修复成功。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/image3.png" alt="image3"></p>
+<p>报错2：“没有那个文件或目录”。说明/data目录不存在，需要创建。
+解决方法：media根目录下创建新目录：
+mkdir /media/jngk/data
+然后重新挂载，即可挂载成功。
+mount /dev/sda2 /media/jngk/data
+现在该目录就不是只读文件系统了，在该目录下右键，新建文件夹选项也不再是灰色不可选状态了。</p>
+<h1 id="无法将xxx项识别为-cmdlet函数脚本文件或可运行程序的名称请检查名称的拼写如果包括路径请确保路径正确然后再试一次">无法将“XXX”项识别为 cmdlet、函数、脚本文件或可运行程序的名称。请检查名称的拼写，如果包括路径，请确保路径正确，然后再试一次</h1>
+<p>进入PowerShell 模式
+Get-ExecutionPolicy -List 查看当前所有作用域
+1</p>
+<p>上图显示就最后一个作用域有权限，其他作用域都没有权限，那么我们就需要去给它设置权限</p>
+<p>设置权限
+Set-ExecutionPolicy RemoteSigned -Scope &#x3C; scopeName >,设置当前用户作用域具备权限，具体设置格</p>
+<p>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+1</p>
+<p>按照上面的格式，执行需要加权限的作用域，然后再去尝试之前的方法，发现就不会报错提示了。</p>
+<h1 id="挖矿病毒处理">挖矿病毒处理</h1>
+<p>找到病毒文件：</p>
+<p>方法一：由于入侵者对程序的名称做了伪装，无法直接通过其进行查找。因此使用PID入手，查找其在/proc里的文件，进而发现了关键路径</p>
+<p>将所有病毒文件展示出来，可以发现关键词miner</p>
+<p>对里面的文件作进一步的查看，可以看到ETH（以太坊）、POOL、WALLET等关键词，实锤中了挖矿病毒</p>
+<p>此外，查看run文件，可以发现这个病毒文件确实做了伪装</p>
+<p>方法二：考虑到入侵者可能会用某些方式将病毒程序作一定的隐藏，这里通过查看用户的计划任务来定位病毒文件，因为病毒文件可能被kill掉而入侵者不会每次都自己手动启动的，肯定会设置自动启动。查看计划任务的命令为crontab -l
+为了查看病毒文件在服务器上是否有多份，可以使用如下命令一次性查看所有用户的计划任务：</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> u </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> $(</span><span style="color:var(--astro-code-token-function)">cat</span><span style="color:var(--astro-code-token-string)"> /etc/passwd</span><span style="color:var(--astro-code-token-keyword)"> |</span><span style="color:var(--astro-code-token-function)"> cut</span><span style="color:var(--astro-code-token-string)"> -d</span><span style="color:var(--astro-code-token-string-expression)">":"</span><span style="color:var(--astro-code-token-string)"> -f1</span><span style="color:var(--astro-code-foreground)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">do</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    echo</span><span style="color:var(--astro-code-foreground)"> $u</span><span style="color:var(--astro-code-token-keyword)">>></span><span style="color:var(--astro-code-token-string)">temp.txt</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    crontab</span><span style="color:var(--astro-code-token-string)"> -l</span><span style="color:var(--astro-code-token-string)"> -u</span><span style="color:var(--astro-code-foreground)"> $u </span><span style="color:var(--astro-code-token-keyword)">>></span><span style="color:var(--astro-code-token-string)"> temp.txt</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">done</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">cat</span><span style="color:var(--astro-code-token-string)"> temp.txt</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">rm</span><span style="color:var(--astro-code-token-string)"> temp.txt</span></span></code></pre>
+<p>方法三：尝试定位病毒文件中的特有关键词，比如“miner”
+updatedb
+locate miner</p>
+<h1 id="由于locate命令不能查找devshm之类的路径以防万一可以使用find命令不过会很慢">由于locate命令不能查找/dev/shm之类的路径，以防万一可以使用find命令，不过会很慢</h1>
+<h1 id="find---name-miner">find / -name miner</h1>
+<p>应对方法：</p>
+<p>删除整个病毒文件夹（python），kill相关的PID，并删除相关定时任务（使用命令crontab -e，或者如果只有一个定时任务的话可以用命令crontab -r）</p>
+<p>更改所有用户的密码，并设置一定的密码复杂度（可以使用cracklib）</p>
+<p>移除所有除了管理员以外用户的sudo权限</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-foreground)">admin</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-token-string-expression)">"root,sudo,%sudo"</span><span style="color:var(--astro-code-token-comment)"> # 填入管理员账号（前三个不能删）</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> $(</span><span style="color:var(--astro-code-token-function)">cat</span><span style="color:var(--astro-code-token-string)"> /etc/sudoers</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">grep</span><span style="color:var(--astro-code-token-string-expression)">  "ALL=(ALL:ALL) ALL"</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">cut</span><span style="color:var(--astro-code-token-string)"> -f</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">cut</span><span style="color:var(--astro-code-token-string)"> -f</span><span style="color:var(--astro-code-token-constant)"> 1</span><span style="color:var(--astro-code-token-string)"> -d</span><span style="color:var(--astro-code-token-string-expression)"> ' '</span><span style="color:var(--astro-code-foreground)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">do</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    echo</span><span style="color:var(--astro-code-foreground)"> $i</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    if</span><span style="color:var(--astro-code-foreground)"> [ </span><span style="color:var(--astro-code-token-keyword)">-z</span><span style="color:var(--astro-code-token-string-expression)"> "$(</span><span style="color:var(--astro-code-token-function)">echo</span><span style="color:var(--astro-code-token-string-expression)"> $admin</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">grep</span><span style="color:var(--astro-code-token-string-expression)"> $i)"</span><span style="color:var(--astro-code-foreground)"> ]</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    then</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">        echo</span><span style="color:var(--astro-code-token-string-expression)"> "*** deluser $i sudo"</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">        deluser</span><span style="color:var(--astro-code-foreground)"> $i </span><span style="color:var(--astro-code-token-string)">sudo</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    fi</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">done</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> $(</span><span style="color:var(--astro-code-token-function)">getent</span><span style="color:var(--astro-code-token-string)"> group</span><span style="color:var(--astro-code-token-string)"> sudo</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">cut</span><span style="color:var(--astro-code-token-string)"> -f</span><span style="color:var(--astro-code-token-constant)"> 4</span><span style="color:var(--astro-code-token-string)"> -d</span><span style="color:var(--astro-code-token-string)"> :</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">tr</span><span style="color:var(--astro-code-token-string)"> -s</span><span style="color:var(--astro-code-token-string-expression)"> ','</span><span style="color:var(--astro-code-token-string-expression)"> '\n'</span><span style="color:var(--astro-code-foreground)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">do</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    echo</span><span style="color:var(--astro-code-foreground)"> $i</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    if</span><span style="color:var(--astro-code-foreground)"> [ </span><span style="color:var(--astro-code-token-keyword)">-z</span><span style="color:var(--astro-code-token-string-expression)"> "$(</span><span style="color:var(--astro-code-token-function)">echo</span><span style="color:var(--astro-code-token-string-expression)"> $admin</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">grep</span><span style="color:var(--astro-code-token-string-expression)"> $i)"</span><span style="color:var(--astro-code-foreground)"> ]</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    then</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">        echo</span><span style="color:var(--astro-code-token-string-expression)"> "*** deluser $i sudo"</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">        deluser</span><span style="color:var(--astro-code-foreground)"> $i </span><span style="color:var(--astro-code-token-string)">sudo</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    fi</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">done</span></span></code></pre>
+<p>删除现有的所有密钥&#x26;授权</p>
+<p>updatedb</p>
+<h1 id="删除公钥密钥">删除公钥+密钥</h1>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> pub </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> $(</span><span style="color:var(--astro-code-token-function)">locate</span><span style="color:var(--astro-code-token-string)"> .pub</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">grep</span><span style="color:var(--astro-code-token-string)"> .pub</span><span style="color:var(--astro-code-foreground)">$)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">do</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">    u</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">$(</span><span style="color:var(--astro-code-token-function)">ll</span><span style="color:var(--astro-code-foreground)"> $pub</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">awk</span><span style="color:var(--astro-code-token-string-expression)"> '{printf $3}'</span><span style="color:var(--astro-code-foreground)">)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)">    # 根据UID判断所属用户是否为普通用户</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    if</span><span style="color:var(--astro-code-foreground)"> [ </span><span style="color:var(--astro-code-token-constant)">999</span><span style="color:var(--astro-code-token-keyword)"> -lt</span><span style="color:var(--astro-code-foreground)"> $(</span><span style="color:var(--astro-code-token-function)">id</span><span style="color:var(--astro-code-token-string)"> -u</span><span style="color:var(--astro-code-foreground)"> $u) ]</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        then</span></span>
+<span class="line"><span style="color:var(--astro-code-foreground)">            pri</span><span style="color:var(--astro-code-token-keyword)">=</span><span style="color:var(--astro-code-foreground)">$(</span><span style="color:var(--astro-code-token-function)">echo</span><span style="color:var(--astro-code-foreground)"> ${pub</span><span style="color:var(--astro-code-token-keyword)">%</span><span style="color:var(--astro-code-foreground)">????})</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">            rm</span><span style="color:var(--astro-code-foreground)"> $pub</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">            rm</span><span style="color:var(--astro-code-foreground)"> $pri</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">            echo</span><span style="color:var(--astro-code-token-string)"> del</span><span style="color:var(--astro-code-foreground)">  $u $pub $pri</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">        else</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">            echo</span><span style="color:var(--astro-code-token-string)"> save</span><span style="color:var(--astro-code-foreground)"> $u $pub</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">    fi</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">done</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># 删除knowN_hosts</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> $(</span><span style="color:var(--astro-code-token-function)">locate</span><span style="color:var(--astro-code-token-string)"> known_hosts</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">grep</span><span style="color:var(--astro-code-token-string)"> known_hosts</span><span style="color:var(--astro-code-foreground)">$)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">do</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    rm</span><span style="color:var(--astro-code-foreground)"> $i</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    echo</span><span style="color:var(--astro-code-token-string)"> del</span><span style="color:var(--astro-code-foreground)"> $i</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">done</span></span>
+<span class="line"><span style="color:var(--astro-code-token-comment)"># 删除authorized_keys</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">for</span><span style="color:var(--astro-code-foreground)"> i </span><span style="color:var(--astro-code-token-keyword)">in</span><span style="color:var(--astro-code-foreground)"> $(</span><span style="color:var(--astro-code-token-function)">locate</span><span style="color:var(--astro-code-token-string)"> authorized_keys</span><span style="color:var(--astro-code-token-keyword)">|</span><span style="color:var(--astro-code-token-function)">grep</span><span style="color:var(--astro-code-token-string)"> authorized_keys</span><span style="color:var(--astro-code-foreground)">$)</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">do</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    rm</span><span style="color:var(--astro-code-foreground)"> $i</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">    echo</span><span style="color:var(--astro-code-token-string)"> del</span><span style="color:var(--astro-code-foreground)"> $i</span></span>
+<span class="line"><span style="color:var(--astro-code-token-keyword)">done</span></span></code></pre>
+<h1 id="查看剩余">查看剩余</h1>
+<p>updatedb
+locate .pub|grep .pub$
+locate known_hosts
+locate authorized_keys</p>
+<p>可能会遇到某个文件用root权限也删除不了</p>
+<p>如果使用命令lsattr发现该文件的隐藏属性中存在除了e以外的属性，则用命令chattr来移除这些属性</p>
+<p>设置远程连接只能使用密钥，不能使用密码</p>
+<p>禁止使用root账号进行远程连接</p>
+<p>使用终端安全杀毒软件、内网安全监控产品、漏洞扫描设备等专业工具</p>
+<h2 id="查杀病毒">查杀病毒</h2>
+<p>1、crontab -e 发现一条自启动任务，且为“python”程序，但不确定是否为挖矿程序，暂时保留
+2、根据挖矿程序PID，进入/proc/PID目录下检查
+进入/tmp/…/Python目录
+<img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/image4.png" alt="image4">
+通过sudo vim config.ini检查config.ini文件，发现正是挖矿配置文件，从而自启动任务为挖矿任务
+<img src="https://gcore.jsdelivr.net/gh/CoderJackZhu/bloggallery/img/image5.png" alt="image5">
+4、kill挖矿进程，删除挖矿文件及自启动任务，同时关闭挖矿病毒使用的端口
+5、使用杀毒软件全盘查杀</p>
+<h2 id="在cuda版本过高的情况nvidia官方bug会出现内存泄露no-such-progress">在cuda版本过高的情况nvidia官方bug，会出现内存泄露no such progress</h2>
+<p>使用</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>python3 -m pip install --upgrade nvidia-ml-py</span></span></code></pre>
+<h2 id="fsl-安装">fsl 安装</h2>
+<p>使用本地安装包
+解压缩到要安装的文件夹。推荐和我一样解压缩到/usr/local目录下
+有可能会出现权限不足的问题无法解压缩，可以在usr目录中打开终端，输入
+sudo chmod -R 777 local
+输入密码后，打开权限
+配置环境变量.bashrc</p>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>export FSLDIR=/usr/local/fsl</span></span>
+<span class="line"><span>export PATH=$PATH:$FSLDIR/bin</span></span>
+<span class="line"><span>source $FSLDIR/etc/fslconf/fsl.sh</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="卸载cuda">卸载cuda</h2>
+<pre class="astro-code css-variables" style="background-color:var(--astro-code-background);color:var(--astro-code-foreground); overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:var(--astro-code-token-function)">cd</span><span style="color:var(--astro-code-token-string)"> /usr/local/cuda-xx.x/bin/</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> ./cuda-uninstaller</span></span>
+<span class="line"><span style="color:var(--astro-code-token-function)">sudo</span><span style="color:var(--astro-code-token-string)"> rm</span><span style="color:var(--astro-code-token-string)"> -rf</span><span style="color:var(--astro-code-token-string)"> /usr/local/cuda-xx.x</span></span></code></pre>
+<h1 id="微星tpm">微星tpm</h1>
+<p>微星gl63有TPM的，下面教你如何操作：
+首先进bios
+然后按右边的CTRL+SHIFT+左边的ALT+F2开启超级模式。
+之后在高级选项中找到PCH-FW Configuration
+找到PTT Configuratio
+把dTPM改为PTT（如果已经是PTT可以跳过此步）。
+之后在高级选项中找到Trusted Computing
+找到Security Device Support，将Disable改为Enable
+按F10保存。</p> </div> <div class="post-nav"> <a href="/2024/03/03/Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署/" class="post-nav-link"> <span class="post-nav-label">上一篇</span> <span class="post-nav-title">Hexo博客配置Github Actions和仓库分支存储实现自动化编译部署</span> </a> <a href="/2023/02/07/浅谈《原神》游戏的理解/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">浅谈《原神》游戏的理解</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#ubuntu安装驱动时候出现的问题">ubuntu安装驱动时候出现的问题</a>  </li><li> <a href="#ubuntu安装cuda驱动时候出现报错">ubuntu安装cuda驱动时候出现报错</a>  </li><li> <a href="#ubuntu拨号上网以及各种方式上网设置">ubuntu拨号上网以及各种方式上网设置</a>  </li><li> <a href="#ubuntu2204-向日葵远程无法连接成功">ubuntu22.04 向日葵远程无法连接成功</a>  </li><li> <a href="#ubuntu机械盘挂载">ubuntu机械盘挂载</a>  </li><li> <a href="#使用yaml创建虚拟环境">使用yaml创建虚拟环境</a>  </li><li> <a href="#使用gitkeep文件保存空文件夹">使用.gitkeep文件保存空文件夹</a>  </li><li> <a href="#创建一个新的普通用户">创建一个新的普通用户</a>  </li><li> <a href="#为普通用户添加sudo权限">为普通用户添加sudo权限</a>  </li><li> <a href="#linux新建用户也使用原来conda环境">linux新建用户也使用原来conda环境</a>  </li><li> <a href="#给用户授予docker使用权限">给用户授予docker使用权限</a>  </li><li> <a href="#neofetch">neofetch</a>  </li><li> <a href="#卸载图形界面">卸载图形界面</a>  </li><li> <a href="#ssh免密登录">ssh免密登录</a>  </li><li> <a href="#cudnn-source-problem">cudnn source problem</a>  </li><li> <a href="#两个盘软raid命令">两个盘软raid命令</a>  </li><li> <a href="#每隔时间杀程序">每隔时间杀程序</a>  </li><li> <a href="#关闭服务器自动休眠">关闭服务器自动休眠</a>  </li><li> <a href="#设置github的ssh连上github">设置github的ssh连上github</a>  </li><li> <a href="#更新包导致cuda和驱动版本不对应nvidia-smi-has-failed-because-it-couldnt-communicate-with-the-nvidia-driver">更新包导致cuda和驱动版本不对应，NVIDIA-SMI has failed because it couldn‘t communicate with the NVIDIA driver</a> <ul class="toc-sub"> <li> <a href="#禁止内核自动更新">禁止内核自动更新</a>  </li> </ul> </li><li> <a href="#文件格式问题">文件格式问题</a>  </li><li> <a href="#centos7安装驱动">centos7安装驱动</a>  </li><li> <a href="#彻底卸载wsl">彻底卸载wsl</a>  </li><li> <a href="#只读文件系统">只读文件系统</a>  </li><li> <a href="#查杀病毒">查杀病毒</a>  </li><li> <a href="#在cuda版本过高的情况nvidia官方bug会出现内存泄露no-such-progress">在cuda版本过高的情况nvidia官方bug，会出现内存泄露no such progress</a>  </li><li> <a href="#fsl-安装">fsl 安装</a>  </li><li> <a href="#卸载cuda">卸载cuda</a>  </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

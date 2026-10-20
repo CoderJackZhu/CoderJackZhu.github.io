@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/works/on-policy-distillation/"><!-- Primary Meta Tags --><title>看懂答案却不会做？AI 也有这个毛病 | Jack&#39;s Blog</title><meta name="title" content="看懂答案却不会做？AI 也有这个毛病 | Jack's Blog"><meta name="description" content="从大模型的在线策略蒸馏，聊到练习、犯错与反馈。一支把技术概念讲给更多人听的视频。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/works/on-policy-distillation/"><meta property="og:title" content="看懂答案却不会做？AI 也有这个毛病 | Jack's Blog"><meta property="og:description" content="从大模型的在线策略蒸馏，聊到练习、犯错与反馈。一支把技术概念讲给更多人听的视频。"><meta property="og:image" content="https://www.jackzhu.top/works/opd-cover.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/works/on-policy-distillation/"><meta property="twitter:title" content="看懂答案却不会做？AI 也有这个毛病 | Jack's Blog"><meta property="twitter:description" content="从大模型的在线策略蒸馏，聊到练习、犯错与反馈。一支把技术概念讲给更多人听的视频。"><meta property="twitter:image" content="https://www.jackzhu.top/works/opd-cover.jpg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.CVM8BtAu.css"></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          transform: none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/works/" aria-current="page"> 作品 </a><a href="/blog/"> 文章 </a><a href="/about/"> 关于 </a><a href="https://github.com/CoderJackZhu" target="_blank" rel="noopener noreferrer"> GitHub </a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const header = document.querySelector(".site-header");
+    const syncNavigation = () => {
+      header?.querySelectorAll(".nav-links a").forEach((link) => {
+        const url = new URL(link.href);
+        if (
+          url.origin === location.origin &&
+          location.pathname.startsWith(url.pathname)
+        ) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+    if (header && !header.dataset.navigationBound) {
+      header.dataset.navigationBound = "true";
+      document.addEventListener("astro:page-load", syncNavigation);
+    }
+    syncNavigation();
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main data-pagefind-body>  <article class="work-detail"> <a class="article-back" href="/works/" data-pagefind-ignore>← 全部作品</a> <header class="work-detail-header"> <div> <p class="eyebrow">技术视频 · 2026</p><h1 data-pagefind-meta="title"> 看懂答案却不会做？AI 也有这个毛病 </h1><p class="work-lead">从大模型的在线策略蒸馏，聊到练习、犯错与反馈。一支把技术概念讲给更多人听的视频。</p> </div> <div class="work-detail-actions" data-pagefind-ignore> <a class="action-link action-link-primary" href="https://www.bilibili.com/video/BV1PEnP6uERZ/" target="_blank" rel="noopener noreferrer"> 在 B站观看 <span aria-hidden="true">↗</span> </a><span class="work-status">已发布 · 7 分 40 秒</span> </div> </header> <figure class="work-figure"> <img src="/works/opd-cover.jpg" alt="视频封面：看答案全懂，自己做全错；AI 也有这个毛病" width="1920" height="1080" decoding="async" data-pagefind-meta="image[src], image_alt[alt]"><figcaption>2026 年 10 月 20 日发布于 B站。视频含 AI 辅助生成内容，片中概率为示意数值。</figcaption> </figure> <div class="work-detail-grid"> <nav class="work-outline" aria-label="作品目录" data-pagefind-ignore> <p class="eyebrow">本页内容</p><a href="#这支视频想解释什么">这支视频想解释什么</a><a href="#观看章节">观看章节</a><a href="#从技术材料到画面">从技术材料到画面</a><a href="#延伸阅读">延伸阅读</a> </nav> <div class="prose work-prose"><h2 id="这支视频想解释什么">这支视频想解释什么</h2>
+<p>看答案时觉得全懂，轮到自己做却卡住了。视频从这个熟悉的体验出发，介绍大模型训练中的在线策略蒸馏（On-Policy Distillation，OPD），再聊聊它对练习与反馈的启发。</p>
+<p>讲解围绕三个问题展开：学习用的数据从哪里来，反馈落在哪一步，以及怎样把下一次练习和这一次的错误接起来。不熟悉模型训练，也可以从开场的例子进入。</p>
+<h2 id="观看章节">观看章节</h2>
+<p>点击时间可以跳转到 B站对应章节。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>时间</th><th>内容</th></tr></thead><tbody><tr><td><a href="https://www.bilibili.com/video/BV1PEnP6uERZ/?t=0">00:00</a></td><td>开场：看懂不等于会做</td></tr><tr><td><a href="https://www.bilibili.com/video/BV1PEnP6uERZ/?t=25">00:25</a></td><td>AI 是怎么学说话的</td></tr><tr><td><a href="https://www.bilibili.com/video/BV1PEnP6uERZ/?t=66">01:06</a></td><td>为什么会一本正经地错到底</td></tr><tr><td><a href="https://www.bilibili.com/video/BV1PEnP6uERZ/?t=109">01:49</a></td><td>两种老办法，各差一口气</td></tr><tr><td><a href="https://www.bilibili.com/video/BV1PEnP6uERZ/?t=156">02:36</a></td><td>在线策略蒸馏：让老师看着学生写</td></tr><tr><td><a href="https://www.bilibili.com/video/BV1PEnP6uERZ/?t=284">04:44</a></td><td>找不到更强的老师怎么办</td></tr><tr><td><a href="https://www.bilibili.com/video/BV1PEnP6uERZ/?t=314">05:14</a></td><td>人也能借过来用</td></tr><tr><td><a href="https://www.bilibili.com/video/BV1PEnP6uERZ/?t=432">07:12</a></td><td>结尾</td></tr></tbody></table>
+<h2 id="从技术材料到画面">从技术材料到画面</h2>
+<p>这个作品包括资料整理、脚本、配音与动画呈现。用具体场景串起抽象概念，再通过画面和节奏帮助理解，是它与一篇技术笔记不同的地方。</p>
+<p>视频含 AI 辅助生成内容。画面中的概率用于示意，关于人的学习方法属于由技术概念引出的思考，不等同于模型训练实验的结论。</p>
+<h2 id="延伸阅读">延伸阅读</h2>
+<ul>
+<li><a href="https://www.thinkingmachines.ai/blog/on-policy-distillation/">Thinking Machines：On-Policy Distillation</a></li>
+<li>视频参考的模仿学习理论：Ross 与 Bagnell（2010）。</li>
+</ul>
+<p>如果对「怎样判断一次改进是否真的有效」更感兴趣，可以继续阅读下面的 SkillEvolver 复盘：一次没有得到预期结果的实验，最终留下了什么。</p></div> </div> <section class="work-related" data-pagefind-ignore> <h2>继续阅读</h2> <a href="/2026/06/20/SkillEvolver自进化实验复盘/"> SkillEvolver 复盘：自进化没有成功，但评测框架留下来了 <span aria-hidden="true">→</span> </a> </section> <div class="work-end" data-pagefind-ignore> <a href="/works/">← 浏览全部作品</a><a href="/about/">关于作者 →</a> </div> </article>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

@@ -20,6 +20,7 @@ links:
   - label: "观看介绍视频"
     href: "https://thingary.jackzhu.top/#film"
 relatedPosts:
+  - "/2026/10/21/building-thingary/"
   - "/2026/09/04/几个小时迁移一个六年博客之后我怎样理解AI Coding/"
 ---
 

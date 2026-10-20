@@ -7,6 +7,7 @@ import {
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { load } from "js-yaml";
 
 type ManifestEntry = {
   title: string;
@@ -15,23 +16,44 @@ type ManifestEntry = {
 };
 
 const distDir = new URL("../../dist/", import.meta.url).pathname;
-const contentDir = fileURLToPath(new URL("../../src/content/blog/", import.meta.url));
+const contentDir = fileURLToPath(
+  new URL("../../src/content/blog/", import.meta.url),
+);
 const staticFallback = process.env.CODEX_SANDBOX === "seatbelt";
 
 function readSourcePosts() {
   return readdirSync(contentDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => {
-      const source = readFileSync(join(contentDir, entry.name, "index.md"), "utf8");
-      const title = source.match(/^title:\s*(.+?)\s*$/m)?.[1]?.trim().replace(/^['"]|['"]$/g, "") ?? "";
+      const source = readFileSync(
+        join(contentDir, entry.name, "index.md"),
+        "utf8",
+      );
+      const title =
+        source
+          .match(/^title:\s*(.+?)\s*$/m)?.[1]
+          ?.trim()
+          .replace(/^['"]|['"]$/g, "") ?? "";
       const date = source.match(/^date:\s*(.+?)\s*$/m)?.[1]?.trim() ?? "";
       const legacyPath =
-        source.match(/^legacyPath:\s*(.+?)\s*$/m)?.[1]?.trim().replace(/^['"]|['"]$/g, "") ?? "";
+        source
+          .match(/^legacyPath:\s*(.+?)\s*$/m)?.[1]
+          ?.trim()
+          .replace(/^['"]|['"]$/g, "") ?? "";
       return { title, date, legacyPath };
     });
 }
 
 const manifest = readSourcePosts() as ManifestEntry[];
+const siteConfig = load(
+  readFileSync(
+    fileURLToPath(new URL("../../site.config.yaml", import.meta.url)),
+    "utf8",
+  ),
+) as {
+  site: { numPostsOnHomepage: number };
+  pages: { home: { introduction: string; featuredPosts: { path: string }[] } };
+};
 const postsPerPage = 24;
 const totalPages = Math.ceil(manifest.length / postsPerPage);
 
@@ -62,7 +84,9 @@ const sandboxTest = base.extend({
     const browser = await playwright.chromium.launch({
       args: ["--single-process", "--no-zygote"],
     });
-    const context = await browser.newContext({ baseURL: "http://127.0.0.1:4321" });
+    const context = await browser.newContext({
+      baseURL: "http://127.0.0.1:4321",
+    });
     const page = await context.newPage();
     await page.route("http://127.0.0.1:4321/**", async (route) => {
       const path = staticFile(new URL(route.request().url()).pathname);
@@ -90,10 +114,18 @@ const sandboxTest = base.extend({
 
 const test = staticFallback ? sandboxTest : base;
 const newestPosts = [...manifest].sort(
-  (left, right) => right.date.localeCompare(left.date) || right.title.localeCompare(left.title, "zh-CN"),
+  (left, right) =>
+    right.date.localeCompare(left.date) ||
+    right.title.localeCompare(left.title, "zh-CN"),
 );
 
-type Rectangle = { left: number; right: number; top: number; bottom: number; width: number };
+type Rectangle = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+  width: number;
+};
 
 function overlaps(left: Rectangle, right: Rectangle) {
   return !(
@@ -106,7 +138,10 @@ function overlaps(left: Rectangle, right: Rectangle) {
 
 async function rect(locator: Locator) {
   const box = await locator.boundingBox();
-  expect(box, `元素 ${await locator.getAttribute("class")} 应可见`).not.toBeNull();
+  expect(
+    box,
+    `元素 ${await locator.getAttribute("class")} 应可见`,
+  ).not.toBeNull();
   return {
     left: box!.x,
     right: box!.x + box!.width,
@@ -125,7 +160,9 @@ async function expectNoDocumentOverflow(page: Page) {
         const box = element.getBoundingClientRect();
         return {
           element: `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ""}${
-            element.classList.length ? `.${[...element.classList].join(".")}` : ""
+            element.classList.length
+              ? `.${[...element.classList].join(".")}`
+              : ""
           }`,
           left: Math.round(box.left),
           right: Math.round(box.right),
@@ -155,14 +192,18 @@ for (const width of [360, 390, 768, 1440]) {
       brand,
       nav.getByRole("link", { name: "文章", exact: true }),
       nav.getByRole("link", { name: "关于", exact: true }),
-      nav.getByRole("link", { name: "友链", exact: true }),
+      nav.getByRole("link", { name: "作品", exact: true }),
+      nav.getByRole("link", { name: "GitHub", exact: true }),
       nav.getByRole("button", { name: "搜索" }),
       page.locator("#theme-toggle"),
     ];
     const boxes = await Promise.all(controls.map(rect));
     for (let left = 0; left < boxes.length; left += 1) {
       for (let right = left + 1; right < boxes.length; right += 1) {
-        expect(overlaps(boxes[left], boxes[right]), `控件 ${left} 与 ${right} 不应重叠`).toBe(false);
+        expect(
+          overlaps(boxes[left], boxes[right]),
+          `控件 ${left} 与 ${right} 不应重叠`,
+        ).toBe(false);
       }
     }
 
@@ -179,21 +220,29 @@ for (const width of [360, 390, 768, 1440]) {
   });
 }
 
-test("首页展示定位语、最近六篇与完整入口", async ({ page }) => {
+test("首页展示作品、精选阅读与不重复的最近写作", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "记录技术实践、学习过程，以及对一些长期问题的思考。",
+    siteConfig.pages.home.introduction,
   );
   const cards = page.locator(".post-list > li .post");
-  await expect(cards).toHaveCount(6);
-  for (let index = 0; index < 6; index += 1) {
-    await expect(cards.nth(index)).toHaveAttribute("href", newestPosts[index].legacyPath);
-    await expect(cards.nth(index)).toContainText(newestPosts[index].title);
-  }
-  await expect(page.getByRole("link", { name: `查看全部 ${manifest.length} 篇文章` })).toHaveAttribute(
-    "href",
-    "/blog/",
+  const selected = siteConfig.pages.home.featuredPosts.map((post) => post.path);
+  const recent = newestPosts.filter(
+    (post) => !selected.includes(post.legacyPath),
   );
+  await expect(page.locator(".work-card")).toHaveCount(2);
+  await expect(page.locator(".reading-pick")).toHaveCount(selected.length);
+  await expect(cards).toHaveCount(siteConfig.site.numPostsOnHomepage);
+  for (let index = 0; index < siteConfig.site.numPostsOnHomepage; index += 1) {
+    await expect(cards.nth(index)).toHaveAttribute(
+      "href",
+      recent[index].legacyPath,
+    );
+    await expect(cards.nth(index)).toContainText(recent[index].title);
+  }
+  await expect(
+    page.getByRole("link", { name: `查看全部 ${manifest.length} 篇文章` }),
+  ).toHaveAttribute("href", "/blog/");
 });
 
 test("文章列表分页、顺序与总数正确", async ({ page }) => {
@@ -206,7 +255,9 @@ test("文章列表分页、顺序与总数正确", async ({ page }) => {
     await expect(page.locator(".post-list > li")).toHaveCount(
       Math.min(postsPerPage, manifest.length - (pageNumber - 1) * postsPerPage),
     );
-    await expect(page.locator(".pagination")).toContainText(`第 ${pageNumber} / ${totalPages} 页`);
+    await expect(page.locator(".pagination")).toContainText(
+      `第 ${pageNumber} / ${totalPages} 页`,
+    );
     if (pageNumber > 1) {
       await expect(page.getByRole("link", { name: "上一页" })).toHaveAttribute(
         "href",
@@ -214,47 +265,69 @@ test("文章列表分页、顺序与总数正确", async ({ page }) => {
       );
     }
     listed.push(
-      ...(await page.locator(".post-list .post").evaluateAll((links) =>
-        links.map((link) => link.getAttribute("href") ?? ""),
-      )),
+      ...(await page
+        .locator(".post-list .post")
+        .evaluateAll((links) =>
+          links.map((link) => link.getAttribute("href") ?? ""),
+        )),
     );
   }
   const byPath = new Map(manifest.map((post) => [post.legacyPath, post]));
   expect(new Set(listed).size).toBe(manifest.length);
   expect(listed.every((href) => byPath.has(href))).toBe(true);
   const listedDates = listed.map((href) => byPath.get(href)!.date);
-  expect(listedDates).toEqual([...listedDates].sort((left, right) => right.localeCompare(left)));
+  expect(listedDates).toEqual(
+    [...listedDates].sort((left, right) => right.localeCompare(left)),
+  );
 });
 
 test("关于、友链与 404 页面可访问", async ({ page }) => {
   await page.goto("/about/");
-  await expect(page.getByRole("heading", { level: 1, name: "关于" })).toBeVisible();
-  await expect(page.locator(".about-copy")).toContainText("Jack，一名 LLM Agent 工程师");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "关于" }),
+  ).toBeVisible();
+  await expect(page.locator(".about-copy")).toContainText(
+    "Jack，一名 LLM Agent 工程师",
+  );
 
   await page.goto("/link/");
-  await expect(page.getByRole("heading", { level: 1, name: "友链" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "友链" }),
+  ).toBeVisible();
   await expect(page.locator(".link-list li")).toHaveCount(9);
 
   const response = await page.goto("/this-route-does-not-exist/");
   expect(response?.status()).toBe(404);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("页面未找到");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "页面未找到",
+  );
 });
 
 test("代表文章保留普通内容、代码、数学、原始 HTML 与多图", async ({ page }) => {
-  await page.goto("/2024/11/06/秋招金山面试分享/", { waitUntil: "domcontentloaded" });
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("秋招金山面试分享");
+  await page.goto("/2024/11/06/秋招金山面试分享/", {
+    waitUntil: "domcontentloaded",
+  });
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "秋招金山面试分享",
+  );
   await expect(page.locator(".prose p").first()).toBeVisible();
 
   await page.goto("/2021/05/30/计算智能导论作业——FCM 聚类的实现/");
-  await expect(page.locator(".prose pre.astro-code code").first()).toBeVisible();
+  await expect(
+    page.locator(".prose pre.astro-code code").first(),
+  ).toBeVisible();
 
   await page.goto("/2021/04/08/数据挖掘报告——MIMC数据集的预处理/");
   await expect(page.locator(".prose .katex").first()).toBeVisible();
 
   await page.goto("/2021/04/28/机器学习报告——高光谱遥感特征选择/");
-  await expect(page.locator(".prose table thead th", { hasText: "Index" }).first()).toBeVisible();
+  await expect(
+    page.locator(".prose table thead th", { hasText: "Index" }).first(),
+  ).toBeVisible();
 
-  await page.goto("/2026/08/29/当文明踩下加速踏板之后/", { waitUntil: "domcontentloaded" });
+  await page.goto("/2026/08/29/当文明踩下加速踏板之后/", {
+    waitUntil: "domcontentloaded",
+  });
   expect(await page.locator(".prose img").count()).toBeGreaterThanOrEqual(4);
 });
 
@@ -265,12 +338,17 @@ test("Pagefind 搜索可按标题与分类返回结果", async ({ page }) => {
   await expect(input).toBeVisible();
 
   await input.fill("现代化的包管理工具");
-  await expect(page.locator(".pagefind-ui__result-link").first()).toContainText("现代化的包管理工具", {
-    timeout: 10_000,
-  });
+  await expect(page.locator(".pagefind-ui__result-link").first()).toContainText(
+    "现代化的包管理工具",
+    {
+      timeout: 10_000,
+    },
+  );
 
   await input.fill("思考与随笔");
-  await expect(page.locator(".pagefind-ui__result-link").first()).toBeVisible({ timeout: 10_000 });
+  await expect(page.locator(".pagefind-ui__result-link").first()).toBeVisible({
+    timeout: 10_000,
+  });
 });
 
 test("主题默认浅色并可持久切换", async ({ page }) => {
@@ -288,18 +366,30 @@ test("主题默认浅色并可持久切换", async ({ page }) => {
   await toggle.click();
   await expect(page.locator("html")).not.toHaveClass(/\bdark\b/);
   await expect(toggle).toHaveAttribute("aria-label", "切换为深色模式");
-  expect(await page.evaluate(() => localStorage.getItem("theme"))).toBe("light");
+  expect(await page.evaluate(() => localStorage.getItem("theme"))).toBe(
+    "light",
+  );
 });
 
 test("键盘可依序聚焦主导航控件且具可访问名称", async ({ page }) => {
   await page.goto("/");
-  const expectedNames = ["Jack's Blog", "文章", "关于", "友链", "照片", "搜索", "切换为深色模式"];
+  const expectedNames = [
+    "Jack's Blog",
+    "作品",
+    "文章",
+    "关于",
+    "GitHub",
+    "搜索",
+    "切换为深色模式",
+  ];
   const names = [];
   for (let index = 0; index < expectedNames.length; index += 1) {
     await page.keyboard.press("Tab");
     names.push(
-      await page.evaluate(() =>
-        document.activeElement?.getAttribute("aria-label")?.trim() || document.activeElement?.textContent?.trim(),
+      await page.evaluate(
+        () =>
+          document.activeElement?.getAttribute("aria-label")?.trim() ||
+          document.activeElement?.textContent?.trim(),
       ),
     );
   }
@@ -314,14 +404,17 @@ test("360px 下代码块与表格不撑破文档且自身可滚动", async ({ pa
   ] as const) {
     await page.goto(url);
     await expectNoDocumentOverflow(page);
-    const overflow = await page.locator(selector).first().evaluate((element) => {
-      const style = getComputedStyle(element);
-      return {
-        overflowX: style.overflowX,
-        clientWidth: element.clientWidth,
-        scrollWidth: element.scrollWidth,
-      };
-    });
+    const overflow = await page
+      .locator(selector)
+      .first()
+      .evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          overflowX: style.overflowX,
+          clientWidth: element.clientWidth,
+          scrollWidth: element.scrollWidth,
+        };
+      });
     if (overflow.scrollWidth > overflow.clientWidth) {
       expect(["auto", "scroll"]).toContain(overflow.overflowX);
     }
@@ -333,4 +426,96 @@ test("favicon href 唯一且为 PNG", async ({ page }) => {
   const icons = page.locator('link[rel="icon"]');
   await expect(icons).toHaveCount(1);
   await expect(icons).toHaveAttribute("href", "/favicon.png");
+});
+
+for (const width of [360, 390, 768, 1440]) {
+  test(`作品列表、详情和关于页 ${width}px 无溢出且图片可加载`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const url of [
+      "/works/",
+      "/works/thingary/",
+      "/works/on-policy-distillation/",
+      "/about/",
+    ]) {
+      await page.goto(url);
+      await expect(page.locator("main h1")).toBeVisible();
+      await expectNoDocumentOverflow(page);
+      for (const image of await page.locator("main img").all()) {
+        await image.scrollIntoViewIfNeeded();
+        await expect
+          .poll(() =>
+            image.evaluate(
+              (el: HTMLImageElement) => el.complete && el.naturalWidth > 0,
+            ),
+          )
+          .toBe(true);
+      }
+    }
+  });
+}
+
+test("从首页进入作品、返回与主题搜索可连续使用", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#theme-toggle").click();
+  await page.locator('.work-card h3 a[href="/works/thingary/"]').click();
+  await expect(page).toHaveURL(/\/works\/thingary\/$/);
+  await expect(
+    page.getByRole("heading", { name: "Thingary · 物谱", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.locator('nav[aria-label="主导航"] a[aria-current="page"]'),
+  ).toHaveText("作品");
+  await expect(page.locator("html")).toHaveClass(/\bdark\b/);
+  await page.locator("#theme-toggle").click();
+  await expect(page.locator("html")).not.toHaveClass(/\bdark\b/);
+  await page.locator("#magnifying-glass").click();
+  const input = page.locator(".pagefind-ui__search-input");
+  await expect(input).toBeVisible();
+  await input.fill("Thingary");
+  await expect(
+    page.locator('.pagefind-ui__result-link[href$="/works/thingary/"]'),
+  ).toBeVisible({ timeout: 10000 });
+  await input.fill("在线策略蒸馏");
+  await expect(
+    page.locator(
+      '.pagefind-ui__result-link[href$="/works/on-policy-distillation/"]',
+    ),
+  ).toBeVisible({ timeout: 10000 });
+  await page.keyboard.press("Escape");
+  await page.locator(".article-back").click();
+  await expect(page).toHaveURL(/\/works\/$/);
+  await expect(page.locator(".work-card")).toHaveCount(2);
+  await page
+    .getByRole("navigation", { name: "主导航" })
+    .getByRole("link", { name: "文章", exact: true })
+    .click();
+  await expect(
+    page.locator('nav[aria-label="主导航"] a[aria-current="page"]'),
+  ).toHaveText("文章");
+});
+
+test("视频使用已发布链接，章节锚点和分享图完整", async ({ page }) => {
+  await page.goto("/works/on-policy-distillation/");
+  await expect(
+    page
+      .locator(".work-detail-actions")
+      .getByRole("link", { name: "在 B站观看" }),
+  ).toHaveAttribute("href", "https://www.bilibili.com/video/BV1PEnP6uERZ/");
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    /\/works\/opd-cover\.jpg$/,
+  );
+  await expect(page.locator(".work-prose tbody tr")).toHaveCount(8);
+  for (const link of await page.locator(".work-outline a").all()) {
+    const href = await link.getAttribute("href");
+    expect(
+      await page.evaluate(
+        (id) => Boolean(document.getElementById(id!)),
+        href!.slice(1),
+      ),
+    ).toBe(true);
+  }
+  await expect(page.locator('a[href*="douyin"]')).toHaveCount(0);
 });

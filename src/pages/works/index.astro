@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import WorkCard from "@components/WorkCard.astro";
+import siteConfig from "@lib/site-config";
+const copy = siteConfig.pages.works;
+const works = (await getCollection("works"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout title={copy.title} description={copy.description}>
+  <header class="archive-head">
+    <p class="eyebrow">{copy.eyebrow}</p><h1>{copy.heading}</h1><p>
+      {copy.description}
+    </p>
+  </header>
+  <div class="work-grid works-index">
+    {
+      works.map((entry, index) => (
+        <WorkCard entry={entry} priority={index === 0} />
+      ))
+    }
+  </div>
+  {
+    works.length === 0 && (
+      <p class="works-empty">
+        作品正在整理中，可以先看看
+        <a class="text-link" href="/blog/">
+          文章
+        </a>
+        。
+      </p>
+    )
+  }
+</Layout>

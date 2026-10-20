@@ -23,15 +23,15 @@ const fullTitle = title === SITE.TITLE ? title : `${title} | ${SITE.TITLE}`;
   <body>
     <noscript>
       <style>
-        .animate{
-          opacity:1;
-          transform:none;
+        .animate {
+          opacity: 1;
+          transform: none;
         }
       </style>
     </noscript>
     <div class="site">
       <Header />
-      <main>
+      <main data-pagefind-body>
         <slot />
       </main>
       <Footer />

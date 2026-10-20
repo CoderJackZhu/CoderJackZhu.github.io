@@ -6,16 +6,16 @@
 
 site:
   title: "Jack's Blog"
-  description: "记录技术实践、学习过程，以及对一些长期问题的思考。"
-  numPostsOnHomepage: 6        # 首页显示文章数
+  description: "Jack 的个人网站：AI Agent 实践、独立软件、技术视频与写作。"
+  numPostsOnHomepage: 3        # 最近写作条数，不重复展示精选文章
   numPostsPerPage: 24          # 「全部文章」每页条数
 
 # 顶部导航栏
 nav:
+  - { label: "作品", href: "/works/" }
   - { label: "文章", href: "/blog/" }
   - { label: "关于", href: "/about/" }
-  - { label: "友链", href: "/link/" }
-  - { label: "照片", href: "/photos/" }
+  - { label: "GitHub", href: "https://github.com/CoderJackZhu" }
 
 # 社交链接（关于页 + 页脚）
 socials:
@@ -59,12 +59,12 @@ footerLinks:
 
 # 关于页文案（每段一行）
 about:
+  workHeading: "最近在做"
   paragraphs:
     - "Jack，一名 LLM Agent 工程师（算法工程师），西安电子科技大学人工智能本硕。"
     - "此前的研究与工程经历覆盖计算机视觉、AIGC 与大模型。"
-    - "当 AI 正在接管大部分具体实现，真正稀缺的不再是掌握哪门技术，而是判断力、品味，以及提出正确问题的能力。"
-    - "我关心的是想法与系统之间的设计——让智能可靠地服务于真实问题，而不是追逐工具与概念的新旧。"
-    - "这里记录我的技术实践、学习过程，以及对一些长期问题的思考。"
+    - "我关心一个想法怎样变成可靠、可用的系统：从要解决的问题，到产品取舍、实现和验证。这里既有 AI Agent 的工程实践，也有自己做的软件和技术讲解视频。"
+    - "写作是我整理这些经历的方式。做成了什么、哪些尝试没有奏效，以及为什么改变方向，都值得留下来。"
     - "早期文章（尤其技术教程类）随技术演进可能已过时，阅读时请注意发布时间。"
 
 # 友链页副标题
@@ -74,10 +74,26 @@ linkSubtitle: "做有价值的事情产生连接。"
 # home 的页面标题直接复用 site.title，不在此重复定义。
 pages:
   home:
-    eyebrow: "Writing · since 2020"
+    eyebrow: "Jack · Build & share"
+    introduction: "我是 Jack。"
+    lead: "关注 AI Agent，也把想法做成产品与内容。"
+    workHeading: "精选作品"
+    readingHeading: "值得先读"
+    featuredPosts:
+      - path: "/2026/06/20/SkillEvolver自进化实验复盘/"
+        note: "从失败的实验里，留下可靠的评测"
+        summary: "从自动改进 Prompt Skill 的尝试出发，记录评测、消融和跨模型迁移如何改变了项目方向。"
+      - path: "/2026/06/10/Codex造零件Hermes养系统/"
+        note: "从一次任务，走向长期运行的系统"
+        summary: "以个人注意力调度系统为例，记录如何组织长期上下文、开发任务与运行反馈。"
     heading: "最近写作"
     subtitle: "Latest writing"
     more: "查看全部 {count} 篇文章 →"
+  works:
+    title: "作品"
+    eyebrow: "Selected work"
+    heading: "做出来的东西。"
+    description: "软件、视频，以及把想法付诸实践的过程。"
   blog:
     title: "文章"
     description: "全部文章，按发布日期倒序排列。"
@@ -87,9 +103,9 @@ pages:
     postsLabel: "posts"
   about:
     title: "关于"
-    eyebrow: "About this site"
+    eyebrow: "About Jack"
     heading: "关于"
-    subtitle: "这是我的个人介绍。"
+    subtitle: "做产品、写代码，也把过程和思考记录下来。"
   link:
     title: "友链"
     eyebrow: "Friends"

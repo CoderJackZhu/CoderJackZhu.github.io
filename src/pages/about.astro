@@ -3,8 +3,12 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import { SITE, SOCIALS } from "@consts";
 import siteConfig from "@lib/site-config";
+import { getCollection } from "astro:content";
 
 const aboutCopy = siteConfig.pages.about;
+const works = (await getCollection("works"))
+  .filter((work) => !work.data.draft && work.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout title={aboutCopy.title} description={SITE.DESCRIPTION}>
@@ -18,10 +22,29 @@ const aboutCopy = siteConfig.pages.about;
       <div class="about-grid">
         <div class="about-copy">
           {siteConfig.about.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          {
+            works.length > 0 && (
+              <section class="about-works">
+                <h2>{siteConfig.about.workHeading}</h2>
+                {works.map((work) => (
+                  <a href={`/works/${work.id}/`}>
+                    <span>{work.data.kind}</span>
+                    <strong>{work.data.title}</strong>
+                    <span aria-hidden="true">→</span>
+                  </a>
+                ))}
+              </section>
+            )
+          }
         </div>
         <dl class="about-note">
           <dt>站点</dt>
           <dd>jackzhu.top</dd>
+          <dt>站内漫游</dt>
+          <dd>
+            <a href="/blog/">全部文章</a> · <a href="/photos/">照片</a> · <a
+              href="/link/">友链</a>
+          </dd>
           <dt>社交</dt>
           <dd>
             {
@@ -31,7 +54,11 @@ const aboutCopy = siteConfig.pages.about;
                   <a
                     href={social.HREF}
                     target={social.HREF.startsWith("http") ? "_blank" : "_self"}
-                    rel={social.HREF.startsWith("http") ? "noopener noreferrer" : undefined}
+                    rel={
+                      social.HREF.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
                   >
                     {social.NAME}
                   </a>

@@ -1,0 +1,58 @@
+---
+import type { CollectionEntry } from "astro:content";
+interface Props {
+  entry: CollectionEntry<"works">;
+  priority?: boolean;
+}
+const { entry, priority = false } = Astro.props;
+const { data } = entry;
+---
+
+<article class="work-card">
+  <a
+    class="work-cover"
+    href={`/works/${entry.id}/`}
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <img
+      src={data.cover}
+      alt=""
+      width={data.coverWidth}
+      height={data.coverHeight}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+    />
+    <span class="work-cover-label">{data.kind}</span>
+  </a>
+  <div class="work-card-copy">
+    <div class="work-meta">
+      <span>{data.status}</span><span>{data.year}</span>
+    </div>
+    <h3>
+      <a href={`/works/${entry.id}/`}
+        >{data.title}<span aria-hidden="true">↗</span></a>
+    </h3>
+    <p>{data.description}</p>
+    <ul class="work-tags" aria-label="作品特点">
+      {data.tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+    <div class="work-actions">
+      <a class="text-link" href={`/works/${entry.id}/`}
+        >了解作品 <span aria-hidden="true">→</span></a
+      >
+      {
+        data.links[0] && (
+          <a
+            class="text-link secondary-link"
+            href={data.links[0].href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {data.links[0].label} <span aria-hidden="true">↗</span>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>

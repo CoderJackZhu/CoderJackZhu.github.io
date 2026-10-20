@@ -28,6 +28,11 @@ export interface HomePageConfig {
   heading: string;
   subtitle: string;
   more: string;
+  introduction: string;
+  lead: string;
+  workHeading: string;
+  readingHeading: string;
+  featuredPosts: { path: string; note: string; summary: string }[];
 }
 
 export interface BlogPageConfig {
@@ -88,10 +93,17 @@ export interface SiteConfig {
   footerLinks: FooterLinkConfig[];
   about: {
     paragraphs: string[];
+    workHeading: string;
   };
   linkSubtitle: string;
   pages: {
     home: HomePageConfig;
+    works: {
+      title: string;
+      eyebrow: string;
+      heading: string;
+      description: string;
+    };
     blog: BlogPageConfig;
     about: AboutPageConfig;
     link: LinkPageConfig;

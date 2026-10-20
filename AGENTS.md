@@ -15,7 +15,7 @@ Jack 的个人博客，基于 Astro Micro 构建，部署到 www.jackzhu.top（G
 
 ## 约定
 
-- 工作目录：`/Users/jackzhu/projects/blog-astro-migration`（branch `main`）
+- 工作目录：`/Users/jackzhu/Code/Own/CoderJackZhu.github.io`（branch `main`）
 - 站点可改文案集中在 `site.config.yaml`（站点/导航/社交/友链/页脚/关于/各页文案/照片墙），由 `src/lib/site-config.ts` 用 js-yaml 加载。
 - 文章在 `src/content/blog/<slug>/index.md`，frontmatter：`title` / `description` / `date` / `section` / `legacyPath` / `cover`（`updated`、`draft` 可选）。
 - 文章 URL 由 `legacyPath` 决定，路由 `[year]/[month]/[day]/[...slug]`；改文章标题不改变 URL。
@@ -25,4 +25,6 @@ Jack 的个人博客，基于 Astro Micro 构建，部署到 www.jackzhu.top（G
 
 1. 公开署名只写 `Jack` / `Jack's Blog`，不写真名、公司履历、非公开项目细节。
 2. 不自动 git commit / push / deploy / publish——本地验证 + 用户批准后才 push。
-3. 文章优先，不是作品集/仪表盘；不设评论、独立归档、标签云、Projects/Publications。
+3. 网站由个人首页、作品与文章组成。首页先展示精选作品，再展示精选与最近写作；作品可以是软件、视频或其他已完成的公开内容。保留文章日期型 URL、搜索与 RSS；不设评论、标签云或空的作品占位。
+4. 作品由 `src/content/works/*.md` 维护，首页精选文章由 `site.config.yaml` 的 `pages.home.featuredPosts` 指定。详细规则见 README。
+5. 视频只链接 B站，不放抖音；不展示播放量作为作品评价。产品截图只用公开的虚构样例，个人站项目页介绍创作与工程取舍，下载与支持范围链接产品站。

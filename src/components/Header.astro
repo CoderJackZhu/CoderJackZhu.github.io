@@ -7,9 +7,22 @@ import siteConfig from "@lib/site-config";
   <a class="brand" href="/">{SITE.TITLE}</a>
   <nav class="site-nav" aria-label="主导航">
     <div class="nav-links">
-      {siteConfig.nav.map((item) => (
-        <a href={item.href}>{item.label}</a>
-      ))}
+      {
+        siteConfig.nav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={
+              Astro.url.pathname.startsWith(item.href) ? "page" : undefined
+            }
+            target={item.href.startsWith("http") ? "_blank" : undefined}
+            rel={
+              item.href.startsWith("http") ? "noopener noreferrer" : undefined
+            }
+          >
+            {item.label}
+          </a>
+        ))
+      }
     </div>
     <div class="nav-actions">
       <button
@@ -54,6 +67,25 @@ import siteConfig from "@lib/site-config";
 
 <script is:inline>
   (() => {
+    const header = document.querySelector(".site-header");
+    const syncNavigation = () => {
+      header?.querySelectorAll(".nav-links a").forEach((link) => {
+        const url = new URL(link.href);
+        if (
+          url.origin === location.origin &&
+          location.pathname.startsWith(url.pathname)
+        ) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+    if (header && !header.dataset.navigationBound) {
+      header.dataset.navigationBound = "true";
+      document.addEventListener("astro:page-load", syncNavigation);
+    }
+    syncNavigation();
     const themeToggle = document.getElementById("theme-toggle");
     if (themeToggle) {
       const syncThemeToggle = () => {

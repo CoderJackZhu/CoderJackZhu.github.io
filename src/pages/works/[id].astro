@@ -1,0 +1,85 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import { selectedPosts } from "@lib/selected-posts";
+interface Props {
+  entry: CollectionEntry<"works">;
+}
+export async function getStaticPaths() {
+  return (await getCollection("works"))
+    .filter((entry) => !entry.data.draft)
+    .map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content, headings } = await render(entry);
+const related = selectedPosts(data.relatedPosts, await getCollection("blog"));
+---
+
+<Layout title={data.title} description={data.description} image={data.cover}>
+  <article class="work-detail">
+    <a class="article-back" href="/works/" data-pagefind-ignore>← 全部作品</a>
+    <header class="work-detail-header">
+      <div>
+        <p class="eyebrow">{data.kind} · {data.year}</p><h1
+          data-pagefind-meta="title"
+        >
+          {data.title}
+        </h1><p class="work-lead">{data.description}</p>
+      </div>
+      <div class="work-detail-actions" data-pagefind-ignore>
+        {
+          data.links.map((link, index) => (
+            <a
+              class:list={[
+                "action-link",
+                { "action-link-primary": index === 0 },
+              ]}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link.label} <span aria-hidden="true">↗</span>
+            </a>
+          ))
+        }<span class="work-status">{data.status}</span>
+      </div>
+    </header>
+    <figure class="work-figure">
+      <img
+        src={data.cover}
+        alt={data.coverAlt}
+        width={data.coverWidth}
+        height={data.coverHeight}
+        decoding="async"
+        data-pagefind-meta="image[src], image_alt[alt]"
+      />{data.caption && <figcaption>{data.caption}</figcaption>}
+    </figure>
+    <div class="work-detail-grid">
+      <nav class="work-outline" aria-label="作品目录" data-pagefind-ignore>
+        <p class="eyebrow">本页内容</p>{
+          headings
+            .filter((heading) => heading.depth === 2)
+            .map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)
+        }
+      </nav>
+      <div class="prose work-prose"><Content /></div>
+    </div>
+    {
+      related.length > 0 && (
+        <section class="work-related" data-pagefind-ignore>
+          <h2>继续阅读</h2>
+          {related.map((post) => (
+            <a href={post.data.legacyPath}>
+              {post.data.title}
+              <span aria-hidden="true">→</span>
+            </a>
+          ))}
+        </section>
+      )
+    }
+    <div class="work-end" data-pagefind-ignore>
+      <a href="/works/">← 浏览全部作品</a><a href="/about/">关于作者 →</a>
+    </div>
+  </article>
+</Layout>

@@ -1,44 +1,132 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Container from "@components/Container.astro";
-import { SITE } from "@consts";
 import siteConfig from "@lib/site-config";
+import { selectedPosts } from "@lib/selected-posts";
 import ArrowCard from "@components/ArrowCard.astro";
+import WorkCard from "@components/WorkCard.astro";
 import { getCollection } from "astro:content";
-
 const allPosts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-
-const blog = allPosts.slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 const home = siteConfig.pages.home;
-const moreText = home.more.replace("{count}", String(allPosts.length));
+const featured = selectedPosts(
+  home.featuredPosts.map((post) => post.path),
+  allPosts,
+);
+const featuredIds = new Set(featured.map((post) => post.id));
+const recent = allPosts
+  .filter((post) => !featuredIds.has(post.id))
+  .slice(0, siteConfig.site.numPostsOnHomepage);
+const works = (await getCollection("works"))
+  .filter((work) => !work.data.draft && work.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title={siteConfig.site.title} description={SITE.DESCRIPTION}>
-  <Container>
-    <aside data-pagefind-ignore>
-      <header class="hero">
+<Layout title={siteConfig.site.title} description={siteConfig.site.description}>
+  <div class="home-page" data-pagefind-ignore>
+    <header class="home-intro">
+      <div>
         <p class="eyebrow">{home.eyebrow}</p>
-        <h1>{SITE.DESCRIPTION}</h1>
-      </header>
-
-      <section class="animate">
-        <div class="section-head">
-          <h2>{home.heading}</h2>
-          <span>{home.subtitle}</span>
+        <h1>{home.introduction}</h1>
+        <p class="home-lead">{home.lead}</p>
+      </div>
+      <div class="intro-note">
+        <p>
+          从一个想法，到可以使用的产品、<br
+            class="desktop-break"
+          />可以分享的内容。
+        </p>
+        <div class="intro-links">
+          <a href="#selected-work"
+            >看我的作品 <span aria-hidden="true">↓</span></a
+          ><a href="/about/">关于我 <span aria-hidden="true">→</span></a>
         </div>
-        <ol class="post-list">
-          {
-            blog.map((post) => (
-              <li>
-                <ArrowCard entry={post} />
-              </li>
-            ))
-          }
-        </ol>
-        <a class="more" href="/blog/">{moreText}</a>
-      </section>
+      </div>
+    </header>
+    {
+      works.length > 0 && (
+        <section
+          class="home-section"
+          id="selected-work"
+          aria-labelledby="work-heading"
+        >
+          <div class="section-head section-head-linked">
+            <>
+              <h2 id="work-heading">{home.workHeading}</h2>
+              <a href="/works/">
+                全部作品 <span aria-hidden="true">→</span>
+              </a>
+            </>
+          </div>
+          <div class="work-grid">
+            {works.map((entry, index) => (
+              <WorkCard entry={entry} priority={index === 0} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+    {
+      featured.length > 0 && (
+        <section class="home-section" aria-labelledby="reading-heading">
+          <div class="section-head">
+            <>
+              <h2 id="reading-heading">{home.readingHeading}</h2>
+              <span>Selected writing</span>
+            </>
+          </div>
+          <div class="selected-reading">
+            {featured.map((post, index) => (
+              <a class="reading-pick" href={post.data.legacyPath}>
+                <p class="pick-note">{home.featuredPosts[index].note}</p>
+                <h3>{post.data.title}</h3>
+                <p class="pick-description">
+                  {home.featuredPosts[index].summary}
+                </p>
+                <span class="text-link">
+                  阅读全文 <span aria-hidden="true">→</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+    <section
+      class="home-section recent-writing"
+      aria-labelledby="recent-heading"
+    >
+      <div class="section-head">
+        <h2 id="recent-heading">{home.heading}</h2><span>{home.subtitle}</span>
+      </div>
+      <ol class="post-list">
+        {
+          recent.map((post) => (
+            <li>
+              <ArrowCard entry={post} />
+            </li>
+          ))
+        }
+      </ol>
+      <a class="more" href="/blog/"
+        >{home.more.replace("{count}", String(allPosts.length))}</a
+      >
+    </section>
+    <aside class="follow-note">
+      <div>
+        <h2>继续保持连接</h2><p>
+          代码在 GitHub，视频在 B站，新的文章可以通过 RSS 订阅。
+        </p>
+      </div><div class="follow-links">
+        {
+          siteConfig.socials.map((social) => (
+            <a href={social.href}>
+              {social.name}
+              <span aria-hidden="true">↗</span>
+            </a>
+          ))
+        }
+      </div>
     </aside>
-  </Container>
+  </div>
 </Layout>

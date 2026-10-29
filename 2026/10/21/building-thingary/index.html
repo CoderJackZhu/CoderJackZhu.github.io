@@ -1,0 +1,344 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/2026/10/21/building-thingary/"><!-- Primary Meta Tags --><title>从自用工具到开源项目：我做 Thingary 的这段过程 | Jack&#39;s Blog</title><meta name="title" content="从自用工具到开源项目：我做 Thingary 的这段过程 | Jack's Blog"><meta name="description" content="记账坚持不下来，又总想知道什么时候才能不用上班，于是我做了物谱。聊聊这个软件怎么一步步长出来，哪些地方返过工，以及最后为什么选择开源。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/2026/10/21/building-thingary/"><meta property="og:title" content="从自用工具到开源项目：我做 Thingary 的这段过程 | Jack's Blog"><meta property="og:description" content="记账坚持不下来，又总想知道什么时候才能不用上班，于是我做了物谱。聊聊这个软件怎么一步步长出来，哪些地方返过工，以及最后为什么选择开源。"><meta property="og:image" content="https://www.jackzhu.top/works/thingary-overview.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/2026/10/21/building-thingary/"><meta property="twitter:title" content="从自用工具到开源项目：我做 Thingary 的这段过程 | Jack's Blog"><meta property="twitter:description" content="记账坚持不下来，又总想知道什么时候才能不用上班，于是我做了物谱。聊聊这个软件怎么一步步长出来，哪些地方返过工，以及最后为什么选择开源。"><meta property="twitter:image" content="https://www.jackzhu.top/works/thingary-overview.jpg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.Cq4OrfbN.css"></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          transform: none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/works/"> 作品 </a><a href="/blog/"> 文章 </a><a href="/about/"> 关于 </a><a href="https://github.com/CoderJackZhu" target="_blank" rel="noopener noreferrer"> GitHub </a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const header = document.querySelector(".site-header");
+    const syncNavigation = () => {
+      header?.querySelectorAll(".nav-links a").forEach((link) => {
+        const url = new URL(link.href);
+        if (
+          url.origin === location.origin &&
+          location.pathname.startsWith(url.pathname)
+        ) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+    if (header && !header.dataset.navigationBound) {
+      header.dataset.navigationBound = "true";
+      document.addEventListener("astro:page-load", syncNavigation);
+    }
+    syncNavigation();
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main data-pagefind-body>  <div class="article-wrap"> <article class="animate"> <a class="article-back" href="/blog/">← 返回文章列表</a> <header class="article-header"> <p class="eyebrow">技术与工程</p> <h1>从自用工具到开源项目：我做 Thingary 的这段过程</h1> <div class="article-meta"> <time datetime="2026-10-21T00:00:00.000Z">2026年10月21日</time>  <span>约 9 分钟</span> </div> <p class="article-lead">记账坚持不下来，又总想知道什么时候才能不用上班，于是我做了物谱。聊聊这个软件怎么一步步长出来，哪些地方返过工，以及最后为什么选择开源。</p> </header> <div class="prose"> <p>上班的时候，我经常想：到底什么时候才能不用上班？</p>
+<p>以前我不怎么管钱，感觉每个月都赚了点，钱却花得很快，也不知道去了哪里。后来试过记账软件，每付一笔钱就要记一次，选分类、选时间、选付款账户。连自动识别账单的方式我也试了，还是嫌麻烦，坚持不下来。</p>
+<p>我更想知道的是，钱有没有存下来，离不用依靠工资生活还有多远。最好像游戏一样，有一条进度条，看得到自己走到了哪里，上班也能多点动力。</p>
+<p>后来，我给自己做了一个软件，叫 Thingary，中文名是物谱。</p>
+<p>最早动手做的其实只是物品档案。账户盘点、目标规划，以及后来被删掉的养老和医保测算，都是一步步加进去的。回头翻 Git 记录，已经有了数百次提交。其中有不少地方，做的时候觉得应该这样，过一阵自己用起来，又改了主意。</p>
+<p><a href="/works/thingary-overview.jpg"><img src="/works/thingary-overview.jpg" alt="物谱总览：账户净资产的历史变化与规划摘要"></a></p>
+<p><em>物谱的总览。本文三张图都是真实应用截图，使用虚构样例资料，点击可查看原图。</em></p>
+<h2 id="先把买过的东西记下来">先把买过的东西记下来</h2>
+<p>决定自己做之前，我也找过现成的软件。</p>
+<p>记资产、记物品的 App 都用过一些。有的要买会员，但提供的分析比较简单，没回答我最关心的问题。国外也有开源工具，不过我当时找到的那些，对公积金、房贷这些国内的情况照顾得不够。既然没有特别合适的，自己也有开发工具可用，就试着做一个。</p>
+<p>一开始的范围还比较小：先做一个自己用的中文 Mac 应用，整理物品。那时连名字都还叫 Possio。前面花了一些时间讨论产品和流程，看不同的界面方案，再开始实现。</p>
+<p>我记了手机、Mac、Mac mini，还有一套相机。放到一起看，才发现相机其实没怎么用。购入价格、持有时间和每天摊下来的成本摆在那里，很容易让人重新想想当初为什么要买。</p>
+<p><a href="/images/building-thingary/assets.jpg"><img src="/images/building-thingary/assets.jpg" alt="物品列表与选中物品的摘要，价格和日期不记得时可以留空"></a></p>
+<p><em>记下买过的东西，也看看哪些已经闲置了。</em></p>
+<p>放得越久，平均每天的成本自然越低。相机有没有用起来，我自己最清楚。这个数字对我的作用，主要是提醒我回头看看这些东西。</p>
+<p>录资料也得省事。买了多久、花了多少钱，有些还能找到订单，有些已经记不清了，所以价格和日期都允许先留空。先把东西记进去，想起来再补，比一上来要求填完所有信息容易坚持。</p>
+<h2 id="钱慢慢也放了进来">钱慢慢也放了进来</h2>
+<p>后来，物谱开始有账户、余额、负债和盘点记录。打开各个银行、券商的 App，把余额抄过来，就能看这段时间家底增加了多少。</p>
+<p>我自己大概半个月到一个月盘一次。这个频率能接受，每次只花一点时间。以前记账总是在一笔笔付款之后慢慢放弃，现在隔一段时间集中看一次，反而能继续做下去。记录多了，就有了一条自己的家底曲线。</p>
+<p>接下来很自然就想往前看：每个月按现在的速度存钱，什么时候能不靠工资？想买个大件，会把时间往后推多久？如果歇一阵，现有的钱能撑多久？</p>
+<p>我试过把在北京买房放进规划里，曲线直接变成了负数，压力一下就上来了。至少按当时填的那组条件，原来的安排走不通了。</p>
+<p>这类试算对我挺有用。一个平时只在脑子里想想的决定，放进数字里，就能看到它会影响哪些地方。每月多存一点，买一件东西，以后两个人一起赚、一起花，结果都会变。预测也会随着这些条件变化，但我对自己现在的积累和开销，开始有了更具体的感觉。</p>
+<p>也正是从这里开始，功能越加越多。</p>
+<h2 id="养老和医保做了一圈又删掉">养老和医保，做了一圈又删掉</h2>
+<p>想算什么时候可以不上班，很快就会碰到养老和医保。</p>
+<p>提前停下来以后，还要不要继续缴社保？什么时候开始领养老金？医保年限够不够？这些都会影响后面要花的钱。我当时觉得，既然是面向国内使用的软件，就应该把这些情况考虑进去，于是继续往下做。</p>
+<p>最开始像是给计算多加几个输入框。真正做进去以后，问题一个接一个冒出来。</p>
+<p>首先，停止工作、停止缴费、开始领取养老金，是三个不同的时间。人可以提前不工作，后面还继续缴费，再过几年才开始领钱。如果只把将来能领的钱加进去，中间要自己掏的缴费漏掉，结果就会算得太乐观。</p>
+<p>补上缴费又有新问题：这笔钱已经包含在生活费里了吗？还是要额外支付？由自己承担，还是别人承担？同一笔钱不能扣两遍，不知道金额时也不能按零算。原本一个“每月生活费”，慢慢拆出了不少需要确认的情况。</p>
+<p>养老金本身也在越算越细。历史缴费、不同参数怎么取、计算中间怎么取整，都做过核对，还找过外部测算结果来比较。有几组数字能对上，接下来又会遇到别的情况需要查。持续做下去，就意味着要长期维护这些规则，也要让使用者取得并填写对应的资料。</p>
+<p>医保那里有个问题，我觉得很能说明这种复杂度。用户已经填了缴费记录，页面却还在让他“补充资料”。仔细看，缺的是适用的政策条件。记录填没填、当地要求是什么、最后够不够，原来是三件事，被挤进了同一个提示里。于是又要改页面，让人看懂到底还差什么。</p>
+<p>做到这一步，我开始重新考虑：一个用来定期盘家底的软件，真的需要把这些都包下来吗？用户本来只是想看看以后够不够花，现在却要先弄懂一堆专业参数。我自己之后也得持续核对和更新。</p>
+<p>最后，我决定把内置的养老、医保政策测算删掉。</p>
+<p>现在物谱保留官方工具的入口，需要的人可以在那里测算，再把预计每月能收到多少钱、从什么时候开始收到，填回自己的计划里。物谱继续算整体的资金安排。前面那些政策测算，已经成了开发历史的一部分。</p>
+<p>删功能也有后续工作。账户和盘点记录要保留，已经记下的收入不能丢；个人养老金、公积金账户仍然是自己的资产，当然还得留着。依赖旧测算的计划，则要重新填写相关条件。不能只是把页面移除，就算处理完了。</p>
+<p>回头看，这部分花了不少功夫，从增加功能走到主动删除。它也让我以后再想加东西时，会多想一步：这些资料，过几个月我还愿不愿意维护？使用者能不能自己弄明白？</p>
+<h2 id="做出来以后还得自己用">做出来以后，还得自己用</h2>
+<p>AI 参与了物谱大量的实现工作。一个想法提出以后，很快就能看到页面。</p>
+<p>不过，页面出现得快，我也得反复去用。有些问题看着界面想不到，真正操作几次才觉得别扭。</p>
+<p>目标页改过好几轮。其中一次，输入条件和结果上下排列，改完条件要往下滚，看完结果想再调，又得滚回去。我希望它回到左边放条件、右边看结果的布局，边改边对照。</p>
+<p><a href="/works/thingary-planning.jpg"><img src="/works/thingary-planning.jpg" alt="物谱目标页：左侧调整条件，右侧查看结果与资产轨迹"></a></p>
+<p><em>左边改条件，右边看变化。这个布局方便来回试几组不同的安排。</em></p>
+<p>侧边栏也做过一层“常用”和“全部”的区分。但功能本来就没多到需要这样整理，反而多了一层要理解的东西。后来又改成直接列出开启的功能，暂时用不到的去设置里关掉。</p>
+<p>有些改动更小。比如盘点时，一个账户余额没变，再抄一遍就很麻烦，于是增加了“与上次相同”。但应用也不能因为我没填，就擅自沿用上次的数字：没填可能是还没查，点过确认才表示这次核对了。</p>
+<p>页面上的词也一直在改。开发过程中觉得很准确的术语，放在界面上未必好懂。我希望打开以后看到的是“每月还要存多少”“歇一阵能撑多久”，能直接对应自己想问的问题。</p>
+<p>这些调整里有一部分还在开发版，后面会继续更新。AI 能很快做出不同方案，最后留哪个，还是要通过使用来决定。</p>
+<h2 id="导入成功了备份却做不了了">导入成功了，备份却做不了了</h2>
+<p>有一次修复，光看导入页面还真发现不了。</p>
+<p>通过表格导入已经卖出的物品，记录可以正常出现，但接下来做备份就会失败。手动备份不行，自动备份也不行，连恢复之前的保护备份都过不了。界面只报一个笼统的“本地数据操作失败”。</p>
+<p>原因是导入时少保存了一份后续校验需要的信息。前面的操作看起来已经完成，问题到了备份时才暴露出来。修复除了补上新导入的处理，也要修好已经产生这种缺项的旧资料。</p>
+<p>那一轮还补了升级前自动备份数据库。软件会继续改，自己放进去的记录却是要一直留着的。导入、备份、恢复和升级得连着试，单独看某个按钮有没有反应，很容易漏掉问题。</p>
+<p>所以测试时，我会用单独的资料库和虚构数据来试，免得拿日常记录冒险。界面在浏览器里看过以后，保存、重启、文件选择这些操作，也还要回到真正的桌面应用里走一遍。</p>
+<h2 id="想过收费最后还是开源了">想过收费，最后还是开源了</h2>
+<p>做的过程中，我也考虑过把物谱做成付费软件。</p>
+<p>按我当时的调研，iOS 上相关产品已经比较成熟，桌面端选择少一些。尤其是适合国内使用习惯、能把资产和养老规划放在一起看的，我没有找到特别合适的。</p>
+<p>但仔细想想，愿意在电脑前定期盘点家底、调整长期规划的人，本来就是一个比较小的群体。桌面端竞品少，可能也和这个需求有关。再考虑付费意愿，我觉得这个方向很难做成一门付费生意。</p>
+<p>我自己还想继续用，也希望让更多人看到我做的东西，还不如开源。有类似需求的人可以直接用，觉得哪里不合适，也可以接着改。我用过别人的开源工具，把自己做的东西分享出来，也挺自然。</p>
+<p>公开以后，还要补上很多自己用时不太在意的事情。</p>
+<p>最初只想着在自己的 Mac 上装好，后来又要考虑不同芯片的 Mac、Windows，以及别人第一次安装时会遇到什么。文件选择、通知、窗口大小、备份目录的权限，都在适配过程中改过。帮助文档和介绍视频也得做，不然别人下载以后，可能连从哪里开始都不知道。</p>
+<p>为方便国内下载，我还加了 Gitee。同步版本也出过问题，后来改成两边放同一批安装包，并检查下载回来的文件是否一致。同步失败就补同步，不用为了再传一遍文件重新打包。</p>
+<p>从自己装着用，到让别人也能用上，中间这些事情都得有人做。开源以后，它们也成了我维护物谱的一部分。</p>
+<h2 id="现在我还是隔一阵盘一次">现在，我还是隔一阵盘一次</h2>
+<p>做了这么多，回到我自己使用时，其实还是很简单：隔半个月到一个月，更新一下余额，看看最近有没有存下钱。有想买的东西，或者对以后的生活有了新打算，再放进去试试。</p>
+<p>物谱还在公开测试，也还有不少可以改的地方。但它已经让我更愿意回头看自己的积累、买过的东西，以及接下来想怎么生活。</p>
+<p>最初那个“什么时候才能不上班”的问题，还会继续想。至少现在，想到它的时候，有一份自己的记录可以打开看看了。</p>
+<hr>
+<p>物谱目前支持 Mac 和 Windows，开源免费。可以在<a href="https://thingary.jackzhu.top/">产品网站</a>下载，也可以先看<a href="https://www.bilibili.com/video/BV16DnN6KE77/">B站介绍视频</a>。源码在 <a href="https://github.com/CoderJackZhu/Thingary">GitHub</a>。</p> </div> <div class="post-nav"> <span></span> <a href="/2026/09/04/几个小时迁移一个六年博客之后我怎样理解AI Coding/" class="post-nav-link next"> <span class="post-nav-label">下一篇</span> <span class="post-nav-title">几个小时迁移一个六年博客之后，我怎样理解 AI Coding</span> </a> </div> </article> <aside class="toc" aria-label="本文目录"> <strong>本文目录</strong> <nav> <ul class="toc-list"> <li> <a href="#先把买过的东西记下来">先把买过的东西记下来</a>  </li><li> <a href="#钱慢慢也放了进来">钱慢慢也放了进来</a>  </li><li> <a href="#养老和医保做了一圈又删掉">养老和医保，做了一圈又删掉</a>  </li><li> <a href="#做出来以后还得自己用">做出来以后，还得自己用</a>  </li><li> <a href="#导入成功了备份却做不了了">导入成功了，备份却做不了了</a>  </li><li> <a href="#想过收费最后还是开源了">想过收费，最后还是开源了</a>  </li><li> <a href="#现在我还是隔一阵盘一次">现在，我还是隔一阵盘一次</a>  </li> </ul> </nav> </aside> </div>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>

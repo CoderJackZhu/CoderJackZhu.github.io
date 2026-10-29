@@ -73,6 +73,19 @@ html.dark {
   gap: 28px;
   margin-top: 26px;
 }
+.work-grid-single {
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+}
+.work-grid-single .work-card {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  align-items: stretch;
+}
+.work-grid-single .work-card-copy {
+  justify-content: center;
+  padding: 8px 0 8px 32px;
+}
 .work-card {
   min-width: 0;
   display: flex;
@@ -208,44 +221,6 @@ html.dark {
 }
 .recent-writing .more {
   margin-bottom: 0;
-}
-.follow-note {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 32px;
-  margin-bottom: 64px;
-  padding: 28px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-}
-.follow-note h2 {
-  font-size: 18px;
-  margin: 0 0 8px;
-}
-.follow-note p {
-  font-size: 13px;
-  color: var(--muted);
-  margin: 0;
-}
-.follow-links {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 25px;
-  min-width: 180px;
-}
-.follow-links a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  color: var(--accent);
-  font-size: 13px;
-  padding: 4px 0;
-}
-.follow-links a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }
 .works-index {
   margin: 0 0 90px;
@@ -458,6 +433,15 @@ html.dark {
   .work-grid {
     gap: 22px;
   }
+  .work-grid-single {
+    grid-template-columns: 1fr;
+  }
+  .work-grid-single .work-card {
+    display: flex;
+  }
+  .work-grid-single .work-card-copy {
+    padding: 18px 0 0;
+  }
   .work-card h3 {
     font-size: 20px;
   }
@@ -466,17 +450,6 @@ html.dark {
   }
   .home-section {
     margin-bottom: 48px;
-  }
-  .follow-note {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 22px;
-    padding: 24px;
-  }
-  .follow-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px 26px;
   }
   .work-detail-header {
     grid-template-columns: 1fr;

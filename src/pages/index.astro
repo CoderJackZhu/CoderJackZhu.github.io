@@ -37,38 +37,19 @@ const works = (await getCollection("works"))
           />可以分享的内容。
         </p>
         <div class="intro-links">
-          <a href="#selected-work"
-            >看我的作品 <span aria-hidden="true">↓</span></a
+          <a href="#selected-reading"
+            >先看文章 <span aria-hidden="true">↓</span></a
           ><a href="/about/">关于我 <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </header>
     {
-      works.length > 0 && (
+      featured.length > 0 && (
         <section
           class="home-section"
-          id="selected-work"
-          aria-labelledby="work-heading"
+          id="selected-reading"
+          aria-labelledby="reading-heading"
         >
-          <div class="section-head section-head-linked">
-            <>
-              <h2 id="work-heading">{home.workHeading}</h2>
-              <a href="/works/">
-                全部作品 <span aria-hidden="true">→</span>
-              </a>
-            </>
-          </div>
-          <div class="work-grid">
-            {works.map((entry, index) => (
-              <WorkCard entry={entry} priority={index === 0} />
-            ))}
-          </div>
-        </section>
-      )
-    }
-    {
-      featured.length > 0 && (
-        <section class="home-section" aria-labelledby="reading-heading">
           <div class="section-head">
             <>
               <h2 id="reading-heading">{home.readingHeading}</h2>
@@ -87,6 +68,34 @@ const works = (await getCollection("works"))
                   阅读全文 <span aria-hidden="true">→</span>
                 </span>
               </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+    {
+      works.length > 0 && (
+        <section
+          class="home-section"
+          id="selected-work"
+          aria-labelledby="work-heading"
+        >
+          <div class="section-head section-head-linked">
+            <>
+              <h2 id="work-heading">{home.workHeading}</h2>
+              <a href="/works/">
+                全部作品 <span aria-hidden="true">→</span>
+              </a>
+            </>
+          </div>
+          <div
+            class:list={[
+              "work-grid",
+              { "work-grid-single": works.length === 1 },
+            ]}
+          >
+            {works.map((entry, index) => (
+              <WorkCard entry={entry} priority={index === 0} />
             ))}
           </div>
         </section>
@@ -112,21 +121,5 @@ const works = (await getCollection("works"))
         >{home.more.replace("{count}", String(allPosts.length))}</a
       >
     </section>
-    <aside class="follow-note">
-      <div>
-        <h2>继续保持连接</h2><p>
-          代码在 GitHub，视频在 B站，新的文章可以通过 RSS 订阅。
-        </p>
-      </div><div class="follow-links">
-        {
-          siteConfig.socials.map((social) => (
-            <a href={social.href}>
-              {social.name}
-              <span aria-hidden="true">↗</span>
-            </a>
-          ))
-        }
-      </div>
-    </aside>
   </div>
 </Layout>

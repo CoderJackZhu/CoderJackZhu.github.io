@@ -220,7 +220,9 @@ for (const width of [360, 390, 768, 1440]) {
   });
 }
 
-test("首页展示作品、精选阅读与不重复的最近写作", async ({ page }) => {
+test("首页先展示精选文章，再展示代表项目与不重复的最近写作", async ({
+  page,
+}) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     siteConfig.pages.home.introduction,
@@ -230,7 +232,17 @@ test("首页展示作品、精选阅读与不重复的最近写作", async ({ pa
   const recent = newestPosts.filter(
     (post) => !selected.includes(post.legacyPath),
   );
-  await expect(page.locator(".work-card")).toHaveCount(2);
+  const readingTop = await rect(
+    page.locator('section[aria-labelledby="reading-heading"]'),
+  );
+  const workTop = await rect(
+    page.locator('section[aria-labelledby="work-heading"]'),
+  );
+  expect(readingTop.top).toBeLessThan(workTop.top);
+  await expect(page.locator(".work-card")).toHaveCount(1);
+  await expect(
+    page.locator('.work-card a[href="/works/on-policy-distillation/"]'),
+  ).toHaveCount(0);
   await expect(page.locator(".reading-pick")).toHaveCount(selected.length);
   await expect(cards).toHaveCount(siteConfig.site.numPostsOnHomepage);
   for (let index = 0; index < siteConfig.site.numPostsOnHomepage; index += 1) {

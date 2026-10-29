@@ -10,7 +10,7 @@ coverWidth: 1920
 coverHeight: 1080
 caption: "2026 年 10 月 20 日发布于 B站。视频含 AI 辅助生成内容，片中概率为示意数值。"
 order: 2
-featured: true
+featured: false
 tags: ["大语言模型", "知识蒸馏", "技术讲解"]
 links:
   - label: "在 B站观看"

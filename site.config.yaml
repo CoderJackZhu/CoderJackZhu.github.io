@@ -77,8 +77,8 @@ pages:
     eyebrow: "Jack · Build & share"
     introduction: "我是 Jack。"
     lead: "关注 AI Agent，也把想法做成产品与内容。"
-    workHeading: "精选作品"
-    readingHeading: "值得先读"
+    workHeading: "代表项目"
+    readingHeading: "精选文章"
     featuredPosts:
       - path: "/2026/06/20/SkillEvolver自进化实验复盘/"
         note: "从失败的实验里，留下可靠的评测"

@@ -7,3 +7,4 @@
 图片不代表当前版本的完整验收状态。更新截图时核对来源，保持真实界面文字，不填入个人资料。
 
 - `yidiandian-cover.jpg`：由 AIVideoFactory 的 `runs/yidiandian-mv/publish/cover-16x9.png` 转为 JPEG（1920×1080），与 B站视频 BV1xgxd6PE6D 对应。封面不含歌名和演唱者；歌曲出处写在作品页说明里。
+- `memory-mv-cover.jpg`：由 AIVideoFactory 的 `runs/memory-mv/publish/cover-16x9.png` 转为 JPEG（1920×1080），与 B站视频 BV1Y44G64Emj 对应。封面不含歌名和演唱者；歌曲出处写在作品页说明里。

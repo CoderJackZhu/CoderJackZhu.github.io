@@ -1,0 +1,304 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="generator" content="Astro v6.4.8"><!-- Canonical URL --><link rel="canonical" href="https://www.jackzhu.top/works/thingary/"><!-- Primary Meta Tags --><title>Thingary · 物谱 | Jack&#39;s Blog</title><meta name="title" content="Thingary · 物谱 | Jack's Blog"><meta name="description" content="每月盘一次家底，看清资产变化，也看看离自己的生活目标还有多远。一个本地使用的桌面应用。"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.jackzhu.top/works/thingary/"><meta property="og:title" content="Thingary · 物谱 | Jack's Blog"><meta property="og:description" content="每月盘一次家底，看清资产变化，也看看离自己的生活目标还有多远。一个本地使用的桌面应用。"><meta property="og:image" content="https://www.jackzhu.top/works/thingary-overview.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.jackzhu.top/works/thingary/"><meta property="twitter:title" content="Thingary · 物谱 | Jack's Blog"><meta property="twitter:description" content="每月盘一次家底，看清资产变化，也看看离自己的生活目标还有多远。一个本地使用的桌面应用。"><meta property="twitter:image" content="https://www.jackzhu.top/works/thingary-overview.jpg"><!-- PageFind --><link href="/pagefind/pagefind-ui.css" rel="stylesheet"><script src="/pagefind/pagefind-ui.js"></script><!-- Baidu Analytics --><script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2a8dc97b4173a5cf5b6a570b541c0233";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script>
+  function init() {
+    preloadTheme();
+    onScroll();
+    animate();
+    addCopyCodeButtons();
+
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById("back-to-prev");
+    backToPrev?.addEventListener("click", () => window.history.back());
+
+    document.addEventListener("scroll", onScroll);
+  }
+
+  function animate() {
+    const animateElements = document.querySelectorAll(".animate");
+
+    animateElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add("show");
+      }, index * 100);
+    });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 0) {
+      document.documentElement.classList.add("scrolled");
+    } else {
+      document.documentElement.classList.remove("scrolled");
+    }
+  }
+
+  function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleTheme(dark) {
+    const css = document.createElement("style");
+
+    css.appendChild(
+      document.createTextNode(
+        `* {
+             -webkit-transition: none !important;
+             -moz-transition: none !important;
+             -o-transition: none !important;
+             -ms-transition: none !important;
+             transition: none !important;
+          }
+        `,
+      ),
+    );
+
+    document.head.appendChild(css);
+
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
+  }
+
+  function preloadTheme() {
+    const userTheme = localStorage.theme;
+
+    if (userTheme === "light" || userTheme === "dark") {
+      toggleTheme(userTheme === "dark");
+    } else {
+      // 浅色为默认，不跟随系统深色偏好
+      toggleTheme(false);
+    }
+  }
+
+  function addCopyCodeButtons() {
+    let copyButtonLabel = "📋";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    async function copyCode(codeBlock, copyButton) {
+      const codeText = codeBlock.innerText;
+      const buttonText = copyButton.innerText;
+      const textToCopy = codeText.replace(buttonText, "");
+
+      await navigator.clipboard.writeText(textToCopy);
+      copyButton.innerText = "✅";
+
+      setTimeout(() => {
+        copyButton.innerText = copyButtonLabel;
+      }, 2000);
+    }
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.innerText = copyButtonLabel;
+      copyButton.classList = "copy-code";
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton?.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => init());
+  document.addEventListener("astro:after-swap", () => init());
+  preloadTheme();
+</script><link rel="stylesheet" href="/_astro/Layout.Cq4OrfbN.css"></head> <body> <noscript> <style>
+        .animate {
+          opacity: 1;
+          transform: none;
+        }
+      </style> </noscript> <div class="site"> <header class="site-header" data-astro-transition-persist="astro-l7r54iwe-1"> <a class="brand" href="/">Jack&#39;s Blog</a> <nav class="site-nav" aria-label="主导航"> <div class="nav-links"> <a href="/works/" aria-current="page"> 作品 </a><a href="/blog/"> 文章 </a><a href="/about/"> 关于 </a><a href="https://github.com/CoderJackZhu" target="_blank" rel="noopener noreferrer"> GitHub </a> </div> <div class="nav-actions"> <button id="magnifying-glass" class="search" aria-label="搜索" title="搜索"> <svg viewBox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="theme-toggle" aria-label="切换为深色模式" title="切换为深色模式"> <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"> <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"></path> </svg> <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.5"></circle> <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path> </svg> </button> </div> </nav> </header> <script>
+  (() => {
+    const header = document.querySelector(".site-header");
+    const syncNavigation = () => {
+      header?.querySelectorAll(".nav-links a").forEach((link) => {
+        const url = new URL(link.href);
+        if (
+          url.origin === location.origin &&
+          location.pathname.startsWith(url.pathname)
+        ) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+    if (header && !header.dataset.navigationBound) {
+      header.dataset.navigationBound = "true";
+      document.addEventListener("astro:page-load", syncNavigation);
+    }
+    syncNavigation();
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      const syncThemeToggle = () => {
+        const dark = document.documentElement.classList.contains("dark");
+        const label = dark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", String(dark));
+      };
+
+      if (!themeToggle.dataset.themeBound) {
+        themeToggle.dataset.themeBound = "true";
+        themeToggle.addEventListener("click", () => {
+          const dark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", dark);
+          localStorage.setItem("theme", dark ? "dark" : "light");
+          syncThemeToggle();
+        });
+      }
+
+      syncThemeToggle();
+    }
+  })();
+</script> <main data-pagefind-body>  <article class="work-detail"> <a class="article-back" href="/works/" data-pagefind-ignore>← 全部作品</a> <header class="work-detail-header"> <div> <p class="eyebrow">桌面软件 · 2026</p><h1 data-pagefind-meta="title"> Thingary · 物谱 </h1><p class="work-lead">每月盘一次家底，看清资产变化，也看看离自己的生活目标还有多远。一个本地使用的桌面应用。</p> </div> <div class="work-detail-actions" data-pagefind-ignore> <a class="action-link action-link-primary" href="https://thingary.jackzhu.top/" target="_blank" rel="noopener noreferrer"> 访问产品网站 <span aria-hidden="true">↗</span> </a><a class="action-link" href="https://github.com/CoderJackZhu/Thingary" target="_blank" rel="noopener noreferrer"> 查看源码 <span aria-hidden="true">↗</span> </a><a class="action-link" href="https://thingary.jackzhu.top/#film" target="_blank" rel="noopener noreferrer"> 观看介绍视频 <span aria-hidden="true">↗</span> </a><span class="work-status">公开测试中</span> </div> </header> <figure class="work-figure"> <img src="/works/thingary-overview.jpg" alt="物谱总览：账户净资产、变化趋势和目标，画面为虚构样例资料" width="1440" height="968" decoding="async" data-pagefind-meta="image[src], image_alt[alt]"><figcaption>物谱的总览界面。截图来自独立样例身份，所有资料均为虚构。</figcaption> </figure> <div class="work-detail-grid"> <nav class="work-outline" aria-label="作品目录" data-pagefind-ignore> <p class="eyebrow">本页内容</p><a href="#从一个具体问题开始">从一个具体问题开始</a><a href="#把范围收在能持续使用的地方">把范围收在能持续使用的地方</a><a href="#从界面到可核对的结果">从界面到可核对的结果</a><a href="#工程与验证">工程与验证</a><a href="#当前状态">当前状态</a> </nav> <div class="prose work-prose"><h2 id="从一个具体问题开始">从一个具体问题开始</h2>
+<p>钱分散在银行卡、基金、券商和房贷里，买过的物品又散落在订单与照片中。单看某一个账户，很难回答「现在一共有多少」「这段时间有什么变化」，更难把这些事实与接下来的生活计划联系起来。</p>
+<p>物谱把账户盘点、物品档案和目标规划放在一起。每个月或每个季度花一点时间更新资料，再回来看看变化，逐步建立一份能够接着用的个人记录。</p>
+<h2 id="把范围收在能持续使用的地方">把范围收在能持续使用的地方</h2>
+<ul>
+<li><strong>低频盘点。</strong> 记录余额和欠款，观察净资产变化，不要求每天记下一笔笔流水。</li>
+<li><strong>资料留在本机。</strong> 无需注册账号，日常使用可以离线；检查更新由用户控制。</li>
+<li><strong>记录连接到计划。</strong> 用已有资料思考每月要存多少、何时能不依靠工资，或暂时休息能撑多久。</li>
+<li><strong>物品按需记录。</strong> 保存价格、照片、维修与保障信息，辅助理解持有成本。</li>
+</ul>
+<p>这些选择也确定了边界：物谱不提供行情交易、自动付款或日常流水记账。规划结果依赖输入与假设，需要随着实际情况更新。</p>
+<h2 id="从界面到可核对的结果">从界面到可核对的结果</h2>
+<p>这个项目让我把产品范围、交互流程、数据语义、实现和验证放在同一个问题里考虑。一个界面能算出数字还不够，还需要让人知道数字从哪里来、什么尚未填写，以及修改之后会影响哪里。</p>
+<p>例如，未知金额不能被静默当成零；资料缺少时，结果需要说明限制。普通表单取消后不留草稿，而已经提交、结果却暂时无法确认的操作，需要保留回执供后续核对。</p>
+<p><img src="/works/thingary-planning.jpg" alt="物谱目标页：输入条件与计算结果并排展示，资料为虚构样例"></p>
+<p>目标页把条件与结果并排呈现，方便对照、修改与复核。这里的图片用于说明产品交互，不代表所有系统与使用情形都已完成验证。</p>
+<h2 id="工程与验证">工程与验证</h2>
+<p>应用使用 Tauri、React、TypeScript 与 Rust。资料存储、备份恢复、计算核心和桌面交互各有自己的验证要求；浏览器中的展示通过，也不能替代原生应用的操作验收。</p>
+<p>项目公开记录了自动检查、独立样例身份下的验收，以及尚未验证的范围。相比罗列测试数量，更重要的是在数据升级、恢复、未知值和提交失败这些地方，能够说明预期行为并复核结果。</p>
+<ul>
+<li><a href="https://github.com/CoderJackZhu/Thingary/blob/main/docs/ARCHITECTURE.md">架构与模块职责</a></li>
+<li><a href="https://github.com/CoderJackZhu/Thingary/blob/main/docs/DEVELOPMENT.md">开发、测试与验收记录</a></li>
+<li><a href="https://github.com/CoderJackZhu/Thingary/blob/main/SOURCE_NOTICES.md">来源与许可说明</a></li>
+</ul>
+<h2 id="当前状态">当前状态</h2>
+<p>物谱处于公开测试阶段，提供 macOS 与 Windows 安装包。具体版本、支持范围与已知限制以<a href="https://thingary.jackzhu.top/">产品网站</a>和<a href="https://github.com/CoderJackZhu/Thingary/releases">发布记录</a>为准。</p>
+<p>项目持续围绕真实使用中的记录、核对和规划流程迭代。主资料库本身未加密，备份可选择加密；相关边界在<a href="https://thingary.jackzhu.top/guide/#privacy">隐私与资料安全说明</a>中公开列出。</p></div> </div> <section class="work-related" data-pagefind-ignore> <h2>继续阅读</h2> <a href="/2026/10/21/building-thingary/"> 从自用工具到开源项目：我做 Thingary 的这段过程 <span aria-hidden="true">→</span> </a><a href="/2026/09/04/几个小时迁移一个六年博客之后我怎样理解AI Coding/"> 几个小时迁移一个六年博客之后，我怎样理解 AI Coding <span aria-hidden="true">→</span> </a> </section> <div class="work-end" data-pagefind-ignore> <a href="/works/">← 浏览全部作品</a><a href="/about/">关于作者 →</a> </div> </article>  </main> <footer class="site-footer"> <div class="footer-row"> <span>© 2020–2026 Jack</span> <a href="https://beian.miit.gov.cn/">陕ICP备2023003055号-1</a> <a href="https://www.upyun.com/">本网站由又拍云提供加速服务</a> </div> <div class="footer-row footer-stats"> <span id="site-runtime">本站已运行 …</span>  <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span> <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>  </div> <div class="footer-row"> <a href="/atom.xml">RSS</a><a href="/sitemap-index.xml">Sitemap</a><a href="https://github.com/CoderJackZhu">GitHub</a><a href="https://www.zhihu.com/people/zhu-yijie-51">知乎</a><a href="https://space.bilibili.com/355295657">B站</a><a href="/link/">友链</a><a href="/photos/">照片</a> </div> <script type="module">typeof window<"u"&&window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("back-to-top");e&&e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})});</script> <button id="back-to-top" class="back-to-top" type="button">↑ 返回顶部</button> </footer> <script>(function(){const since = "2020-10-26";
+
+    (() => {
+      const updateRuntime = () => {
+        const el = document.getElementById("site-runtime");
+        if (!el) return;
+        const start = new Date(since);
+        const days = Math.floor((Date.now() - start.getTime()) / 86400000);
+        const y = Math.floor(days / 365);
+        const d = days % 365;
+        el.textContent = `本站已运行 ${y} 年 ${d} 天`;
+      };
+      updateRuntime();
+      document.addEventListener("astro:after-swap", updateRuntime);
+    })();
+  })();</script> <script>
+    (() => {
+      const fetchCount = () => {
+        const cb = "BusuanziCallback_" + Math.floor(1e12 * Math.random());
+        window[cb] = (data) => {
+          try {
+            const uv = document.getElementById("busuanzi_value_site_uv");
+            const pv = document.getElementById("busuanzi_value_site_pv");
+            if (uv && data.site_uv) uv.textContent = data.site_uv;
+            if (pv && data.site_pv) pv.textContent = data.site_pv;
+          } catch (e) {}
+          try { delete window[cb]; } catch (e) {}
+        };
+        const s = document.createElement("script");
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=" + cb;
+        s.async = true;
+        document.head.appendChild(s);
+      };
+      fetchCount();
+      document.addEventListener("astro:after-swap", fetchCount);
+    })();
+  </script> </div> <aside data-pagefind-ignore> <div id="backdrop" class="search-backdrop invisible" data-astro-transition-persist="astro-3snakcvo-2"> <div id="pagefind-container" class="search-modal"> <div id="search" class="pagefind-ui pagefind-init" data-pagefind-ui data-bundle-path="/pagefind/" data-ui-options="{&quot;showImages&quot;:false,&quot;excerptLength&quot;:15,&quot;resetStyles&quot;:false}"></div> <script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.Dp02Itiv.js"></script> <div class="search-close">
+Press <kbd>Esc</kbd> or click anywhere to close
+</div> </div> </div> </aside> <script>
+  const magnifyingGlass = document.getElementById("magnifying-glass");
+  const backdrop = document.getElementById("backdrop");
+
+  function openPagefind() {
+    const searchDiv = document.getElementById("search");
+    const search = searchDiv.querySelector("input");
+    setTimeout(() => {
+      search.focus();
+    }, 0);
+    backdrop?.classList.remove("invisible");
+    backdrop?.classList.add("visible");
+  }
+
+  function closePagefind() {
+    const search = document.getElementById("search");
+    search.value = "";
+    backdrop?.classList.remove("visible");
+    backdrop?.classList.add("invisible");
+  }
+
+  // open pagefind
+  magnifyingGlass?.addEventListener("click", () => {
+    openPagefind();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      openPagefind();
+    } else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      openPagefind();
+    }
+  });
+
+  // close pagefind
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePagefind();
+    }
+  });
+
+  // close pagefind when searched result(link) clicked
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("pagefind-ui__result-link")) {
+      closePagefind();
+    }
+  });
+
+  backdrop?.addEventListener("click", (event) => {
+    if (!event.target.closest("#pagefind-container")) {
+      closePagefind();
+    }
+  });
+
+  // prevent form submission
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+</script> </body></html>
